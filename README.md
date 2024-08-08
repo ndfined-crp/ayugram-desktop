@@ -6,28 +6,15 @@
 
 ## ☄️ Installation Instructions
 
-### FlakeHub
+### With nix profile
 
+Use the following command:
 
-```nix
-# flake.nix
-{
-  inputs.ayugram-desktop.url = "https://flakehub.com/f/kaeeraa/ayugram-desktop/*.tar.gz";
-
-  outputs = { self, ayugram-desktop }: {
-    # Use in your outputs
-  };
-}
-
+```shell
+$ nix profile install https://github.com/kaeeraa/ayugram-desktop/archive/refs/tags/v0.0.3.tar.gz
 ```
 
-```nix
-# configuration.nix
-environment.systemPackages = with pkgs; [
-  inputs.ayugram-desktop.packages.${pkgs.system}.default
-];
-
-```
+Then answer in the following order: `y` `n` `y` `n`
 
 ### From a repository
 
