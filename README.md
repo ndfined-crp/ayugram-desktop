@@ -10,6 +10,7 @@
 
 
 ```nix
+# flake.nix
 {
   inputs.ayugram-desktop.url = "https://flakehub.com/f/kaeeraa/ayugram-desktop/*.tar.gz";
 
@@ -20,9 +21,18 @@
 
 ```
 
+```nix
+# configuration.nix
+environment.systemPackages = with pkgs; [
+  inputs.ayugram-desktop.packages.${pkgs.system}.default
+];
+
+```
+
 ### From a repository
 
 ```nix
+# flake.nix
 {
   inputs.ayugram-desktop.url = "git+https://github.com/kaeeraa/ayugram-desktop?submodules=1"; # add this
   
@@ -33,13 +43,14 @@
 
 ```
 
-To use it in your system add this to your configuration.nix: 
-
 ```nix
+# configuration.nix
 environment.systemPackages = with pkgs; [
   inputs.ayugram-desktop.packages.${pkgs.system}.default
 ];
+
 ```
+
 
 ## ⚡ Binary cache
 

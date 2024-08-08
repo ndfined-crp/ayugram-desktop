@@ -1,5 +1,8 @@
 name: "Cachix"
-on: [push, pull_request]
+on: 
+  push:
+    paths:
+      - '**.nix'
 jobs:
   tests:
     runs-on: ubuntu-latest
