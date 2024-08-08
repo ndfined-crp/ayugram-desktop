@@ -1,50 +1,52 @@
-{ lib
-, fetchFromGitHub
-, fetchpatch
-, callPackage
-, pkg-config
-, cmake
-, ninja
-, python3
-, gobject-introspection
-, wrapGAppsHook
-, wrapQtAppsHook
-, extra-cmake-modules
-, qtbase
-, qtwayland
-, qtsvg
-, qtimageformats
-, gtk3
-, boost
-, fmt
-, libdbusmenu
-, lz4
-, xxHash
-, ffmpeg
-, openalSoft
-, minizip
-, libopus
-, alsa-lib
-, libpulseaudio
-, pipewire
-, range-v3
-, tl-expected
-, hunspell
-, glibmm_2_68
-, webkitgtk_6_0
-, jemalloc
-, rnnoise
-, protobuf
-, abseil-cpp
-, xdg-utils
-, microsoft-gsl
-, rlottie
-, stdenv
-, darwin
-, lld
-, libicns
-, nix-update-script
-, libXtst
+{ # ty shwewo
+  pkgs ? import <nixpkgs> { system = builtins.currentSystem; },
+  lib ? pkgs.lib,
+  stdenv ? pkgs.stdenv,
+  fetchFromGitHub ? pkgs.fetchFromGitHub,
+  fetchpatch ? pkgs.fetchpatch,
+  callPackage ? pkgs.callPackage,
+  pkg-config ? pkgs.pkg-config,
+  cmake ? pkgs.cmake,
+  ninja ? pkgs.ninja,
+  python3 ? pkgs.python3,
+  gobject-introspection ? pkgs.gobject-introspection,
+  wrapGAppsHook ? pkgs.wrapGAppsHook,
+  wrapQtAppsHook ? pkgs.libsForQt5.qt5.wrapQtAppsHook,
+  extra-cmake-modules ? pkgs.extra-cmake-modules,
+  qtbase ? pkgs.libsForQt5.qt5.qtbase,
+  qtwayland ? pkgs.libsForQt5.qt5.qtwayland,
+  qtsvg ? pkgs.libsForQt5.qt5.qtsvg,
+  qtimageformats ? pkgs.libsForQt5.qt5.qtimageformats,
+  gtk3 ? pkgs.gtk3,
+  boost ? pkgs.boost,
+  fmt ? pkgs.fmt,
+  libdbusmenu ? pkgs.libdbusmenu,
+  lz4 ? pkgs.lz4,
+  xxHash ? pkgs.xxHash,
+  ffmpeg ? pkgs.ffmpeg,
+  openalSoft ? pkgs.openalSoft,
+  minizip ? pkgs.minizip,
+  libopus ? pkgs.libopus,
+  alsa-lib ? pkgs.alsa-lib,
+  libpulseaudio ? pkgs.libpulseaudio,
+  pipewire ? pkgs.pipewire,
+  range-v3 ? pkgs.range-v3,
+  tl-expected ? pkgs.tl-expected,
+  hunspell ? pkgs.hunspell,
+  glibmm_2_68 ? pkgs.glibmm_2_68,
+  webkitgtk_6_0 ? pkgs.webkitgtk_6_0,
+  jemalloc ? pkgs.jemalloc,
+  rnnoise ? pkgs.rnnoise,
+  protobuf ? pkgs.protobuf,
+  abseil-cpp ? pkgs.abseil-cpp,
+  xdg-utils ? pkgs.xdg-utils,
+  microsoft-gsl ? pkgs.microsoft-gsl,
+  rlottie ? pkgs.rlottie,
+  darwin ? pkgs.darwin,
+  lld ? pkgs.lld,
+  libicns ? pkgs.libicns,
+  nix-update-script ? pkgs.nix-update-script,
+  libXtst ? pkgs.xorg.libXtst,
 }:
 
 # Main reference:
@@ -65,40 +67,17 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "ayugram-desktop";
-  version = "4.15";
+  version = "5.2.2";
 
   src = fetchFromGitHub {
     owner = "AyuGram";
     repo = "AyuGramDesktop";
     rev = "v${version}";
     fetchSubmodules = true;
-    hash = "sha256-7WBMF+plDuYu/Nn0rs7DLqKbxXg3apaM7FEpDvHJyhI=";
+    hash = "sha256-XaywX/kxRxN7vkItsvNGexjoukfAyyvEVMrn1Vy7U54=";
   };
 
-  patches = [
-    ./macos.patch
-    # the generated .desktop files contains references to unwrapped tdesktop, breaking scheme handling
-    # and the scheme handler is already registered in the packaged .desktop file, rendering this unnecessary
-    # see https://github.com/NixOS/nixpkgs/issues/218370
-    (fetchpatch {
-      url = "https://salsa.debian.org/debian/telegram-desktop/-/raw/09b363ed5a4fcd8ecc3282b9bfede5fbb83f97ef/debian/patches/Disable-register-custom-scheme.patch";
-      hash = "sha256-B8X5lnSpwwdp1HlvyXJWQPybEN+plOwimdV5gW6aY2Y=";
-    })
-  ];
-
-  postPatch = lib.optionalString stdenv.isLinux ''
-    substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioInputALSA.cpp \
-      --replace-fail '"libasound.so.2"' '"${alsa-lib}/lib/libasound.so.2"'
-    substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioOutputALSA.cpp \
-      --replace-fail '"libasound.so.2"' '"${alsa-lib}/lib/libasound.so.2"'
-    substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioPulse.cpp \
-      --replace-fail '"libpulse.so.0"' '"${libpulseaudio}/lib/libpulse.so.0"'
-    substituteInPlace Telegram/lib_webview/webview/platform/linux/webview_linux_webkitgtk_library.cpp \
-      --replace-fail '"libwebkitgtk-6.0.so.4"' '"${webkitgtk_6_0}/lib/libwebkitgtk-6.0.so.4"'
-  '' + lib.optionalString stdenv.isDarwin ''
-    substituteInPlace Telegram/lib_webrtc/webrtc/platform/mac/webrtc_environment_mac.mm \
-      --replace-fail kAudioObjectPropertyElementMain kAudioObjectPropertyElementMaster
-  '';
+  # no patches, because: 1. i dont have mac, 2. patches breaking building
 
   # We want to run wrapProgram manually (with additional parameters)
   dontWrapGApps = true;

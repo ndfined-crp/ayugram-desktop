@@ -1,28 +1,26 @@
-### Ayugram desktop NixOS flake
+# 🌐 Ayugram desktop | NixOS flake 🌐
 
-#### To install, add this to your flake:
+## ☄️ Installation Instructions
 
-```nix
-inputs = {
-  ayugram-desktop.url = "github:shwewo/ayugram-desktop";
-  # your other flakes...
-};
-```
-
-To use my binary cache, add this to nix config:
+Example `flake.nix` (don't copy it fully):
 
 ```nix
-nix = {
-  settings = {
-    substituters = [
-      "https://shwewo.cachix.org"
-    ];
-    trusted-public-keys = [
-      "shwewo.cachix.org-1:84cIX7ETlqQwAWHBnd51cD4BeUVXCyGbFdtp+vLxKOo="
-    ];
-    # other options...
+{
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    
+    ayugram-desktop.url = "/home/kaeeraa/PycharmProjects/ayugram-desktop"; # add this
   };
-};
+
+  outputs = { self, nixpkgs, ... }@ inputs: { # also add @ inputs
+    nixosConfigurations.kaeeraa-dev = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = { inherit inputs; }; # and this line
+      modules = [ ./configuration.nix ];
+    };
+  };
+}
+
 ```
 
 To use it in your system add this to your configuration.nix: 
@@ -33,15 +31,30 @@ environment.systemPackages = with pkgs; [
 ];
 ```
 
-Also don't forget to add `inherit inputs` to your `flake.nix` like that:
+## ⚡ Binary cache
+
+### You can also use the binary cache, if you want to skip building.
+
+First way to use the binary cache is use the cachix command:
+
+```shell
+$ cachix use kaeeraa
+```
+
+Second way to use the binary cache is set it directly in the configuration:
 
 ```nix
-nixosConfigurations.hostname = nixpkgs.lib.nixosSystem {
-  system = "x86_64-linux";
-  specialArgs = { 
-    inherit inputs;   
+nix = {
+  settings = {
+    substituters = [
+      "https://kaeeraa.cachix.org"
+    ];
+    trusted-public-keys = [
+      "kaeeraa.cachix.org-1:S3CnhT12akYQf4Ph7fndLgqo2os4ket3OTP2amrzJRs="
+    ];
+    # other options...
   };
-
-  # other configuration...
-}
+};
 ```
+
+## 🪐 Thanks to shwewo
