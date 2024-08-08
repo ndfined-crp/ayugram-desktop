@@ -9,7 +9,7 @@
 Use the following command:
 
 ```shell
-$ nix profile install https://github.com/kaeeraa/ayugram-desktop/archive/refs/tags/ayugram-v5.5.2.tar.gz
+$ nix profile install https://github.com/kaeeraa/ayugram-desktop/archive/refs/tags/ayugram-v5.5.2-v0.0.2.tar.gz
 ```
 
 Answer at all questions `y`
