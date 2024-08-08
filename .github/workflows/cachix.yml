@@ -18,5 +18,5 @@ jobs:
         name: kaeeraa
         # If you chose signing key for write access
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-    - run: nix-build
+    - run: nix-build | cachix push kaeeraa
     # - run: nix-shell --run "echo OK" # actually useless 10 minutes
