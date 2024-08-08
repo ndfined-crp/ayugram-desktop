@@ -1,5 +1,5 @@
 { # ty shwewo
-  pkgs ? import <nixpkgs> { system = builtins.currentSystem },
+  pkgs ? import <nixpkgs> { system = builtins.currentSystem; },
   lib ? pkgs.lib,
   stdenv ? pkgs.stdenv,
   fetchFromGitHub ? pkgs.fetchFromGitHub,
