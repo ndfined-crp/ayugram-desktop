@@ -16,6 +16,7 @@ jobs:
       id-token: "write"
       contents: "read"
     steps:
+      - run: "export NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1"
       - uses: "actions/checkout@v4"
         with:
           ref: "${{ (inputs.tag != null) && format('refs/tags/{0}', inputs.tag) || '' }}"
