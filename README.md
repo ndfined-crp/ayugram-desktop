@@ -9,7 +9,7 @@ Example `flake.nix` (don't copy it fully):
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     
-    ayugram-desktop.url = "/home/kaeeraa/PycharmProjects/ayugram-desktop"; # add this
+    ayugram-desktop.url = "git+https://github.com/kaeeraa/ayugram-desktop?submodules=1"; # add this
   };
 
   outputs = { self, nixpkgs, ... }@ inputs: { # also add @ inputs
@@ -34,6 +34,12 @@ environment.systemPackages = with pkgs; [
 ## ⚡ Binary cache
 
 ### You can also use the binary cache, if you want to skip building.
+
+#### Auto using cache
+
+Cache already built in this flake, you just need to trust it.
+
+#### Manual using cache
 
 First way to use the binary cache is use the cachix command:
 
