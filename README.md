@@ -1,12 +1,10 @@
 #  Ayugram desktop 🌐 NixOS flake 
 
 [![Cachix](https://github.com/kaeeraa/ayugram-desktop/actions/workflows/cachix.yml/badge.svg)](https://github.com/kaeeraa/ayugram-desktop/actions/workflows/cachix.yml)
-[![FlakeHub](https://img.shields.io/endpoint?url=https://flakehub.com/f/kaeeraa/ayugram-desktop/badge)](https://flakehub.com/flake/kaeeraa/ayugram-desktop)
-
 
 ## ☄️ Installation Instructions
 
-### With nix profile
+### With nix profile (easiest way to install)
 
 Use the following command:
 
@@ -14,16 +12,16 @@ Use the following command:
 $ nix profile install https://github.com/kaeeraa/ayugram-desktop/archive/refs/tags/v0.0.3.tar.gz
 ```
 
-Then answer in the following order: `y` `n` `y` `n`
+Answer at all questions `y`
 
 ### From a repository
 
 ```nix
 # flake.nix
 {
-  inputs.ayugram-desktop.url = "git+https://github.com/kaeeraa/ayugram-desktop?submodules=1"; # add this
+  inputs.ayugram-desktop.url = "git+https://github.com/kaeeraa/ayugram-desktop?submodules=1";
   
-  outputs = { self, ayugram-desktop, ... }: { # also add @ inputs
+  outputs = { self, ayugram-desktop, ... }: {
     # Use in your outputs
   };
 }
@@ -37,7 +35,6 @@ environment.systemPackages = with pkgs; [
 ];
 
 ```
-
 
 ## ⚡ Binary cache
 
