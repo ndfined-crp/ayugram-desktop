@@ -1,25 +1,33 @@
 #  Ayugram desktop 🌐 NixOS flake 
 
 [![Cachix](https://github.com/kaeeraa/ayugram-desktop/actions/workflows/cachix.yml/badge.svg)](https://github.com/kaeeraa/ayugram-desktop/actions/workflows/cachix.yml)
+[![FlakeHub](https://img.shields.io/endpoint?url=https://flakehub.com/f/kaeeraa/ayugram-desktop/badge)](https://flakehub.com/flake/kaeeraa/ayugram-desktop)
+
 
 ## ☄️ Installation Instructions
 
-Example `flake.nix` (don't copy it fully):
+### FlakeHub
+
 
 ```nix
 {
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    
-    ayugram-desktop.url = "git+https://github.com/kaeeraa/ayugram-desktop?submodules=1"; # add this
-  };
+  inputs.ayugram-desktop.url = "https://flakehub.com/f/kaeeraa/ayugram-desktop/*.tar.gz";
 
-  outputs = { self, nixpkgs, ... }@ inputs: { # also add @ inputs
-    nixosConfigurations.kaeeraa-dev = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = { inherit inputs; }; # and this line
-      modules = [ ./configuration.nix ];
-    };
+  outputs = { self, ayugram-desktop }: {
+    # Use in your outputs
+  };
+}
+
+```
+
+### From a repository
+
+```nix
+{
+  inputs.ayugram-desktop.url = "git+https://github.com/kaeeraa/ayugram-desktop?submodules=1"; # add this
+  
+  outputs = { self, ayugram-desktop, ... }: { # also add @ inputs
+    # Use in your outputs
   };
 }
 
