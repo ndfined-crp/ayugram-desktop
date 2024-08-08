@@ -1,6 +1,6 @@
-# 🌐 Ayugram desktop | NixOS flake 🌐
+#  Ayugram desktop 🌐 NixOS flake 
 
-[![Cachix](https://github.com/kaeeraa/ayugram-desktop/actions/workflows/cachix.yml/badge.svg?event=push)](https://github.com/kaeeraa/ayugram-desktop/actions/workflows/cachix.yml)
+[![Cachix](https://github.com/kaeeraa/ayugram-desktop/actions/workflows/cachix.yml/badge.svg)](https://github.com/kaeeraa/ayugram-desktop/actions/workflows/cachix.yml)
 
 ## ☄️ Installation Instructions
 
