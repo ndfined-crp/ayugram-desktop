@@ -1,6 +1,7 @@
 #  Ayugram desktop 🌐 NixOS flake 
 
 [![Cachix](https://github.com/kaeeraa/ayugram-desktop/actions/workflows/cachix.yml/badge.svg)](https://github.com/kaeeraa/ayugram-desktop/actions/workflows/cachix.yml)
+[![wakatime](https://wakatime.com/badge/github/kaeeraa/ayugram-desktop.svg)](https://wakatime.com/badge/github/kaeeraa/ayugram-desktop)
 
 ## ☄️ Installation Instructions
 
@@ -69,3 +70,5 @@ nix = {
 ```
 
 ## 🪐 Thanks to shwewo
+
+### Forked from [shwewo/ayugram-desktop](https://github.com/shwewo/ayugram-desktop) for [AyuGram/AyuGramDesktop](https://github.com/telegramdesktop/tdesktop)

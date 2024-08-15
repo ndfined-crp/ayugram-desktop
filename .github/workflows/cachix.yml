@@ -1,22 +1,20 @@
 name: "Cachix"
-on: 
+on:
   push:
     paths:
       - '**.nix'
   workflow_dispatch:
-    inputs: {}
+    inputs: { }
 jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: DeterminateSystems/nix-installer-action@v4
-      with:
-        nix_path: nixpkgs=channel:nixos-unstable
-    - uses: cachix/cachix-action@v15
-      with:
-        name: kaeeraa
-        # If you chose signing key for write access
-        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-    - run: nix-build
-    - run: nix-shell --run "echo OK" # actually useless 10 minutes
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@v4
+      - uses: cachix/cachix-action@v15
+        with:
+          name: kaeeraa
+          # If you chose signing key for write access
+          signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+      - run: nix-build
+      - run: nix-shell --run "echo OK" # actually useless 10 minutes

@@ -1,4 +1,4 @@
-{ # ty shwewo
+{ # tysm shwewo
   pkgs ? import <nixpkgs> { system = builtins.currentSystem; },
   lib ? pkgs.lib,
   stdenv ? pkgs.stdenv,
@@ -63,7 +63,7 @@ let
       cxxStandard = "20";
     };
   };
-  mainProgram = if stdenv.isLinux then "ayugram-desktop" else "ayugram";
+  mainProgram = "ayugram-desktop";
 in
 stdenv.mkDerivation rec {
   pname = "ayugram-desktop";
@@ -89,12 +89,9 @@ stdenv.mkDerivation rec {
     ninja
     python3
     wrapQtAppsHook
-  ] ++ lib.optionals stdenv.isLinux [
     gobject-introspection
     wrapGAppsHook
     extra-cmake-modules
-  ] ++ lib.optionals stdenv.isDarwin [
-    lld
   ];
 
   buildInputs = [
@@ -116,7 +113,6 @@ stdenv.mkDerivation rec {
     microsoft-gsl
     rlottie
     libXtst
-  ] ++ lib.optionals stdenv.isLinux [
     qtwayland
     gtk3
     fmt
@@ -128,50 +124,13 @@ stdenv.mkDerivation rec {
     glibmm_2_68
     webkitgtk_6_0
     jemalloc
-  ] ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk_11_0.frameworks; [
-    Cocoa
-    CoreFoundation
-    CoreServices
-    CoreText
-    CoreGraphics
-    CoreMedia
-    OpenGL
-    AudioUnit
-    ApplicationServices
-    Foundation
-    AGL
-    Security
-    SystemConfiguration
-    Carbon
-    AudioToolbox
-    VideoToolbox
-    VideoDecodeAcceleration
-    AVFoundation
-    CoreAudio
-    CoreVideo
-    CoreMediaIO
-    QuartzCore
-    AppKit
-    CoreWLAN
-    WebKit
-    IOKit
-    GSS
-    MediaPlayer
-    IOSurface
-    Metal
-    NaturalLanguage
-    libicns
-  ]);
-
-  env = lib.optionalAttrs stdenv.isDarwin {
-    NIX_CFLAGS_LINK = "-fuse-ld=lld";
-  };
+  ];
 
   cmakeFlags = [
     "-Ddisable_autoupdate=ON"
-    # We're allowed to used the API ID of the Snap package:
-    "-DTDESKTOP_API_ID=611335"
-    "-DTDESKTOP_API_HASH=d524b414d21f4d37f08684c1df41ac9c"
+    "-DTDESKTOP_API_ID=2040"
+    "-DTDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627"
+    "-DDESKTOP_APP_USE_GTK3=ON"
     # See: https://github.com/NixOS/nixpkgs/pull/130827#issuecomment-885212649
     "-DDESKTOP_APP_USE_PACKAGED_FONTS=OFF"
     "-DDESKTOP_APP_DISABLE_SCUDO=ON"
@@ -186,13 +145,7 @@ stdenv.mkDerivation rec {
     export GI_GIR_PATH="$XDG_DATA_DIRS"
   '';
 
-  installPhase = lib.optionalString stdenv.isDarwin ''
-    mkdir -p $out/Applications
-    cp -r ${mainProgram}.app $out/Applications
-    ln -s $out/{Applications/${mainProgram}.app/Contents/MacOS,bin}
-  '';
-
-  postFixup = lib.optionalString stdenv.isLinux ''
+  postFixup = ''
     sed -i 's/Exec=DESKTOPINTEGRATION=1 ayugram-desktop -- %u/Exec=ayugram-desktop -- %u/g' "$out/share/applications/com.ayugram.desktop.desktop"
     sed -i 's/StartupWMClass=AyuGram/StartupWMClass=com.ayugram/g' "$out/share/applications/com.ayugram.desktop.desktop"
     
@@ -201,10 +154,7 @@ stdenv.mkDerivation rec {
     wrapProgram $out/bin/${mainProgram} \
       "''${gappsWrapperArgs[@]}" \
       "''${qtWrapperArgs[@]}" \
-      --suffix PATH : ${lib.makeBinPath [ xdg-utils ]}
-  '' + lib.optionalString stdenv.isDarwin ''
-    wrapQtApp $out/Applications/${mainProgram}.app/Contents/MacOS/${mainProgram}
-  ''; 
+      --suffix PATH : ${lib.makeBinPath [ xdg-utils ]} '';
 
   passthru = {
     inherit tg_owt;
