@@ -337,3 +337,4 @@ zsdoc/data
 .git
 .idea
 .idea/**
+.run/

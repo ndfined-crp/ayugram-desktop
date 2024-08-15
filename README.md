@@ -56,6 +56,7 @@ $ cachix use kaeeraa
 Second way to use the binary cache is set it directly in the configuration:
 
 ```nix
+# configuration.nix
 nix = {
   settings = {
     substituters = [

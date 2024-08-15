@@ -47,6 +47,10 @@
   libicns ? pkgs.libicns,
   nix-update-script ? pkgs.nix-update-script,
   libXtst ? pkgs.xorg.libXtst,
+  libclang ? pkgs.libclang,
+  kcoreaddons ? pkgs.libsForQt5.kcoreaddons,
+  mount ? pkgs.mount,
+  xdmcp ? pkgs.xorg.libXdmcp,
 }:
 
 # Main reference:
@@ -124,6 +128,10 @@ stdenv.mkDerivation rec {
     glibmm_2_68
     webkitgtk_6_0
     jemalloc
+    libclang
+    kcoreaddons
+    mount
+    xdmcp
   ];
 
   cmakeFlags = [
