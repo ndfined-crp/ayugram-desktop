@@ -1,5 +1,6 @@
 { # tysm shwewo
   pkgs ? import <nixpkgs> { system = builtins.currentSystem; },
+  sources ? import ./nix/sources.nix,
   lib ? pkgs.lib,
   stdenv ? pkgs.stdenv,
   fetchFromGitHub ? pkgs.fetchFromGitHub,
@@ -51,6 +52,7 @@
   kcoreaddons ? pkgs.libsForQt5.kcoreaddons,
   mount ? pkgs.mount,
   xdmcp ? pkgs.xorg.libXdmcp,
+  tg_owt ? import sources.tg_owt-nix { inherit pkgs; },
 }:
 
 # Main reference:
@@ -61,12 +63,6 @@
 # - https://github.com/void-linux/void-packages/blob/master/srcpkgs/telegram-desktop/template
 
 let
-  tg_owt = callPackage ./tg_owt.nix {
-    inherit stdenv;
-    abseil-cpp = abseil-cpp.override {
-      cxxStandard = "20";
-    };
-  };
   mainProgram = "ayugram-desktop";
 in
 stdenv.mkDerivation rec {
@@ -96,6 +92,7 @@ stdenv.mkDerivation rec {
     gobject-introspection
     wrapGAppsHook
     extra-cmake-modules
+    tg_owt
   ];
 
   buildInputs = [

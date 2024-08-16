@@ -1,0 +1,26 @@
+{
+    "nixpkgs": {
+        "branch": "nixos-unstable",
+        "description": "Nix Packages collection",
+        "homepage": null,
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "c3aa7b8938b17aebd2deecf7be0636000d62a2b9",
+        "sha256": "1ds3yjcy52l8d3rkxr3b7h9c0c3nly079bgakjaasnfjj3xprrwr",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/c3aa7b8938b17aebd2deecf7be0636000d62a2b9.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "tg_owt-nix": {
+        "branch": "master",
+        "description": "tg_owt library port for nixos",
+        "homepage": null,
+        "owner": "kaeeraa",
+        "repo": "tg_owt-nix",
+        "rev": "095fa89f6de4d65e514027bb4b465a14d3761742",
+        "sha256": "00aars7lmbd4870s109pyjj5ivli3xbv3rrx61zlmdpg77r678wk",
+        "type": "tarball",
+        "url": "https://github.com/kaeeraa/tg_owt-nix/archive/095fa89f6de4d65e514027bb4b465a14d3761742.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    }
+}
