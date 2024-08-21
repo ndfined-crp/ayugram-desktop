@@ -1,6 +1,5 @@
 { # tysm shwewo
   pkgs ? import <nixpkgs> { system = builtins.currentSystem; },
-  sources ? import ./nix/sources.nix,
   lib ? pkgs.lib,
   stdenv ? pkgs.stdenv,
   fetchFromGitHub ? pkgs.fetchFromGitHub,
@@ -52,7 +51,7 @@
   kcoreaddons ? pkgs.libsForQt5.kcoreaddons,
   mount ? pkgs.mount,
   xdmcp ? pkgs.xorg.libXdmcp,
-  tg_owt ? import sources.tg_owt-nix { inherit pkgs; },
+  tg_owt ? import ./tg_owt.nix,
 }:
 
 # Main reference:
