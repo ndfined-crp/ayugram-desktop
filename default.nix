@@ -72,14 +72,14 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "ayugram-desktop";
-  version = "5.2.2";
+  version = "5.4.1";
 
   src = fetchFromGitHub {
     owner = "AyuGram";
     repo = "AyuGramDesktop";
     rev = "v${version}";
     fetchSubmodules = true;
-    hash = "sha256-XaywX/kxRxN7vkItsvNGexjoukfAyyvEVMrn1Vy7U54=";
+    hash = "sha256-7KmXA3EDlCszoUfQZg3UsKvfRCENy/KLxiE08J9COJ8=";
   };
 
   # no patches, because: 1. i dont have mac, 2. patches breaking building
