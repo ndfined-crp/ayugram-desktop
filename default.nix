@@ -51,7 +51,6 @@
   kcoreaddons ? pkgs.libsForQt5.kcoreaddons,
   mount ? pkgs.mount,
   xdmcp ? pkgs.xorg.libXdmcp,
-  tg_owt ? import ./tg_owt.nix,
 }:
 
 # Main reference:
@@ -63,6 +62,13 @@
 
 let
   mainProgram = "ayugram-desktop";
+
+  tg_owt = callPackage ./tg_owt.nix {
+    inherit stdenv;
+    abseil-cpp = abseil-cpp.override {
+      cxxStandard = "20";
+    };
+  };
 in
 stdenv.mkDerivation rec {
   pname = "ayugram-desktop";
@@ -91,7 +97,6 @@ stdenv.mkDerivation rec {
     gobject-introspection
     wrapGAppsHook
     extra-cmake-modules
-    tg_owt
   ];
 
   buildInputs = [
