@@ -1,5 +1,5 @@
 { # tysm shwewo
-  pkgs ? import <nixpkgs> { system = builtins.currentSystem; },
+  pkgs ? import (builtins.fetchTarball https://github.com/NixOS/nixpkgs/tarball/bd29cb4b3004a482a2c5917de7525a762fecdc7e) { system = builtins.currentSystem; },
   lib ? pkgs.lib,
   stdenv ? pkgs.stdenv,
   fetchFromGitHub ? pkgs.fetchFromGitHub,
@@ -51,6 +51,7 @@
   kcoreaddons ? pkgs.libsForQt5.kcoreaddons,
   mount ? pkgs.mount,
   xdmcp ? pkgs.xorg.libXdmcp,
+  ada ? pkgs.ada,
 }:
 
 # Main reference:
@@ -133,6 +134,7 @@ stdenv.mkDerivation rec {
     kcoreaddons
     mount
     xdmcp
+    ada
   ];
 
   cmakeFlags = [

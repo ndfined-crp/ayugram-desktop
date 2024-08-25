@@ -38,17 +38,18 @@
 , libglvnd ? pkgs.libglvnd
 , unstableGitUpdater ? pkgs.unstableGitUpdater
 , darwin ? pkgs.darwin
+, python3 ? pkgs.python3
 }:
 
 stdenv.mkDerivation {
   pname = "tg_owt";
-  version = "unstable-2023-12-21"; # TODO : update if possible
+  version = "unstable-2024-08-04";
 
   src = fetchFromGitHub {
     owner = "desktop-app";
     repo = "tg_owt";
-    rev = "afd9d5d31798d3eacf9ed6c30601e91d0f1e4d60";
-    sha256 = "sha256-/1cghoxmm+6uFEUgCjh1Xhb0CTnd1XAq1M21FruDRek=";
+    rev = "dc17143230b5519f3c1a8da0079e00566bd4c5a8";
+    sha256 = "sha256-7j7hBIOXEdNJDnDSVUqy234nkTCaeZ9tDAzqvcuaq0o";
     fetchSubmodules = true;
   };
 
@@ -60,7 +61,7 @@ stdenv.mkDerivation {
     libjpeg libopus ffmpeg protobuf openh264 usrsctp libevent libvpx abseil-cpp
     libX11 libXtst libXcomposite libXdamage libXext libXrender libXrandr libXi
     glib pcre util-linuxMinimal libselinux libsepol pipewire alsa-lib libpulseaudio
-    mesa libepoxy libglvnd
+    mesa libepoxy libglvnd python3
   ];
 
   patches = [
