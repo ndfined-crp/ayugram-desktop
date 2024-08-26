@@ -2,37 +2,40 @@
 name: Bug report
 about: Create a report to help us improve
 title: ''
-labels: ''
+labels: '0.kind: bug'
 assignees: ''
 
 ---
 
-**Describe the bug**
+### Describe the bug
 A clear and concise description of what the bug is.
 
-**To Reproduce**
+### Steps To Reproduce
 Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+1. ...
+2. ...
+3. ...
 
-**Expected behavior**
+### Expected behavior
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
+### Screenshots
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
-
-**Additional context**
+### Additional context
 Add any other context about the problem here.
+
+### Metadata
+Please run `nix-shell -p nix-info --run "nix-info -m"` and paste the result.
+
+```console
+[user@system:~]$ nix-shell -p nix-info --run "nix-info -m"
+output here
+```
+
+---
+
+Add a :+1: [reaction] to [issues you find important].
+
+[reaction]: https://github.blog/2016-03-10-add-reactions-to-pull-requests-issues-and-comments/
+[issues you find important]: https://github.com/kaeeraa/ayugram-desktop/issues?q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc
