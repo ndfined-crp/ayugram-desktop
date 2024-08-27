@@ -51,7 +51,7 @@ in
   nix-update-script ? pkgs.nix-update-script,
   libXtst ? pkgs.xorg.libXtst,
   libclang ? pkgs.libclang,
-  clang ? pkgs.clang
+  clang ? pkgs.clang,
   kcoreaddons ? pkgs.libsForQt5.kcoreaddons,
   mount ? pkgs.mount,
   xdmcp ? pkgs.xorg.libXdmcp,
@@ -211,14 +211,13 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   cmakeFlags = [
-    "DDESKTOP_APP_DISABLE_AUTOUPDATE=true"
-
-    # We're allowed to used the API ID of the Snap package:
-    "DTDESKTOP_API_ID=24009370"
-    "DTDESKTOP_API_HASH=85b666d799477d7c3ac6f4ec80a510c8"
-
+    "-Ddisable_autoupdate=ON"
+    "-DTDESKTOP_API_ID=2040"
+    "-DTDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627"
+    "-DDESKTOP_APP_USE_GTK3=ON"
     # See: https://github.com/NixOS/nixpkgs/pull/130827#issuecomment-885212649
-    "DDESKTOP_APP_USE_PACKAGED_FONTS=false"
+    "-DDESKTOP_APP_USE_PACKAGED_FONTS=OFF"
+    "-DDESKTOP_APP_DISABLE_SCUDO=ON"
   ];
 
   preBuild = ''
@@ -253,7 +252,7 @@ stdenv.mkDerivation (finalAttrs: {
     description = "Desktop Telegram client with good customization and Ghost mode.";
     license = licenses.gpl3Only;
     platforms = lib.platforms.all;
-    homepage = "https://github.com/AyuGram/AyuGramDesktop";
+    homepage = "https://ayugram.one";
     changelog = "https://github.com/Ayugram/AyuGramDesktop/releases/tag/v${version}";
     maintainers = with maintainers; [ ];
     inherit mainProgram;
