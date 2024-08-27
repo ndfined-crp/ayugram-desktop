@@ -122,6 +122,8 @@ stdenv.mkDerivation (finalAttrs: {
     ninja
     python3
     wrapQtAppsHook
+    clang
+    libclang
   ] ++ lib.optionals stdenv.isLinux [
     gobject-introspection
     wrapGAppsHook3
@@ -151,6 +153,9 @@ stdenv.mkDerivation (finalAttrs: {
     ada
     clang
     libclang
+    kcoreaddons
+    mount
+    xdmcp
   ] ++ lib.optionals stdenv.isLinux [
     qtwayland
     gtk3
