@@ -51,6 +51,7 @@ in
   nix-update-script ? pkgs.nix-update-script,
   libXtst ? pkgs.xorg.libXtst,
   libclang ? pkgs.libclang,
+  clang ? pkgs.clang
   kcoreaddons ? pkgs.libsForQt5.kcoreaddons,
   mount ? pkgs.mount,
   xdmcp ? pkgs.xorg.libXdmcp,
@@ -148,6 +149,8 @@ stdenv.mkDerivation (finalAttrs: {
     microsoft_gsl
     rlottie
     ada
+    clang
+    libclang
   ] ++ lib.optionals stdenv.isLinux [
     qtwayland
     gtk3
