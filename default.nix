@@ -1,6 +1,6 @@
 let
   sources = import ./nix/sources.nix;
-  pkgs = import sources.nixpkgs { system = builtins.currentSystem; };
+  pkgs = import sources.nixpkgs { };
 in
 { # tysm shwewo
   lib ? pkgs.lib,
@@ -43,7 +43,7 @@ in
   protobuf ? pkgs.protobuf,
   abseil-cpp ? pkgs.abseil-cpp,
   xdg-utils ? pkgs.xdg-utils,
-  microsoft-gsl ? pkgs.microsoft-gsl,
+  microsoft_gsl ? pkgs.microsoft_gsl,
   rlottie ? pkgs.rlottie,
   darwin ? pkgs.darwin,
   lld ? pkgs.lld,
@@ -93,6 +93,11 @@ stdenv.mkDerivation (finalAttrs: {
 
   # ok, now darwin support
   patches = [
+    (fetchpatch {
+      url = "https://github.com/TDesktop-x64/tdesktop/commit/c996ccc1561aed089c8b596f6ab3844335bbf1df.patch";
+      revert = true;
+      hash = "sha256-Hz7BXl5z4owe31l9Je3QOXT8FAyKcbsXsKjGfCmXhzE=";
+    })
     ./macos.patch
     ./scheme.patch
   ];
@@ -145,7 +150,7 @@ stdenv.mkDerivation (finalAttrs: {
     rnnoise
     protobuf
     tg_owt
-    microsoft-gsl
+    microsoft_gsl
     rlottie
     ada
   ] ++ lib.optionals stdenv.isLinux [
@@ -203,12 +208,14 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   cmakeFlags = [
-    "DDESKTOP_APP_DISABLE_AUTOUPDATE=true"
+    "D DESKTOP_APP_DISABLE_AUTOUPDATE=true"
+
     # We're allowed to used the API ID of the Snap package:
-    "DTDESKTOP_API_ID=611335"
-    "DTDESKTOP_API_HA=d524b414d21f4d37f08684c1df41ac9c"
+    "D TDESKTOP_API_ID=611335"
+    "D TDESKTOP_API_HA=d524b414d21f4d37f08684c1df41ac9c"
+
     # See: https://github.com/NixOS/nixpkgs/pull/130827#issuecomment-885212649
-    "DDESKTOP_APP_USE_PACKAGED_FONTS=false"
+    "D DESKTOP_APP_USE_PACKAGED_FONTS=false"
   ];
 
   preBuild = ''
@@ -245,7 +252,7 @@ stdenv.mkDerivation (finalAttrs: {
     platforms = lib.platforms.all;
     homepage = "https://github.com/AyuGram/AyuGramDesktop";
     changelog = "https://github.com/Ayugram/AyuGramDesktop/releases/tag/v${version}";
-    maintainers = with maintainers; [ kaeeraa ];
+    maintainers = with maintainers; [ ];
     inherit mainProgram;
   };
 })
