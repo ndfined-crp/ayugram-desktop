@@ -102,7 +102,7 @@ stdenv.mkDerivation {
 
   cmakeFlags = [
     # Building as a shared library isn't officially supported and may break at any time.
-    (lib.cmakeBool "BUILD_SHARED_LIBS" false)
+    "DBUILD_SHARED_LIBS=false"
   ];
 
   passthru.updateScript = unstableGitUpdater { };

@@ -1,5 +1,8 @@
+let
+  sources = import ./nix/sources.nix;
+  pkgs = import sources.nixpkgs { system = builtins.currentSystem; };
+in
 { # tysm shwewo
-  pkgs ? import (builtins.fetchTarball https://github.com/NixOS/nixpkgs/tarball/bd29cb4b3004a482a2c5917de7525a762fecdc7e) { system = builtins.currentSystem; },
   lib ? pkgs.lib,
   stdenv ? pkgs.stdenv,
   fetchFromGitHub ? pkgs.fetchFromGitHub,
@@ -200,12 +203,12 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   cmakeFlags = [
-    (lib.cmakeBool "DESKTOP_APP_DISABLE_AUTOUPDATE" true)
+    "DDESKTOP_APP_DISABLE_AUTOUPDATE=true"
     # We're allowed to used the API ID of the Snap package:
-    (lib.cmakeFeature "TDESKTOP_API_ID" "611335")
-    (lib.cmakeFeature "TDESKTOP_API_HASH" "d524b414d21f4d37f08684c1df41ac9c")
+    "DTDESKTOP_API_ID=611335"
+    "DTDESKTOP_API_HA=d524b414d21f4d37f08684c1df41ac9c"
     # See: https://github.com/NixOS/nixpkgs/pull/130827#issuecomment-885212649
-    (lib.cmakeBool "DESKTOP_APP_USE_PACKAGED_FONTS" false)
+    "DDESKTOP_APP_USE_PACKAGED_FONTS=false"
   ];
 
   preBuild = ''
@@ -242,7 +245,7 @@ stdenv.mkDerivation (finalAttrs: {
     platforms = lib.platforms.all;
     homepage = "https://github.com/AyuGram/AyuGramDesktop";
     changelog = "https://github.com/Ayugram/AyuGramDesktop/releases/tag/v${version}";
-    maintainers = with maintainers; [ ];
+    maintainers = with maintainers; [ kaeeraa ];
     inherit mainProgram;
   };
 })
