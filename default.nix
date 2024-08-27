@@ -209,8 +209,8 @@ stdenv.mkDerivation (finalAttrs: {
     "D DESKTOP_APP_DISABLE_AUTOUPDATE=true"
 
     # We're allowed to used the API ID of the Snap package:
-    "D TDESKTOP_API_ID=611335"
-    "D TDESKTOP_API_HASH=d524b414d21f4d37f08684c1df41ac9c"
+    "D TDESKTOP_API_ID=24009370"
+    "D TDESKTOP_API_HASH=85b666d799477d7c3ac6f4ec80a510c8"
 
     # See: https://github.com/NixOS/nixpkgs/pull/130827#issuecomment-885212649
     "D DESKTOP_APP_USE_PACKAGED_FONTS=false"
