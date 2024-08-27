@@ -93,11 +93,6 @@ stdenv.mkDerivation (finalAttrs: {
 
   # ok, now darwin support
   patches = [
-    (fetchpatch {
-      url = "https://github.com/TDesktop-x64/tdesktop/commit/c996ccc1561aed089c8b596f6ab3844335bbf1df.patch";
-      revert = true;
-      hash = "sha256-Hz7BXl5z4owe31l9Je3QOXT8FAyKcbsXsKjGfCmXhzE=";
-    })
     ./macos.patch
     ./scheme.patch
   ];
