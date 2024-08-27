@@ -14,8 +14,7 @@ jobs:
       - uses: cachix/cachix-action@v15
         with:
           name: kaeeraa
-          # If you chose signing key for write access
-          signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
       - run: nix-build
 
