@@ -1,8 +1,10 @@
 let
+  system = builtins.currentSystem;
   sources = import ./nix/sources.nix;
-  pkgs = import sources.nixpkgs { };
+  pkgs = import sources.nixpkgs { inherit system; };
 in
 { # tysm shwewo
+  system ? builtins.currentSystem,
   lib ? pkgs.lib,
   stdenv ? pkgs.stdenv,
   fetchFromGitHub ? pkgs.fetchFromGitHub,
@@ -61,6 +63,7 @@ in
   pcre-cpp ? pkgs.pcre-cpp,
 }:
 
+
 # Main reference:
 # - This package was originally based on the Arch package but all patches are now upstreamed:
 #   https://git.archlinux.org/svntogit/community.git/tree/trunk/PKGBUILD?h=packages/telegram-desktop
@@ -80,6 +83,8 @@ let
       cxxStandard = "20";
     };
   };
+
+
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "${pname}";
