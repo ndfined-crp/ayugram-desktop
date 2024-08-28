@@ -1,10 +1,8 @@
 let
-  system = builtins.currentSystem;
   sources = import ./nix/sources.nix;
   pkgs = import sources.nixpkgs { inherit system; };
 in
 { # tysm shwewo
-  system ? builtins.currentSystem,
   lib ? pkgs.lib,
   stdenv ? pkgs.stdenv,
   fetchFromGitHub ? pkgs.fetchFromGitHub,
