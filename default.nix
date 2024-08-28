@@ -208,6 +208,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   env = lib.optionalAttrs stdenv.isDarwin {
     NIX_CFLAGS_LINK = "-fuse-ld=lld";
+    PKG_CONFIG_PATH = "$PKG_CONFIG_PATH:$(which mount)";
   };
 
   cmakeFlags = [
