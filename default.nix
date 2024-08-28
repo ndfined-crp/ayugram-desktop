@@ -241,12 +241,6 @@ stdenv.mkDerivation (finalAttrs: {
     ln -s $out/{Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS,bin}
   '';
 
-  preFixup = ''
-    remove-references-to -t ${stdenv.cc.cc} $out/bin/${mainProgram}
-    remove-references-to -t ${microsoft-gsl} $out/bin/${mainProgram}
-    remove-references-to -t ${tg_owt.dev} $out/bin/${mainProgram}
-  '';
-
   postFixup = lib.optionalString stdenv.isLinux ''
     # This is necessary to run Telegram in a pure environment.
     # We also use gappsWrapperArgs from wrapGAppsHook.
