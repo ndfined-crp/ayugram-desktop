@@ -1,6 +1,6 @@
 let
   sources = import ./nix/sources.nix;
-  pkgs = import sources.nixpkgs { inherit system; };
+  pkgs = import sources.nixpkgs { };
 in
 { # tysm shwewo
   lib ? pkgs.lib,
