@@ -41,6 +41,15 @@ stdenv.mkDerivation {
     fetchSubmodules = true;
   };
 
+  enableParallelBuilding = true;
+
+  postPatch = lib.optionalString stdenv.isLinux ''
+    substituteInPlace src/modules/desktop_capture/linux/wayland/egl_dmabuf.cc \
+      --replace '"libEGL.so.1"' '"${libGL}/lib/libEGL.so.1"' \
+      --replace '"libGL.so.1"' '"${libGL}/lib/libGL.so.1"' \
+      --replace '"libgbm.so.1"' '"${mesa}/lib/libgbm.so.1"'
+  '';
+
   outputs = [
     "out"
     "dev"
@@ -102,7 +111,7 @@ stdenv.mkDerivation {
 
   cmakeFlags = [
     # Building as a shared library isn't officially supported and may break at any time.
-    "D BUILD_SHARED_LIBS=false"
+    (lib.cmakeBool "BUILD_SHARED_LIBS" false)
   ];
 
   passthru.updateScript = unstableGitUpdater { };

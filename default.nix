@@ -43,7 +43,7 @@ in
   protobuf ? pkgs.protobuf,
   abseil-cpp ? pkgs.abseil-cpp,
   xdg-utils ? pkgs.xdg-utils,
-  microsoft_gsl ? pkgs.microsoft_gsl,
+  microsoft-gsl ? pkgs.microsoft_gsl,
   rlottie ? pkgs.rlottie,
   darwin ? pkgs.darwin,
   lld ? pkgs.lld,
@@ -57,6 +57,8 @@ in
   xdmcp ? pkgs.xorg.libXdmcp,
   ada ? pkgs.ada,
   glib-networking ? pkgs.glib-networking,
+  pcre ? pkgs.pcre,
+  pcre-cpp ? pkgs.pcre-cpp,
 }:
 
 # Main reference:
@@ -67,7 +69,7 @@ in
 # - https://github.com/void-linux/void-packages/blob/master/srcpkgs/telegram-desktop/template
 
 let
-  mainProgram = "ayugram-desktop";
+  mainProgram = if stdenv.isLinux then "ayugram-desktop" else "Ayugram";
 
   pname = "AyuGramDesktop";
   version = "5.4.1";
@@ -148,7 +150,7 @@ stdenv.mkDerivation (finalAttrs: {
     rnnoise
     protobuf
     tg_owt
-    microsoft_gsl
+    microsoft-gsl
     rlottie
     ada
     clang
@@ -156,6 +158,8 @@ stdenv.mkDerivation (finalAttrs: {
     kcoreaddons
     mount
     xdmcp
+    pcre
+    pcre-cpp
   ] ++ lib.optionals stdenv.isLinux [
     qtwayland
     gtk3
@@ -203,8 +207,8 @@ stdenv.mkDerivation (finalAttrs: {
     LocalAuthentication
     libicns
   ]);
-
-
+  
+  enableParallelBuilding = true;
 
   env = lib.optionalAttrs stdenv.isDarwin {
     NIX_CFLAGS_LINK = "-fuse-ld=lld";
@@ -230,6 +234,12 @@ stdenv.mkDerivation (finalAttrs: {
     mkdir -p $out/Applications
     cp -r ${finalAttrs.meta.mainProgram}.app $out/Applications
     ln -s $out/{Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS,bin}
+  '';
+
+  preFixup = ''
+    remove-references-to -t ${stdenv.cc.cc} $out/bin/${mainProgram}
+    remove-references-to -t ${microsoft-gsl} $out/bin/${mainProgram}
+    remove-references-to -t ${tg_owt.dev} $out/bin/${mainProgram}
   '';
 
   postFixup = lib.optionalString stdenv.isLinux ''
