@@ -1,4 +1,5 @@
 {  # got from https://github.com/NixOS/nixpkgs/blob/5715b0743d28e2da129d05028137a374c0639060/pkgs/applications/networking/instant-messengers/telegram/telegram-desktop/tg_owt.nix
+  pkgs,
   lib,
   stdenv,
   fetchFromGitHub,

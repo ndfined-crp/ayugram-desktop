@@ -1,8 +1,9 @@
 let
   sources = import ./nix/sources.nix;
-  pkgs = import sources.nixpkgs { };
+  nixpkgs = import sources.nixpkgs { };
 in
 { # tysm shwewo
+  pkgs ? nixpkgs,
   lib ? pkgs.lib,
   stdenv ? pkgs.stdenv,
   fetchFromGitHub ? pkgs.fetchFromGitHub,
@@ -77,6 +78,7 @@ let
 
   tg_owt = callPackage ./tg_owt.nix {
     inherit stdenv;
+    inherit pkgs;
     abseil-cpp = abseil-cpp.override {
       cxxStandard = "20";
     };
