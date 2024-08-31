@@ -1,7 +1,5 @@
 #  Ayugram desktop 🌐 NixOS flake 
 
-## ⚠️ This is the “master” branch, proceed to release branch if you need more stability
-
 [![Cachix](https://github.com/kaeeraa/ayugram-desktop/actions/workflows/cachix.yml/badge.svg)](https://github.com/kaeeraa/ayugram-desktop/actions/workflows/cachix.yml)
 [![wakatime](https://wakatime.com/badge/github/kaeeraa/ayugram-desktop.svg)](https://wakatime.com/badge/github/kaeeraa/ayugram-desktop)
 
@@ -12,7 +10,7 @@
 Use the following command:
 
 ```shell
-$ nix profile install github+kaeeraa/ayugram-desktop/master 
+$ nix profile install github+kaeeraa/ayugram-desktop/release
 ```
 
 Answer at all questions `y`
