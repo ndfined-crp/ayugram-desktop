@@ -97,11 +97,10 @@ stdenv.mkDerivation (finalAttrs: {
     hash = "sha256-7KmXA3EDlCszoUfQZg3UsKvfRCENy/KLxiE08J9COJ8=";
   };
 
-  # ok, now darwin support
   patches = [
+    ./desktop.patch
     ./macos.patch
     ./scheme.patch
-    ./desktop.patch
   ];
 
   postPatch =
