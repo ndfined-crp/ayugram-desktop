@@ -98,6 +98,7 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   patches = [
+    ./patch/color_space.patch
     ./patch/desktop.patch
     ./patch/macos.patch
     ./patch/scheme.patch
