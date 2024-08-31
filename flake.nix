@@ -5,8 +5,8 @@
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
   nixConfig = {
-    extra-substituters = [ "https://kaeeraa.cachix.org" ];
-    extra-trusted-public-keys = [ "kaeeraa.cachix.org-1:S3CnhT12akYQf4Ph7fndLgqo2os4ket3OTP2amrzJRs=" ];
+    extra-substituters = [ "https://cache.garnix.io" ];
+    extra-trusted-public-keys = [ "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=" ];
   };
 
   outputs =
