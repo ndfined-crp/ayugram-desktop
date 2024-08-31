@@ -77,7 +77,7 @@ let
   pname = "AyuGramDesktop";
   version = "5.4.1";
 
-  tg_owt = callPackage ./tg_owt.nix {
+  tg_owt = callPackage ./lib/tg_owt.nix {
     inherit stdenv;
     inherit pkgs;
     abseil-cpp = abseil-cpp.override { cxxStandard = "20"; };
@@ -98,9 +98,9 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   patches = [
-    ./desktop.patch
-    ./macos.patch
-    ./scheme.patch
+    ./patch/desktop.patch
+    ./patch/macos.patch
+    ./patch/scheme.patch
   ];
 
   postPatch =
