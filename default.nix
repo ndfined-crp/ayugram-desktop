@@ -284,7 +284,7 @@ stdenv.mkDerivation (finalAttrs: {
     homepage = "https://ayugram.one";
     changelog = "https://github.com/Ayugram/AyuGramDesktop/releases/tag/v${version}";
     maintainers = with maintainers; [ ];
-    broken = stdenv.isDarwin; # no darweenn!!!!!!!!!!!!!
+#    broken = stdenv.isDarwin; # no darweenn!!!!!!!!!!!!!  but we will try
     inherit mainProgram;
   };
 })
