@@ -8,7 +8,7 @@ index 05cb414..d056557 100644
  #ifdef Q_OS_MAC
 -		format.setColorSpace(QColorSpace::SRgb);
 +		auto const colorSpace = QColorSpace::SRgb;
-+		format.setColorSpace(colorSpace);
++		// format.setColorSpace(colorSpace);
  #endif // Q_OS_MAC
  		QSurfaceFormat::setDefaultFormat(format);
  		return true;
