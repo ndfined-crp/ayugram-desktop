@@ -14,9 +14,3 @@ index 63ed4009b..b8090c426 100644
  
  	void hideAndDeactivate();
  	void updateDockCounter();
-diff --git a/Telegram/lib_ui b/Telegram/lib_ui
---- a/Telegram/lib_ui
-+++ b/Telegram/lib_ui
-@@ -1 +1 @@
--Subproject commit 563092d3920fe1e6a6c326e25d4abb92f33fa36f
-+Subproject commit 563092d3920fe1e6a6c326e25d4abb92f33fa36f-dirty
