@@ -101,6 +101,7 @@ stdenv.mkDerivation (finalAttrs: {
     ./desktop.patch
     ./macos.patch
     ./scheme.patch
+    ./desktop.patch
   ];
 
   postPatch =
