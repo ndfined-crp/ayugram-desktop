@@ -4,13 +4,13 @@ index 63ed4009b..b8090c426 100644
 +++ b/Telegram/SourceFiles/platform/mac/main_window_mac.h
 @@ -49,10 +49,7 @@ protected:
  private:
- 	friend class Private;
- 
--	bool nativeEvent(
--		const QByteArray &eventType,
--		void *message,
--		qintptr *result) override;
-+    //	bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result) override;
- 
- 	void hideAndDeactivate();
- 	void updateDockCounter();
+  friend class Private;
+
+- bool nativeEvent(
+-  const QByteArray &eventType,
+-  void *message,
+-  qintptr *result) override;
++ bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result);
+
+  void hideAndDeactivate();
+  void updateDockCounter();
