@@ -1,9 +1,9 @@
 let
+  # let using nixpkgs from the niv
   sources = import ./nix/sources.nix;
   nixpkgs = import sources.nixpkgs { };
 in
 {
-  # tysm shwewo
   pkgs ? nixpkgs,
   lib ? pkgs.lib,
   stdenv ? pkgs.stdenv,
@@ -78,7 +78,7 @@ let
   version = "5.4.1";
 
   tg_owt = callPackage ./lib/tg_owt.nix {
-    inherit stdenv;
+    inherit stdenv; # oh no, stdenv
     inherit pkgs;
     abseil-cpp = abseil-cpp.override { cxxStandard = "20"; };
   };
@@ -223,6 +223,7 @@ stdenv.mkDerivation (finalAttrs: {
       ]
     );
 
+  # not sure about this
   enableParallelBuilding = true;
 
   env = lib.optionalAttrs stdenv.isDarwin {
@@ -230,24 +231,27 @@ stdenv.mkDerivation (finalAttrs: {
     PKG_CONFIG_PATH = "$PKG_CONFIG_PATH:$(which mount)";
   };
 
-
   cmakeFlags = [
-    (lib.cmakeBool    "disable_autoupdate"             true)
+    # ayugram doesn't love autoupdate
+    (lib.cmakeBool "disable_autoupdate" true)
 
-    (lib.cmakeFeature "TDESKTOP_API_ID"                "2040")
-    (lib.cmakeFeature "TDESKTOP_API_HASH"              "b18441a1ff607e10a989891a5462e627")
+    # we can't build without this (https://github.com/AyuGram/AyuGramDesktop/blob/dev/docs/api_credentials.md)
+    (lib.cmakeFeature "TDESKTOP_API_ID" "2040")
+    (lib.cmakeFeature "TDESKTOP_API_HASH" "b18441a1ff607e10a989891a5462e627")
 
-    (lib.cmakeBool    "DESKTOP_APP_USE_GTK3"           true)
+    # because we can
+    (lib.cmakeBool "DESKTOP_APP_USE_GTK3" true)
 
     # See: https://github.com/NixOS/nixpkgs/pull/130827#issuecomment-885212649
-    (lib.cmakeBool    "DESKTOP_APP_USE_PACKAGED_FONTS" false)
+    (lib.cmakeBool "DESKTOP_APP_USE_PACKAGED_FONTS" false)
 
-    (lib.cmakeBool    "DESKTOP_APP_DISABLE_SCUDO"      true)
+    (lib.cmakeBool "DESKTOP_APP_DISABLE_SCUDO" true)
 
-    (lib.cmakeFeature "CMAKE_BUILD_TYPE"               "Release")
-    (lib.cmakeFeature "CMAKE_CXX_FLAGS"                "-O3")
-    (lib.cmakeBool    "CMAKE_EXPORT_COMPILE_COMMANDS"  true)
-    (lib.cmakeFeature "CMAKE_GENERATOR"                "Ninja")
+    # speed up build
+    (lib.cmakeFeature "CMAKE_BUILD_TYPE" "Release")
+    (lib.cmakeFeature "CMAKE_CXX_FLAGS" "-O3")
+    (lib.cmakeBool "CMAKE_EXPORT_COMPILE_COMMANDS" true)
+    (lib.cmakeFeature "CMAKE_GENERATOR" "Ninja")
   ];
 
   preBuild = ''
@@ -280,13 +284,14 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   meta = with lib; {
+    # inherit from AyuGramDesktop
     description = "Desktop Telegram client with good customization and Ghost mode.";
     license = licenses.gpl3Only;
     platforms = lib.platforms.all;
     homepage = "https://ayugram.one";
     changelog = "https://github.com/Ayugram/AyuGramDesktop/releases/tag/v${version}";
     maintainers = with maintainers; [ ];
-#    broken = stdenv.isDarwin; # no darweenn!!!!!!!!!!!!!  but we will try
+    #    broken = stdenv.isDarwin; # no darweenn!!!!!!!!!!!!!  but we will try
     inherit mainProgram;
   };
 })
