@@ -244,7 +244,9 @@ stdenv.mkDerivation (finalAttrs: {
 
     # See: https://github.com/NixOS/nixpkgs/pull/130827#issuecomment-885212649
     (lib.cmakeBool "DESKTOP_APP_USE_PACKAGED_FONTS" false)
+    (lib.cmakeBool "DESKTOP_APP_USE_PACKAGED_FONTS" false)
 
+    (lib.cmakeBool "DESKTOP_APP_DISABLE_SCUDO" true)
     (lib.cmakeBool "DESKTOP_APP_DISABLE_SCUDO" true)
 
     # speed up build
