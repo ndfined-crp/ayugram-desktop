@@ -95,15 +95,12 @@ stdenv.mkDerivation (finalAttrs: {
     hash = "sha256-7KmXA3EDlCszoUfQZg3UsKvfRCENy/KLxiE08J9COJ8=";
   };
 
-  patches = [
-    ./patch/desktop.patch
-
-    lib.optionals.stdenv.isDarwin
-    [
+  patches =
+    [ ./patch/desktop.patch ]
+    ++ lib.optionals stdenv.isDarwin [
       ./patch/macos.patch
       # ./patch/macos-opengl.patch
-    ]
-  ];
+    ];
 
   postPatch =
     lib.optionalString stdenv.isLinux ''
