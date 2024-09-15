@@ -274,7 +274,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   postFixup =
     ''
-      makeWrapper ${kotatogram-desktop}/bin/kotatogram-desktop $out/bin/kotatogram-desktop \
+      makeWrapper ${ayugram-desktop}/bin/ayugram-desktop $out/bin/ayugram-desktop \
         --prefix GIO_EXTRA_MODULES : ${glib-networking}/lib/gio/modules \
         --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ webkitgtk_6_0 ]}
     ''
