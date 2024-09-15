@@ -97,8 +97,13 @@ stdenv.mkDerivation (finalAttrs: {
 
   patches = [
     ./patch/desktop.patch
-    ./patch/macos.patch
-    ./patch/macos-opengl.patch
+
+    lib.optionalString
+    stdenv.isDarwin
+    [
+      ./patch/macos.patch
+      ./patch/macos-opengl.patch
+    ]
   ];
 
   postPatch =
@@ -273,7 +278,7 @@ stdenv.mkDerivation (finalAttrs: {
   # ''
 
   postFixup =
-    ''
+    lib.optionalString stdenv.isLinux ''
       makeWrapper $out/bin/${finalAttrs.meta.mainProgram} $out/bin/${finalAttrs.meta.mainProgram} \
         --prefix GIO_EXTRA_MODULES : ${glib-networking}/lib/gio/modules \
         --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ webkitgtk_6_0 ]}
