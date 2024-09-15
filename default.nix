@@ -61,6 +61,7 @@ in
   glib-networking ? pkgs.glib-networking,
   pcre ? pkgs.pcre,
   pcre-cpp ? pkgs.pcre-cpp,
+  makeWrapper ? pkgs.makeWrapper,
 
 }:
 
@@ -74,9 +75,6 @@ in
 let
   mainProgram = if stdenv.isLinux then "ayugram-desktop" else "Ayugram";
 
-  pname = "AyuGramDesktop";
-  version = "5.4.1";
-
   tg_owt = callPackage ./lib/tg_owt.nix {
     inherit stdenv; # oh no, stdenv
     inherit pkgs;
@@ -85,24 +83,22 @@ let
 
 in
 stdenv.mkDerivation (finalAttrs: {
-  pname = "${pname}";
-  version = "${version}";
+  pname = "ayugram-desktop";
+  version = "5.4.1";
 
   src = fetchFromGitHub {
     owner = "AyuGram";
-    repo = "${pname}";
-    rev = "v${version}";
+    repo = "AyuGramDesktop";
+    rev = "v5.4.1";
 
     fetchSubmodules = true;
     hash = "sha256-7KmXA3EDlCszoUfQZg3UsKvfRCENy/KLxiE08J9COJ8=";
   };
 
   patches = [
-    ./patch/native_event.patch
-    ./patch/color_space.patch
     ./patch/desktop.patch
     ./patch/macos.patch
-    ./patch/scheme.patch
+    ./patch/macos-opengl.patch
   ];
 
   postPatch =
@@ -121,9 +117,8 @@ stdenv.mkDerivation (finalAttrs: {
         --replace-fail kAudioObjectPropertyElementMain kAudioObjectPropertyElementMaster
     '';
 
-  # We want to run wrapProgram manually (with additional parameters)
-  dontWrapGApps = true;
-  dontWrapQtApps = true;
+  # Wrapping the inside of the app bundles, avoiding double-wrapping
+  dontWrapQtApps = stdenv.isDarwin;
 
   nativeBuildInputs =
     [
@@ -226,10 +221,7 @@ stdenv.mkDerivation (finalAttrs: {
   # not sure about this
   enableParallelBuilding = true;
 
-  env = lib.optionalAttrs stdenv.isDarwin {
-    NIX_CFLAGS_LINK = "-fuse-ld=lld";
-    PKG_CONFIG_PATH = "$PKG_CONFIG_PATH:$(which mount)";
-  };
+  env = lib.optionalAttrs stdenv.isDarwin { NIX_CFLAGS_LINK = "-fuse-ld=lld"; };
 
   cmakeFlags = [
     # ayugram doesn't love autoupdate
@@ -265,14 +257,26 @@ stdenv.mkDerivation (finalAttrs: {
     ln -s $out/{Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS,bin}
   '';
 
+  preFixup = ''
+    remove-references-to -t ${stdenv.cc.cc} $out/bin/${mainProgram}
+    remove-references-to -t ${microsoft-gsl} $out/bin/${mainProgram}
+    remove-references-to -t ${tg_owt.dev} $out/bin/${mainProgram}
+  '';
+
+  # lib.optionalString stdenv.isLinux ''
+  #   # This is necessary to run Telegram in a pure environment.
+  #   # We also use gappsWrapperArgs from wrapGAppsHook.
+  #   wrapProgram $out/bin/${finalAttrs.meta.mainProgram} \
+  #     "''${gappsWrapperArgs[@]}" \
+  #     "''${qtWrapperArgs[@]}" \
+  #     --suffix PATH : ${lib.makeBinPath [ xdg-utils ]}
+  # ''
+
   postFixup =
-    lib.optionalString stdenv.isLinux ''
-      # This is necessary to run Telegram in a pure environment.
-      # We also use gappsWrapperArgs from wrapGAppsHook.
-      wrapProgram $out/bin/${finalAttrs.meta.mainProgram} \
-        "''${gappsWrapperArgs[@]}" \
-        "''${qtWrapperArgs[@]}" \
-        --suffix PATH : ${lib.makeBinPath [ xdg-utils ]}
+    ''
+      makeWrapper ${kotatogram-desktop}/bin/kotatogram-desktop $out/bin/kotatogram-desktop \
+        --prefix GIO_EXTRA_MODULES : ${glib-networking}/lib/gio/modules \
+        --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ webkitgtk_6_0 ]}
     ''
     + lib.optionalString stdenv.isDarwin ''
       wrapQtApp $out/Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS/${finalAttrs.meta.mainProgram}
@@ -284,6 +288,8 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   meta = with lib; {
+    inherit mainProgram;
+
     # inherit from AyuGramDesktop
     description = "Desktop Telegram client with good customization and Ghost mode.";
     license = licenses.gpl3Only;
@@ -292,6 +298,5 @@ stdenv.mkDerivation (finalAttrs: {
     changelog = "https://github.com/Ayugram/AyuGramDesktop/releases/tag/v${version}";
     maintainers = with maintainers; [ ];
     #    broken = stdenv.isDarwin; # no darweenn!!!!!!!!!!!!!  but we will try
-    inherit mainProgram;
   };
 })
