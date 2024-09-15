@@ -98,11 +98,10 @@ stdenv.mkDerivation (finalAttrs: {
   patches = [
     ./patch/desktop.patch
 
-    lib.optionalString
-    stdenv.isDarwin
+    lib.optionalAttrs.stdenv.isDarwin
     [
       ./patch/macos.patch
-      ./patch/macos-opengl.patch
+      # ./patch/macos-opengl.patch
     ]
   ];
 
