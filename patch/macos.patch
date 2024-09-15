@@ -114,34 +114,34 @@ index 7521c08..5e22da2 100644
  
  std::unique_ptr<Environment> CreateEnvironment(
 Submodule Telegram/lib_webview contains modified content
-diff --git a/Telegram/lib_webview/webview/platform/mac/webview_mac.mm b/Telegram/lib_webview/webview/platform/mac/webview_mac.mm
-index e7808fc..34020f0 100644
---- a/Telegram/lib_webview/webview/platform/mac/webview_mac.mm
-+++ b/Telegram/lib_webview/webview/platform/mac/webview_mac.mm
-@@ -334,6 +334,7 @@ Instance::Instance(Config config) {
- 	_handler = [[Handler alloc] initWithMessageHandler:config.messageHandler navigationStartHandler:config.navigationStartHandler navigationDoneHandler:config.navigationDoneHandler dialogHandler:config.dialogHandler dataRequested:handleDataRequest];
- 	_dataRequestHandler = std::move(config.dataRequestHandler);
- 	[configuration setURLSchemeHandler:_handler forURLScheme:stdToNS(kDataUrlScheme)];
-+#if 0
- 	if (@available(macOS 14, *)) {
- 		if (config.userDataToken != LegacyStorageIdToken().toStdString()) {
- 			NSUUID *uuid = UuidFromToken(config.userDataToken);
-@@ -341,10 +342,13 @@ Instance::Instance(Config config) {
- 			[uuid release];
- 		}
- 	}
-+#endif
- 	_webview = [[WKWebView alloc] initWithFrame:NSZeroRect configuration:configuration];
-+#if 0
- 	if (@available(macOS 13.3, *)) {
- 		_webview.inspectable = config.debug ? YES : NO;
- 	}
-+#endif
- 	[_manager addScriptMessageHandler:_handler name:@"external"];
- 	[_webview setNavigationDelegate:_handler];
- 	[_webview setUIDelegate:_handler];
-@@ -700,10 +704,12 @@ void *Instance::winId() {
- }
+# diff --git a/Telegram/lib_webview/webview/platform/mac/webview_mac.mm b/Telegram/lib_webview/webview/platform/mac/webview_mac.mm
+# index e7808fc..34020f0 100644
+# --- a/Telegram/lib_webview/webview/platform/mac/webview_mac.mm
+# +++ b/Telegram/lib_webview/webview/platform/mac/webview_mac.mm
+# @@ -334,6 +334,7 @@ Instance::Instance(Config config) {
+#  	_handler = [[Handler alloc] initWithMessageHandler:config.messageHandler navigationStartHandler:config.navigationStartHandler navigationDoneHandler:config.navigationDoneHandler dialogHandler:config.dialogHandler dataRequested:handleDataRequest];
+#  	_dataRequestHandler = std::move(config.dataRequestHandler);
+#  	[configuration setURLSchemeHandler:_handler forURLScheme:stdToNS(kDataUrlScheme)];
+# +#if 0
+#  	if (@available(macOS 14, *)) {
+#  		if (config.userDataToken != LegacyStorageIdToken().toStdString()) {
+#  			NSUUID *uuid = UuidFromToken(config.userDataToken);
+# @@ -341,10 +342,13 @@ Instance::Instance(Config config) {
+#  			[uuid release];
+#  		}
+#  	}
+# +#endif
+#  	_webview = [[WKWebView alloc] initWithFrame:NSZeroRect configuration:configuration];
+# +#if 0
+#  	if (@available(macOS 13.3, *)) {
+#  		_webview.inspectable = config.debug ? YES : NO;
+#  	}
+# +#endif
+#  	[_manager addScriptMessageHandler:_handler name:@"external"];
+#  	[_webview setNavigationDelegate:_handler];
+#  	[_webview setUIDelegate:_handler];
+# @@ -700,10 +704,12 @@ void *Instance::winId() {
+#  }
  
  void Instance::setOpaqueBg(QColor opaqueBg) {
 +#if 0
