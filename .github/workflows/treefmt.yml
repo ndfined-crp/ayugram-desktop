@@ -1,0 +1,19 @@
+name: Format Code
+
+on: [push, pull_request]
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    # setup some formatters
+    - uses: biomejs/setup-biome@v2.2.1
+    - uses: uncenter/setup-taplo@v1.0.8
+    - name: Run treefmt
+      uses: isbecker/treefmt-action@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        version: 'latest'
+        fail_on_change: 'true'
