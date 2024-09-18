@@ -14,7 +14,7 @@ jobs:
       uses : DeterminateSystems/nix-installer-action@main
     
     - name : Install nixfmt
-      run  : nix-env -iA nixpkgs.nixfmt-rfc-style
+      run  : nix-env -iA nixos.nixfmt-rfc-style
       
     - name : Run treefmt
       uses : isbecker/treefmt-action@v1
