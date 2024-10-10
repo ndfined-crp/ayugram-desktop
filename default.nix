@@ -57,6 +57,15 @@
   pcre-cpp,
   makeWrapper,
   fetchgit,
+  libXi,
+  libXfixes,
+  libXrandr,
+  libXrender,
+  libXext,
+  libX11,
+  libXScrnSaver,
+  libXcomposite,
+  libXdamage,
 }:
 
 let
@@ -119,6 +128,7 @@ stdenv.mkDerivation (finalAttrs: {
     wrapQtAppsHook
     clang
     libclang
+    pkg-config
   ];
 
   buildInputs = [
@@ -145,6 +155,11 @@ stdenv.mkDerivation (finalAttrs: {
     pcre
     pcre-cpp
     libXtst
+    openssl
+    libjpeg
+    libopus
+    ffmpeg
+    libXdamage
   ];
 
   propagatedBuildInputs = lib.optionals stdenv.isLinux [
@@ -160,6 +175,16 @@ stdenv.mkDerivation (finalAttrs: {
     webkitgtk_6_0
     jemalloc
     tg_owt
+    glib
+    libXi
+    libXcomposite
+    libXdamage
+    libXext
+    libXfixes
+    libXrender
+    libXrandr
+    libXtst
+    pipewire
   ];
 
   darwinFrameworks = lib.optionals stdenv.isDarwin (
