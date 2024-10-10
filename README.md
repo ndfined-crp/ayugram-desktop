@@ -56,7 +56,7 @@
 3. Now rebuild, and feel free to use `ayugram-desktop`!
 
 
-<h2 align=center>☄⚡ Manual Binary Cache Setup</h2> 
+<h2 align=center>⚡ Manual Binary Cache Setup</h2> 
 
 Simpy add it into your `nix` settings inside nixos configuration:
 ```Nix
