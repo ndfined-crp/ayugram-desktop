@@ -51,7 +51,6 @@
   clang,
   kcoreaddons,
   mount,
-  xdmcp,
   ada,
   glib-networking,
   pcre,
@@ -142,7 +141,6 @@ stdenv.mkDerivation (finalAttrs: {
       ada
       kcoreaddons
       mount
-      xdmcp
       pcre
       pcre-cpp
       libXtst
