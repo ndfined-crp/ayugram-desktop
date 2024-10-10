@@ -15,7 +15,7 @@
     flake-utils.lib.eachDefaultSystem (system: {
       packages = {
         ayugram-desktop = nixpkgs.legacyPackages.${system}.callPackage ./default.nix { };
-        default = packages.ayugram-desktop;
+        default = ayugram-desktop;
       };
     });
 }
