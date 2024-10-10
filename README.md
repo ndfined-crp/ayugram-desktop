@@ -3,7 +3,7 @@
 [![wakatime](https://wakatime.com/badge/github/kaeeraa/ayugram-desktop.svg)](https://wakatime.com/badge/github/kaeeraa/ayugram-desktop)
 
 > [!NOTE]
-> We do have binary cache via [Garnix](https://garnix.io/) CI. In case you'll setup it manually - make sure to rebuild with activated cache **BEFORE** adding `ayugram` into `systemPackages`.
+> We do have binary cache via [Garnix](https://garnix.io/) CI. In case you'll setup it manually - make sure to rebuild with activated cache **BEFORE** adding `ayugram` into `environment.systemPackages` or `home.packages.`.
 
 <h2 align=center>☄️ Installation Instructions</h2> 
 
