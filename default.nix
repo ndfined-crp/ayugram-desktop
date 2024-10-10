@@ -64,7 +64,7 @@ let
 
   tg_owt = fetchgit {
     url = "https://github.com/kaeeraa/tg_owt.git";
-    hash = "sha256-7j7hBIOXEdNJDnDSVUqy234nkTCaeZ9tDAzqvcuaq0o=";
+    hash = "sha256-Hu8Kz2MidIyKaUtsDWhkzlpDJEm+OwzanE9fIUxgJRE=";
   };
 
 in
