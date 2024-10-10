@@ -9,7 +9,6 @@
   cmake,
   ninja,
   python3,
-  gobject-introspection,
   wrapGAppsHook3,
   wrapQtAppsHook,
   extra-cmake-modules,
