@@ -53,8 +53,6 @@
   mount,
   ada,
   glib-networking,
-  pcre,
-  pcre-cpp,
   makeWrapper,
   fetchgit,
   libXi,
@@ -66,17 +64,19 @@
   libXScrnSaver,
   libXcomposite,
   libXdamage,
-  glib
-  libdbusmenu
-  libpulseaudio
-  alsa-lib
-  fmt
-  kcoreaddons
-  mount
-  pcre
-  pcre-cpp
-  webkitgtk_6_0
-  openssl
+  glib,
+  libdbusmenu,
+  libpulseaudio,
+  alsa-lib,
+  fmt,
+  kcoreaddons,
+  mount,
+  pcre,
+  pcre-cpp,
+  openssl,
+  libjpeg,
+  libopus,
+  ffmpeg,
 }:
 
 let
@@ -160,9 +160,6 @@ stdenv.mkDerivation (finalAttrs: {
     tg_owt
     microsoft-gsl
     rlottie
-    ada
-    kcoreaddons
-    mount
     pcre
     pcre-cpp
     libXtst
