@@ -69,6 +69,8 @@
   pcre-cpp,
   openssl,
   libjpeg,
+  gobject-introspection
+
 }:
 
 let
@@ -161,6 +163,7 @@ stdenv.mkDerivation (finalAttrs: {
     ffmpeg
     libXdamage
     ada
+    gobject-introspection
   ];
 
   propagatedBuildInputs = lib.optionals stdenv.isLinux [
