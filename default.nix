@@ -88,118 +88,116 @@ stdenv.mkDerivation (finalAttrs: {
       ./patch/macos-opengl.patch
     ];
 
-  postPatch = lib.optionalString stdenv.isLinux ''
-    for file in \
-      Telegram/ThirdParty/libtgvoip/os/linux/AudioInputALSA.cpp \
-      Telegram/ThirdParty/libtgvoip/os/linux/AudioOutputALSA.cpp \
-      Telegram/ThirdParty/libtgvoip/os/linux/AudioPulse.cpp \
-      Telegram/lib_webview/webview/platform/linux/webview_linux_webkitgtk_library.cpp
-    do
-      substituteInPlace "$file" \
-        --replace '"libasound.so.2"' '"${alsa-lib}/lib/libasound.so.2"' \
-        --replace '"libpulse.so.0"' '"${libpulseaudio}/lib/libpulse.so.0"' \
-        --replace '"libwebkitgtk-6.0.so.4"' '"${webkitgtk_6_0}/lib/libwebkitgtk-6.0.so.4"'
-    done
-  '' + lib.optionalString stdenv.isDarwin ''
-    substituteInPlace Telegram/lib_webrtc/webrtc/platform/mac/webrtc_environment_mac.mm \
-      --replace kAudioObjectPropertyElementMain kAudioObjectPropertyElementMaster
-  '';
+  postPatch =
+    lib.optionalString stdenv.isLinux ''
+      for file in \
+        Telegram/ThirdParty/libtgvoip/os/linux/AudioInputALSA.cpp \
+        Telegram/ThirdParty/libtgvoip/os/linux/AudioOutputALSA.cpp \
+        Telegram/ThirdParty/libtgvoip/os/linux/AudioPulse.cpp \
+        Telegram/lib_webview/webview/platform/linux/webview_linux_webkitgtk_library.cpp
+      do
+        substituteInPlace "$file" \
+          --replace '"libasound.so.2"' '"${alsa-lib}/lib/libasound.so.2"' \
+          --replace '"libpulse.so.0"' '"${libpulseaudio}/lib/libpulse.so.0"' \
+          --replace '"libwebkitgtk-6.0.so.4"' '"${webkitgtk_6_0}/lib/libwebkitgtk-6.0.so.4"'
+      done
+    ''
+    + lib.optionalString stdenv.isDarwin ''
+      substituteInPlace Telegram/lib_webrtc/webrtc/platform/mac/webrtc_environment_mac.mm \
+        --replace kAudioObjectPropertyElementMain kAudioObjectPropertyElementMaster
+    '';
 
   # Wrapping the inside of the app bundles, avoiding double-wrapping
   dontWrapQtApps = stdenv.isDarwin;
 
-  nativeBuildInputs =
+  nativeBuildInputs = [
+    cmake
+    ninja
+    pkg-config
+    python3
+    wrapQtAppsHook
+    clang
+    libclang
+  ];
+
+  buildInputs = [
+    qtbase
+    qtsvg
+    qtimageformats
+    boost
+    lz4
+    xxHash
+    ffmpeg
+    openalSoft
+    minizip
+    libopus
+    range-v3
+    tl-expected
+    rnnoise
+    protobuf
+    tg_owt
+    microsoft-gsl
+    rlottie
+    ada
+    kcoreaddons
+    mount
+    pcre
+    pcre-cpp
+    libXtst
+  ];
+
+  propagatedBuildInputs = lib.optionals stdenv.isLinux [
+    qtwayland
+    gtk3
+    glib-networking
+    fmt
+    libdbusmenu
+    alsa-lib
+    libpulseaudio
+    pipewire
+    hunspell
+    webkitgtk_6_0
+    jemalloc
+  ];
+
+  darwinFrameworks = lib.optionals stdenv.isDarwin (
+    with darwin.apple_sdk_11_0.frameworks;
     [
-      cmake
-      ninja
-      pkg-config
-      python3
-      wrapQtAppsHook
-      clang
-      libclang
-    ];
-
-  buildInputs =
-    [
-      qtbase
-      qtsvg
-      qtimageformats
-      boost
-      lz4
-      xxHash
-      ffmpeg
-      openalSoft
-      minizip
-      libopus
-      range-v3
-      tl-expected
-      rnnoise
-      protobuf
-      tg_owt
-      microsoft-gsl
-      rlottie
-      ada
-      kcoreaddons
-      mount
-      pcre
-      pcre-cpp
-      libXtst
-    ];
-
-  propagatedBuildInputs =
-    lib.optionals stdenv.isLinux [
-      qtwayland
-      gtk3
-      glib-networking
-      fmt
-      libdbusmenu
-      alsa-lib
-      libpulseaudio
-      pipewire
-      hunspell
-      webkitgtk_6_0
-      jemalloc
-    ];
-
-  darwinFrameworks =
-    lib.optionals stdenv.isDarwin (
-      with darwin.apple_sdk_11_0.frameworks;
-      [
-        Cocoa
-        CoreFoundation
-        CoreServices
-        CoreText
-        CoreGraphics
-        CoreMedia
-        OpenGL
-        AudioUnit
-        ApplicationServices
-        Foundation
-        AGL
-        Security
-        SystemConfiguration
-        Carbon
-        AudioToolbox
-        VideoToolbox
-        VideoDecodeAcceleration
-        AVFoundation
-        CoreAudio
-        CoreVideo
-        CoreMediaIO
-        QuartzCore
-        AppKit
-        CoreWLAN
-        WebKit
-        IOKit
-        GSS
-        MediaPlayer
-        IOSurface
-        Metal
-        NaturalLanguage
-        LocalAuthentication
-        libicns
-      ]
-    );
+      Cocoa
+      CoreFoundation
+      CoreServices
+      CoreText
+      CoreGraphics
+      CoreMedia
+      OpenGL
+      AudioUnit
+      ApplicationServices
+      Foundation
+      AGL
+      Security
+      SystemConfiguration
+      Carbon
+      AudioToolbox
+      VideoToolbox
+      VideoDecodeAcceleration
+      AVFoundation
+      CoreAudio
+      CoreVideo
+      CoreMediaIO
+      QuartzCore
+      AppKit
+      CoreWLAN
+      WebKit
+      IOKit
+      GSS
+      MediaPlayer
+      IOSurface
+      Metal
+      NaturalLanguage
+      LocalAuthentication
+      libicns
+    ]
+  );
 
   # On darwin, we need to use lld as the linker, as otherwise the linking step
   # will fail due to missing symbols.
@@ -220,6 +218,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   preBuild = lib.optionalString stdenv.isLinux ''
     export GI_GIR_PATH=${webkitgtk_6_0}/share/gir-1.0
+    export tg_owt_DIR=${tg_owt}/share/cmake/tg_owt
   '';
 
   installPhase = lib.optionalString stdenv.isDarwin ''
@@ -228,13 +227,15 @@ stdenv.mkDerivation (finalAttrs: {
     ln -s $out/Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS/${finalAttrs.meta.mainProgram} $out/bin/${finalAttrs.meta.mainProgram}
   '';
 
-  postFixup = lib.optionalString stdenv.isLinux ''
-    wrapProgram $out/bin/${finalAttrs.meta.mainProgram} \
-      --prefix GIO_EXTRA_MODULES : ${glib-networking}/lib/gio/modules \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ webkitgtk_6_0 ]}
-  '' + lib.optionalString stdenv.isDarwin ''
-    wrapQtApp $out/Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS/${finalAttrs.meta.mainProgram}
-  '';
+  postFixup =
+    lib.optionalString stdenv.isLinux ''
+      wrapProgram $out/bin/${finalAttrs.meta.mainProgram} \
+        --prefix GIO_EXTRA_MODULES : ${glib-networking}/lib/gio/modules \
+        --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ webkitgtk_6_0 ]}
+    ''
+    + lib.optionalString stdenv.isDarwin ''
+      wrapQtApp $out/Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS/${finalAttrs.meta.mainProgram}
+    '';
 
   passthru = {
     inherit tg_owt;
@@ -261,5 +262,3 @@ stdenv.mkDerivation (finalAttrs: {
     '';
   };
 })
-
-
