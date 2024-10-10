@@ -1,4 +1,4 @@
-#  Ayugram desktop 🌐 NixOS flake 
+# Ayugram desktop 🌐 NixOS flake
 
 [![wakatime](https://wakatime.com/badge/github/kaeeraa/ayugram-desktop.svg)](https://wakatime.com/badge/github/kaeeraa/ayugram-desktop)
 
@@ -9,6 +9,7 @@
 Use the following command:
 
 ```shell
+# change release to any branch you want
 $ nix profile install github+kaeeraa/ayugram-desktop/release
 ```
 
@@ -20,7 +21,7 @@ Answer at all questions `y`
 # flake.nix
 {
   inputs.ayugram-desktop.url = "github:kaeeraa/ayugram-desktop/release?submodules=1";
-  
+
   outputs = { self, ayugram-desktop, ... }: {
     # Use in your outputs
   };
