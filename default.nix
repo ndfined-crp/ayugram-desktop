@@ -1,84 +1,70 @@
-let
-  # let using nixpkgs from the niv
-  sources = import ./nix/sources.nix;
-  nixpkgs = import sources.nixpkgs { };
-in
 {
-  pkgs ? nixpkgs,
-  lib ? pkgs.lib,
-  stdenv ? pkgs.stdenv,
-  fetchFromGitHub ? pkgs.fetchFromGitHub,
-  fetchpatch ? pkgs.fetchpatch,
-  callPackage ? pkgs.callPackage,
-  pkg-config ? pkgs.pkg-config,
-  cmake ? pkgs.cmake,
-  ninja ? pkgs.ninja,
-  python3 ? pkgs.python3,
-  gobject-introspection ? pkgs.gobject-introspection,
-  wrapGAppsHook3 ? pkgs.wrapGAppsHook3,
-  wrapQtAppsHook ? pkgs.libsForQt5.qt5.wrapQtAppsHook,
-  extra-cmake-modules ? pkgs.extra-cmake-modules,
-  qtbase ? pkgs.libsForQt5.qt5.qtbase,
-  qtwayland ? pkgs.libsForQt5.qt5.qtwayland,
-  qtsvg ? pkgs.libsForQt5.qt5.qtsvg,
-  qtimageformats ? pkgs.libsForQt5.qt5.qtimageformats,
-  gtk3 ? pkgs.gtk3,
-  boost ? pkgs.boost,
-  fmt ? pkgs.fmt,
-  libdbusmenu ? pkgs.libdbusmenu,
-  lz4 ? pkgs.lz4,
-  xxHash ? pkgs.xxHash,
-  ffmpeg ? pkgs.ffmpeg,
-  openalSoft ? pkgs.openalSoft,
-  minizip ? pkgs.minizip,
-  libopus ? pkgs.libopus,
-  alsa-lib ? pkgs.alsa-lib,
-  libpulseaudio ? pkgs.libpulseaudio,
-  pipewire ? pkgs.pipewire,
-  range-v3 ? pkgs.range-v3,
-  tl-expected ? pkgs.tl-expected,
-  hunspell ? pkgs.hunspell,
-  glibmm_2_68 ? pkgs.glibmm_2_68,
-  webkitgtk_6_0 ? pkgs.webkitgtk_6_0,
-  jemalloc ? pkgs.jemalloc,
-  rnnoise ? pkgs.rnnoise,
-  protobuf ? pkgs.protobuf,
-  abseil-cpp ? pkgs.abseil-cpp,
-  xdg-utils ? pkgs.xdg-utils,
-  microsoft-gsl ? pkgs.microsoft_gsl,
-  rlottie ? pkgs.rlottie,
-  darwin ? pkgs.darwin,
-  lld ? pkgs.lld,
-  libicns ? pkgs.libicns,
-  nix-update-script ? pkgs.nix-update-script,
-  libXtst ? pkgs.xorg.libXtst,
-  libclang ? pkgs.libclang,
-  clang ? pkgs.clang,
-  kcoreaddons ? pkgs.libsForQt5.kcoreaddons,
-  mount ? pkgs.mount,
-  xdmcp ? pkgs.xorg.libXdmcp,
-  ada ? pkgs.ada,
-  glib-networking ? pkgs.glib-networking,
-  pcre ? pkgs.pcre,
-  pcre-cpp ? pkgs.pcre-cpp,
-  makeWrapper ? pkgs.makeWrapper,
-
+  pkgs,
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  fetchpatch,
+  callPackage,
+  pkg-config,
+  cmake,
+  ninja,
+  python3,
+  gobject-introspection,
+  wrapGAppsHook3,
+  wrapQtAppsHook,
+  extra-cmake-modules,
+  qtbase,
+  qtwayland,
+  qtsvg,
+  qtimageformats,
+  gtk3,
+  boost,
+  fmt,
+  libdbusmenu,
+  lz4,
+  xxHash,
+  ffmpeg,
+  openalSoft,
+  minizip,
+  libopus,
+  alsa-lib,
+  libpulseaudio,
+  pipewire,
+  range-v3,
+  tl-expected,
+  hunspell,
+  glibmm_2_68,
+  webkitgtk_6_0,
+  jemalloc,
+  rnnoise,
+  protobuf,
+  abseil-cpp,
+  xdg-utils,
+  microsoft-gsl,
+  rlottie,
+  darwin,
+  lld,
+  libicns,
+  nix-update-script,
+  libXtst,
+  libclang,
+  clang,
+  kcoreaddons,
+  mount,
+  xdmcp,
+  ada,
+  glib-networking,
+  pcre,
+  pcre-cpp,
+  makeWrapper,
 }:
-
-# Main reference:
-# - This package was originally based on the Arch package but all patches are now upstreamed:
-#   https://git.archlinux.org/svntogit/community.git/tree/trunk/PKGBUILD?h=packages/telegram-desktop
-# Other references that could be useful:
-# - https://git.alpinelinux.org/aports/tree/testing/telegram-desktop/APKBUILD
-# - https://github.com/void-linux/void-packages/blob/master/srcpkgs/telegram-desktop/template
 
 let
   mainProgram = if stdenv.isLinux then "ayugram-desktop" else "Ayugram";
 
-  tg_owt = callPackage ./lib/tg_owt.nix {
-    inherit stdenv; # oh no, stdenv
-    inherit pkgs;
-    abseil-cpp = abseil-cpp.override { cxxStandard = "20"; };
+  tg_owt = fetchgit {
+    url = "https://github.com/kaeeraa/tg_owt";
+    hash = "sha256-7j7hBIOXEdNJDnDSVUqy234nkTCaeZ9tDAzqvcuaq0o=";
   };
 
 in
@@ -102,41 +88,36 @@ stdenv.mkDerivation (finalAttrs: {
       ./patch/macos-opengl.patch
     ];
 
-  postPatch =
-    lib.optionalString stdenv.isLinux ''
-      substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioInputALSA.cpp \
-        --replace-fail '"libasound.so.2"' '"${alsa-lib}/lib/libasound.so.2"'
-      substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioOutputALSA.cpp \
-        --replace-fail '"libasound.so.2"' '"${alsa-lib}/lib/libasound.so.2"'
-      substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioPulse.cpp \
-        --replace-fail '"libpulse.so.0"' '"${libpulseaudio}/lib/libpulse.so.0"'
-      substituteInPlace Telegram/lib_webview/webview/platform/linux/webview_linux_webkitgtk_library.cpp \
-        --replace-fail '"libwebkitgtk-6.0.so.4"' '"${webkitgtk_6_0}/lib/libwebkitgtk-6.0.so.4"'
-    ''
-    + lib.optionalString stdenv.isDarwin ''
-      substituteInPlace Telegram/lib_webrtc/webrtc/platform/mac/webrtc_environment_mac.mm \
-        --replace-fail kAudioObjectPropertyElementMain kAudioObjectPropertyElementMaster
-    '';
+  postPatch = lib.optionalString stdenv.isLinux ''
+    for file in \
+      Telegram/ThirdParty/libtgvoip/os/linux/AudioInputALSA.cpp \
+      Telegram/ThirdParty/libtgvoip/os/linux/AudioOutputALSA.cpp \
+      Telegram/ThirdParty/libtgvoip/os/linux/AudioPulse.cpp \
+      Telegram/lib_webview/webview/platform/linux/webview_linux_webkitgtk_library.cpp
+    do
+      substituteInPlace "$file" \
+        --replace '"libasound.so.2"' '"${alsa-lib}/lib/libasound.so.2"' \
+        --replace '"libpulse.so.0"' '"${libpulseaudio}/lib/libpulse.so.0"' \
+        --replace '"libwebkitgtk-6.0.so.4"' '"${webkitgtk_6_0}/lib/libwebkitgtk-6.0.so.4"'
+    done
+  '' + lib.optionalString stdenv.isDarwin ''
+    substituteInPlace Telegram/lib_webrtc/webrtc/platform/mac/webrtc_environment_mac.mm \
+      --replace kAudioObjectPropertyElementMain kAudioObjectPropertyElementMaster
+  '';
 
   # Wrapping the inside of the app bundles, avoiding double-wrapping
   dontWrapQtApps = stdenv.isDarwin;
 
   nativeBuildInputs =
     [
-      pkg-config
       cmake
       ninja
+      pkg-config
       python3
       wrapQtAppsHook
       clang
       libclang
-    ]
-    ++ lib.optionals stdenv.isLinux [
-      gobject-introspection
-      wrapGAppsHook3
-      extra-cmake-modules
-    ]
-    ++ lib.optionals stdenv.isDarwin [ lld ];
+    ];
 
   buildInputs =
     [
@@ -158,16 +139,16 @@ stdenv.mkDerivation (finalAttrs: {
       microsoft-gsl
       rlottie
       ada
-      clang
-      libclang
       kcoreaddons
       mount
       xdmcp
       pcre
       pcre-cpp
       libXtst
-    ]
-    ++ lib.optionals stdenv.isLinux [
+    ];
+
+  propagatedBuildInputs =
+    lib.optionals stdenv.isLinux [
       qtwayland
       gtk3
       glib-networking
@@ -179,8 +160,10 @@ stdenv.mkDerivation (finalAttrs: {
       hunspell
       webkitgtk_6_0
       jemalloc
-    ]
-    ++ lib.optionals stdenv.isDarwin (
+    ];
+
+  darwinFrameworks =
+    lib.optionals stdenv.isDarwin (
       with darwin.apple_sdk_11_0.frameworks;
       [
         Cocoa
@@ -219,69 +202,40 @@ stdenv.mkDerivation (finalAttrs: {
       ]
     );
 
-  # not sure about this
-  enableParallelBuilding = true;
-
-  env = lib.optionalAttrs stdenv.isDarwin { NIX_CFLAGS_LINK = "-fuse-ld=lld"; };
+  # On darwin, we need to use lld as the linker, as otherwise the linking step
+  # will fail due to missing symbols.
+  makeFlags = lib.optionalString stdenv.isDarwin "NIX_CFLAGS_LINK=-fuse-ld=lld";
 
   cmakeFlags = [
-    # ayugram doesn't love autoupdate
-    (lib.cmakeBool "disable_autoupdate" true)
-
-    # we can't build without this (https://github.com/AyuGram/AyuGramDesktop/blob/dev/docs/api_credentials.md)
-    (lib.cmakeFeature "TDESKTOP_API_ID" "2040")
-    (lib.cmakeFeature "TDESKTOP_API_HASH" "b18441a1ff607e10a989891a5462e627")
-
-    # because we can
-    (lib.cmakeBool "DESKTOP_APP_USE_GTK3" true)
-
-    # See: https://github.com/NixOS/nixpkgs/pull/130827#issuecomment-885212649
-    (lib.cmakeBool "DESKTOP_APP_USE_PACKAGED_FONTS" false)
-
-    (lib.cmakeBool "DESKTOP_APP_DISABLE_SCUDO" true)
-
-    # speed up build
-    (lib.cmakeFeature "CMAKE_BUILD_TYPE" "Release")
-    (lib.cmakeFeature "CMAKE_CXX_FLAGS" "-O3")
-    (lib.cmakeBool "CMAKE_EXPORT_COMPILE_COMMANDS" true)
-    (lib.cmakeFeature "CMAKE_GENERATOR" "Ninja")
+    "-Ddisable_autoupdate=ON"
+    "-DTDESKTOP_API_ID=2040"
+    "-DTDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627"
+    "-DDESKTOP_APP_USE_GTK3=ON"
+    "-DDESKTOP_APP_USE_PACKAGED_FONTS=OFF"
+    "-DDESKTOP_APP_DISABLE_SCUDO=ON"
+    "-DCMAKE_BUILD_TYPE=Release"
+    "-DCMAKE_CXX_FLAGS=-O3"
+    "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+    "-DCMAKE_GENERATOR=Ninja"
   ];
 
-  preBuild = ''
-    # for cppgir to locate gir files
-    export GI_GIR_PATH="$XDG_DATA_DIRS"
+  preBuild = lib.optionalString stdenv.isLinux ''
+    export GI_GIR_PATH=${webkitgtk_6_0}/share/gir-1.0
   '';
 
   installPhase = lib.optionalString stdenv.isDarwin ''
     mkdir -p $out/Applications
     cp -r ${finalAttrs.meta.mainProgram}.app $out/Applications
-    ln -s $out/{Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS,bin}
+    ln -s $out/Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS/${finalAttrs.meta.mainProgram} $out/bin/${finalAttrs.meta.mainProgram}
   '';
 
-  preFixup = ''
-    remove-references-to -t ${stdenv.cc.cc} $out/bin/${mainProgram}
-    remove-references-to -t ${microsoft-gsl} $out/bin/${mainProgram}
-    remove-references-to -t ${tg_owt.dev} $out/bin/${mainProgram}
+  postFixup = lib.optionalString stdenv.isLinux ''
+    wrapProgram $out/bin/${finalAttrs.meta.mainProgram} \
+      --prefix GIO_EXTRA_MODULES : ${glib-networking}/lib/gio/modules \
+      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ webkitgtk_6_0 ]}
+  '' + lib.optionalString stdenv.isDarwin ''
+    wrapQtApp $out/Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS/${finalAttrs.meta.mainProgram}
   '';
-
-  # lib.optionalString stdenv.isLinux ''
-  #   # This is necessary to run Telegram in a pure environment.
-  #   # We also use gappsWrapperArgs from wrapGAppsHook.
-  #   wrapProgram $out/bin/${finalAttrs.meta.mainProgram} \
-  #     "''${gappsWrapperArgs[@]}" \
-  #     "''${qtWrapperArgs[@]}" \
-  #     --suffix PATH : ${lib.makeBinPath [ xdg-utils ]}
-  # ''
-
-  postFixup =
-    lib.optionalString stdenv.isLinux ''
-      makeWrapper $out/bin/${finalAttrs.meta.mainProgram} $out/bin/${finalAttrs.meta.mainProgram} \
-        --prefix GIO_EXTRA_MODULES : ${glib-networking}/lib/gio/modules \
-        --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ webkitgtk_6_0 ]}
-    ''
-    + lib.optionalString stdenv.isDarwin ''
-      wrapQtApp $out/Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS/${finalAttrs.meta.mainProgram}
-    '';
 
   passthru = {
     inherit tg_owt;
@@ -299,5 +253,14 @@ stdenv.mkDerivation (finalAttrs: {
     changelog = "https://github.com/Ayugram/AyuGramDesktop/releases/tag/v${version}";
     maintainers = with maintainers; [ ];
     broken = stdenv.isDarwin; # temporary
+    badPlatforms = [ stdenv.isDarwin ];
+    downloadPage = "https://github.com/Ayugram/AyuGramDesktop/releases/tag/v${version}";
+    longDescription = ''
+      AyuGram is a fork of Telegram Desktop with a focus on
+      customization. It includes features like a customizable
+      interface, Ghost mode, and more.
+    '';
   };
 })
+
+
