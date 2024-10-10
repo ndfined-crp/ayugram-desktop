@@ -158,6 +158,7 @@ stdenv.mkDerivation (finalAttrs: {
     hunspell
     webkitgtk_6_0
     jemalloc
+    tg_owt
   ];
 
   darwinFrameworks = lib.optionals stdenv.isDarwin (
