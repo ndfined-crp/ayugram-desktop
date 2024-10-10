@@ -62,9 +62,10 @@
 let
   mainProgram = if stdenv.isLinux then "ayugram-desktop" else "Ayugram";
 
-  tg_owt = fetchgit {
-    url = "https://github.com/kaeeraa/tg_owt.git";
-    hash = "sha256-Hu8Kz2MidIyKaUtsDWhkzlpDJEm+OwzanE9fIUxgJRE=";
+  tg_owt = callPackage ./lib/tg_owt.nix {
+    inherit stdenv; # oh no, stdenv
+    inherit pkgs;
+    abseil-cpp = abseil-cpp.override { cxxStandard = "20"; };
   };
 
 in
