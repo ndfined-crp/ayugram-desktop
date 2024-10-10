@@ -57,6 +57,7 @@
   pcre,
   pcre-cpp,
   makeWrapper,
+  fetchgit,
 }:
 
 let
