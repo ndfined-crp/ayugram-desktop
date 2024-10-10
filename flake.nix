@@ -15,7 +15,7 @@
     flake-utils.lib.eachDefaultSystem (system:
       {
         packages = rec {
-          ayugram-desktop = (nixpkgs.legacyPackages.${system};.libsForQt5.callPackage ./default.nix { });
+          ayugram-desktop = (nixpkgs.legacyPackages.${system}.libsForQt5.callPackage ./default.nix { });
           default = ayugram-desktop;
         };
       }
