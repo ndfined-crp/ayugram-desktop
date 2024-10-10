@@ -69,7 +69,6 @@
   pcre-cpp,
   openssl,
   libjpeg,
-  ffmpeg,
 }:
 
 let
