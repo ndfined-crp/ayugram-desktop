@@ -65,17 +65,10 @@
   libXcomposite,
   libXdamage,
   glib,
-  libdbusmenu,
-  libpulseaudio,
-  alsa-lib,
-  fmt,
-  kcoreaddons,
-  mount,
   pcre,
   pcre-cpp,
   openssl,
   libjpeg,
-  libopus,
   ffmpeg,
 }:
 
