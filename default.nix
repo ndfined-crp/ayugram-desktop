@@ -67,6 +67,16 @@
   libXcomposite,
   libXdamage,
   glib
+  libdbusmenu
+  libpulseaudio
+  alsa-lib
+  fmt
+  kcoreaddons
+  mount
+  pcre
+  pcre-cpp
+  webkitgtk_6_0
+  openssl
 }:
 
 let
