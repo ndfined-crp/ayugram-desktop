@@ -63,7 +63,7 @@ let
   mainProgram = if stdenv.isLinux then "ayugram-desktop" else "Ayugram";
 
   tg_owt = fetchgit {
-    url = "https://github.com/kaeeraa/tg_owt";
+    url = "https://github.com/kaeeraa/tg_owt.git";
     hash = "sha256-7j7hBIOXEdNJDnDSVUqy234nkTCaeZ9tDAzqvcuaq0o=";
   };
 
