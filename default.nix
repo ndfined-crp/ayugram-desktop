@@ -160,6 +160,7 @@ stdenv.mkDerivation (finalAttrs: {
     libopus
     ffmpeg
     libXdamage
+    ada
   ];
 
   propagatedBuildInputs = lib.optionals stdenv.isLinux [
