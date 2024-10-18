@@ -30,7 +30,7 @@
     in {
 
         nixosModules = {
-            default = packages;
+            default = self.nixosModules;
         };
     
         homeManagerModules = {
@@ -40,8 +40,7 @@
 
         packages = forAllSystems (pkgs: 
             {
-                ayugram-desktop = pkgs.callPackage ./package.nix {};
-                default = ayugram-desktop;
+                default = pkgs.callPackage ./default.nix {};
             }
         );
     };
