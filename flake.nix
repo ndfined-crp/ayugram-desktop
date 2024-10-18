@@ -40,7 +40,7 @@
 
         packages = forAllSystems (pkgs: 
             {
-                default = pkgs.callPackage ./default.nix {};
+                default = pkgs.libsForQt5.callPackage ./default.nix {};
             }
         );
     };
