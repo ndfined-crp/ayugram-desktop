@@ -30,13 +30,12 @@
     in {
 
         nixosModules = {
-            default = self.nixosModules;
+            default = "${self.packages}";
         };
     
         homeManagerModules = {
-            default = self.nixosModules;
+            default = "${self.packages}";
         };
-
 
         packages = forAllSystems (pkgs: 
             {
