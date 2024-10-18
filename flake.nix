@@ -11,7 +11,12 @@
     extra-trusted-public-keys = [ "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=" ];
   };
 
-    outputs = {self, nixpkgs, flake-utils }:
+    outputs = {
+      self, 
+      nixpkgs, 
+      flake-utils,
+      ...
+    }:
     flake-utils.lib.eachDefaultSystem (system:
       {
         packages = rec {
