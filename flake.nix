@@ -30,15 +30,6 @@
                 system: function nixpkgs.legacyPackages.${system}
             );
     in {
-
-        nixosModules = {
-            ayugram = self.packages;
-        };
-    
-        homeManagerModules = {
-            ayugram = self.nixosModules.default;
-        };
-
         overlays = {
             ayugram-desktop = final: prev: self.packages;
         };
