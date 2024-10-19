@@ -17,8 +17,7 @@
         nixpkgs,
         home-manager,
         ...
-    } @ inputs :
-
+    } @ inputs : 
     let
         forAllSystems = function:
             nixpkgs.lib.genAttrs [
@@ -30,13 +29,13 @@
                 system: function nixpkgs.legacyPackages.${system}
             );
     in {
-        overlays = {
-            ayugram-desktop = final: prev: self.packages;
-        };
-
         packages = forAllSystems ( pkgs: {
             ayugram-desktop = pkgs.libsForQt5.callPackage ./default.nix {};
         });
+
+        overlays = {
+            ayugram-desktop = final: prev: self.packages;
+        };
     };
 
     nixConfig = {
@@ -47,5 +46,7 @@
         extra-trusted-public-keys = [ 
             "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
         ];
+
+        sandbox = true;
     };
 }
