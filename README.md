@@ -36,7 +36,7 @@
   ...
 }: {
   environment.systemPackages = with pkgs; [
-    inputs.ayugram-desktop.packages.${pkgs.system}.default
+    inputs.ayugram-desktop.packages.${pkgs.system}.ayugram-desktop
   ];
 }
 ```
@@ -49,7 +49,7 @@
   ...
 }: {
   home.packages = with pkgs; [
-    inputs.ayugram-desktop.packages.${pkgs.system}.default
+    inputs.ayugram-desktop.packages.${pkgs.system}.ayugram-desktop
   ];
 }
 ```
