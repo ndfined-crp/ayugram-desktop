@@ -32,13 +32,6 @@
         packages = forAllSystems ( pkgs: {
             ayugram-desktop = pkgs.libsForQt5.callPackage ./default.nix {};
         });
-
-        overlays = {
-            ayugram-desktop = final: prev: {
-                pname = "ayugram-desktop";
-                src = self.packages;
-            };
-        };
     };
 
     nixConfig = {
