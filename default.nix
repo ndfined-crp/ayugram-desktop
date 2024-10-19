@@ -73,8 +73,6 @@
 }:
 
 let
-  mainProgram = if stdenv.isLinux then "ayugram-desktop" else "Ayugram";
-
   tg_owt = callPackage ./lib/tg_owt.nix {
     inherit stdenv; # oh no, stdenv
     inherit pkgs;
@@ -273,7 +271,7 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   meta = with lib; {
-    inherit mainProgram;
+    mainProgram = "ayugram-desktop";
 
     # inherit from AyuGramDesktop
     description = "Desktop Telegram client with good customization and Ghost mode.";
