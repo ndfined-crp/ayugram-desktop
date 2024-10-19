@@ -5,20 +5,13 @@
         nixpkgs = {
             url = "github:nixos/nixpkgs/nixos-unstable";
         };
-
-        home-manager = {
-            url = "github:nix-community/home-manager";
-            inputs.nixpkgs.follows = "nixpkgs";
-        };
     };
 
     outputs = {
         self,
         nixpkgs,
-        home-manager,
         ...
-    } @ inputs :
-
+    } @ inputs : 
     let
         forAllSystems = function:
             nixpkgs.lib.genAttrs [
@@ -30,23 +23,7 @@
                 system: function nixpkgs.legacyPackages.${system}
             );
     in {
-
-        nixosModules = {
-            default = self.nixosModules.ayugram;
-            ayugram = self.packages;
-        };
-    
-        homeManagerModules = {
-            default = self.homeManagerModules.ayugram;
-            ayugram = self.nixosModules.default;
-        };
-
-        overlays.default = final: prev: {
-            ayugram-desktop = self.packages;
-        };
-
-        packages = forAllSystems ( pkgs: rec {
-            default = ayugram-desktop;
+        packages = forAllSystems ( pkgs: {
             ayugram-desktop = pkgs.libsForQt5.callPackage ./default.nix {};
         });
     };
