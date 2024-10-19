@@ -30,23 +30,23 @@
     in {
 
         nixosModules = {
-            default = "${self.packages}";
+            default = self.nixosModules.ayugram;
+            ayugram = self.packages;
         };
     
         homeManagerModules = {
-            default = "${self.packages}";
+            default = self.homeManagerModules.ayugram;
+            ayugram = self.nixosModules.default;
         };
 
-        overlays = callPackage: {
-            default = callPackage "${self.packages}";
+        overlays.default = final: prev: {
+            ayugram-desktop = self.packages;
         };
 
-        packages = forAllSystems ( pkgs: rec
-            {
-                default = ayugram-desktop;
-                ayugram-desktop = pkgs.libsForQt5.callPackage ./default.nix {};
-            }
-        );
+        packages = forAllSystems ( pkgs: rec {
+            default = ayugram-desktop;
+            ayugram-desktop = pkgs.libsForQt5.callPackage ./default.nix {};
+        });
     };
 
     nixConfig = {
