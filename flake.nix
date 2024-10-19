@@ -24,19 +24,21 @@
             nixpkgs.lib.genAttrs [
                 "x86_64-linux"
                 "aarch64-linux"
+                "x86_64-darwin"
+                "aarch64-darwin"
             ] (
                 system: function nixpkgs.legacyPackages.${system}
             );
     in {
 
         nixosModules = {
-            default = self.nixosModules.ayugram;
+            default = self.nixosModules;
             ayugram = self.packages;
         };
     
         homeManagerModules = {
-            default = self.homeManagerModules.ayugram;
-            ayugram = self.nixosModules.default;
+            default = self.homeManagerModules;
+            ayugram = self.nixosModules;
         };
 
         overlays.default = final: prev: {
