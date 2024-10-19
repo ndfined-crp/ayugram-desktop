@@ -24,8 +24,6 @@
             nixpkgs.lib.genAttrs [
                 "x86_64-linux"
                 "aarch64-linux"
-                "aarch64-darwin"
-                "x86_64-darwin"
             ] (
                 system: function nixpkgs.legacyPackages.${system}
             );
@@ -39,8 +37,13 @@
             default = "${self.packages}";
         };
 
-        packages = forAllSystems (pkgs: 
+        overlays = callPackage: {
+            default = callPackage "${self.packages}";
+        };
+
+        packages = forAllSystems ( pkgs: rec
             {
+                default = ayugram-desktop;
                 ayugram-desktop = pkgs.libsForQt5.callPackage ./default.nix {};
             }
         );
@@ -55,5 +58,4 @@
             "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
         ];
     };
-
 }
