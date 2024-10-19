@@ -32,13 +32,13 @@
     in {
 
         nixosModules = {
-            default = self.nixosModules;
+            default = self.nixosModules.ayugram;
             ayugram = self.packages;
         };
     
         homeManagerModules = {
-            default = self.homeManagerModules;
-            ayugram = self.nixosModules;
+            default = self.homeManagerModules.ayugram;
+            ayugram = self.nixosModules.default;
         };
 
         overlays.default = final: prev: {
