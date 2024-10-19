@@ -34,7 +34,10 @@
         });
 
         overlays = {
-            ayugram-desktop = final: prev: self.packages;
+            ayugram-desktop = final: prev: {
+                pname = ayugram-desktop;
+                src = self.packages;
+            };
         };
     };
 
