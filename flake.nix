@@ -35,7 +35,7 @@
 
         overlays = {
             ayugram-desktop = final: prev: {
-                pname = ayugram-desktop;
+                pname = "ayugram-desktop";
                 src = self.packages;
             };
         };
