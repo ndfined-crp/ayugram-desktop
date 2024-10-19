@@ -276,15 +276,15 @@ stdenv.mkDerivation (finalAttrs: {
     inherit mainProgram;
 
     # inherit from AyuGramDesktop
-    description = "Desktop Telegram client with good customization and Ghost mode.";
-    license = licenses.gpl3Only;
-    platforms = lib.platforms.all;
-    homepage = "https://ayugram.one";
-    changelog = "https://github.com/Ayugram/AyuGramDesktop/releases/tag/v${version}";
     maintainers = with maintainers; [ ];
+    platforms = lib.platforms.all;
     broken = stdenv.isDarwin; # temporary
     badPlatforms = [ stdenv.isDarwin ];
+    description = "Desktop Telegram client with good customization and Ghost mode.";
+    license = licenses.gpl3Only;
+    homepage = "https://ayugram.one";
     downloadPage = "https://github.com/Ayugram/AyuGramDesktop/releases/tag/v${version}";
+    changelog = "https://github.com/Ayugram/AyuGramDesktop/releases/tag/v${version}";
     longDescription = ''
       AyuGram is a fork of Telegram Desktop with a focus on
       customization. It includes features like a customizable
