@@ -1,5 +1,4 @@
 {
-  sources ? import ./nix/sources.nix,
   pkgs,
   lib,
   stdenv,
@@ -13,6 +12,7 @@
   wrapGAppsHook3,
   wrapQtAppsHook,
   extra-cmake-modules,
+  qtbase,
   qtwayland,
   qtsvg,
   qtimageformats,
@@ -77,8 +77,6 @@ let
     inherit pkgs;
     abseil-cpp = abseil-cpp.override { cxxStandard = "20"; };
   };
-
-  qtbase = import sources.nixpkgs.qtbase { };
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop";
