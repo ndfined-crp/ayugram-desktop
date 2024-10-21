@@ -78,7 +78,7 @@ let
     abseil-cpp = abseil-cpp.override { cxxStandard = "20"; };
   };
 
-  qtbase = sources.qtbase;
+  qtbase = import sources.qtbase { };
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop";
