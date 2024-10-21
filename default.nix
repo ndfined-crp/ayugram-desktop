@@ -68,8 +68,7 @@
   pcre-cpp,
   openssl,
   libjpeg,
-  gobject-introspection
-
+  gobject-introspection,
 }:
 
 let
@@ -78,7 +77,6 @@ let
     inherit pkgs;
     abseil-cpp = abseil-cpp.override { cxxStandard = "20"; };
   };
-
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop";
