@@ -1,5 +1,5 @@
 {
-  sources ? import ./sources.nix,
+  sources ? import ./nix/sources.nix,
   pkgs,
   lib,
   stdenv,
