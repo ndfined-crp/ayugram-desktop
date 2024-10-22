@@ -29,7 +29,7 @@
     };
 
   nixConfig = {
-    sandbox = stdenv.isLinux;
+    sandbox = nixpkgs.stdenv.isLinux;
     extra-substituters = [
       "https://cache.garnix.io"
     ];
