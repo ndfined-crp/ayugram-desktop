@@ -29,7 +29,7 @@
     };
 
   nixConfig = {
-    sandbox = false;
+    # sandbox = false;
     extra-substituters = [
       "https://cache.garnix.io"
     ];
