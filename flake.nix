@@ -13,30 +13,26 @@
       ...
     }@inputs:
     let
-        forAllSystems = function:
-            nixpkgs.lib.genAttrs [
-                "x86_64-linux"
-                "aarch64-linux"
-            ] (
-                system: function nixpkgs.legacyPackages.${system}
-            );
-    in {
+      forAllSystems =
+        function:
+        nixpkgs.lib.genAttrs [
+          "x86_64-linux"
+          "aarch64-linux"
+        ] (system: function nixpkgs.legacyPackages.${system});
+    in
+    {
 
-        nixosModules = {
-            default = self.nixosModules;
-        };
+      nixosModules = {
+        default = self.nixosModules;
+      };
 
-        homeManagerModules = {
-            default = self.nixosModules;
-        };
+      homeManagerModules = {
+        default = self.nixosModules;
+      };
 
-
-        packages = forAllSystems (pkgs:
-            {
-                ayugram-desktop = pkgs.libsForQt5.callPackage ./default.nix {};
-            }
-        );
-    };
+      packages = forAllSystems (pkgs: {
+        ayugram-desktop = pkgs.libsForQt5.callPackage ./default.nix { };
+      });
 
       nixConfig = {
         sandbox = nixpkgs.stdenv.isLinux;
@@ -47,6 +43,6 @@
           "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
         ];
       };
+    };
 
 }
-
