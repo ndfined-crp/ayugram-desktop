@@ -1,9 +1,8 @@
-# got from https://github.com/NixOS/nixpkgs/blob/5715b0743d28e2da129d05028137a374c0639060/pkgs/applications/networking/instant-messengers/telegram/telegram-desktop/tg_owt.nix
 {
-  pkgs,
   lib,
   stdenv,
   fetchFromGitHub,
+  fetchpatch2,
   pkg-config,
   cmake,
   crc32c,
@@ -43,14 +42,17 @@ stdenv.mkDerivation {
     fetchSubmodules = true;
   };
 
-  enableParallelBuilding = true;
-
-  postPatch = lib.optionalString stdenv.isLinux ''
-    substituteInPlace src/modules/desktop_capture/linux/wayland/egl_dmabuf.cc \
-      --replace '"libEGL.so.1"' '"${libGL}/lib/libEGL.so.1"' \
-      --replace '"libGL.so.1"' '"${libGL}/lib/libGL.so.1"' \
-      --replace '"libgbm.so.1"' '"${mesa}/lib/libgbm.so.1"'
-  '';
+  patches = [
+    # Remove usage of AVCodecContext::reordered_opaque
+    (fetchpatch2 {
+      name = "webrtc-ffmpeg-7.patch";
+      url = "https://webrtc.googlesource.com/src/+/e7d10047096880feb5e9846375f2da54aef91202%5E%21/?format=TEXT";
+      decode = "base64 -d";
+      stripLen = 1;
+      extraPrefix = "src/";
+      hash = "sha256-EdwHeVko8uDsP5GTw2ryWiQgRVCAdPc1me6hySdiwMU=";
+    })
+  ];
 
   outputs = [
     "out"
