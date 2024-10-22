@@ -1,11 +1,13 @@
-# Ayugram desktop 🌐 NixOS flake {: .center}
+<h1 align="center">Ayugram desktop 🌐 NixOS flake</h1>
 
-![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/kaeeraa/ayugram-desktop?style=for-the-badge) ![GitHub License](https://img.shields.io/github/license/kaeeraa/ayugram-desktop?style=for-the-badge)
+![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/ayugram-port/ayugram-desktop?style=for-the-badge) 
+![GitHub License](https://img.shields.io/github/license/kaeeraa/ayugram-port?style=for-the-badge)
 
 > [!NOTE]
-> We do have binary cache via [Garnix](https://garnix.io/) CI. In case you'll setup it manually - make sure to rebuild with activated cache **BEFORE** adding `ayugram` into `environment.systemPackages` or `home.packages.`.
+> We do have binary cache via [Garnix](https://garnix.io/) CI. In case you'll setup it manually - make sure to
+> rebuild with activated cache **BEFORE** adding `ayugram` into `environment.systemPackages` or `home.packages.`.
 
-## ☄️ Installation Instructions {: .center}
+<h2 align="center">☄️ Installation Instructions</h2>
 
   1. You'll need to add this repo into your `flake.nix`:
 
@@ -57,7 +59,7 @@
 
   3. Now rebuild, and feel free to use `ayugram-desktop`!
 
-## ⚡ Manual Binary Cache Setup {: .center}
+<h2 align="center"> ⚡ Manual Binary Cache Setup</h2>
 
 Simpy add it into your `nix` settings inside nixos configuration:
 
@@ -74,7 +76,7 @@ Simpy add it into your `nix` settings inside nixos configuration:
     };
     ```
 
-## 🪐 P.S.: {: .center}
+<h2 align="center"> 🪐 P.S.:</h2>
 
 | Thanks | to |
 | - | - |
