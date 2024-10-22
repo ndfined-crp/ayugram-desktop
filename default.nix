@@ -59,7 +59,7 @@
   pcre-cpp,
   openssl,
   libjpeg,
-  qtbase
+  qtbase,
 }:
 
 let
@@ -81,7 +81,7 @@ stdenv.mkDerivation (finalAttrs: {
     rev = "v${finalAttrs.version}";
 
     fetchSubmodules = true;
-    hash = "";
+    hash = "sha256-Hon5qVJeQF/6y55lVKB0O87Du+DvCUYVdMjibgU0YM4=";
   };
 
   patches =
