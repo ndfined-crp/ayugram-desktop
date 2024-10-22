@@ -1,7 +1,7 @@
 <h1 align="center">Ayugram desktop 🌐 NixOS flake</h1>
 
 ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/ayugram-port/ayugram-desktop?style=for-the-badge) 
-![GitHub License](https://img.shields.io/github/license/kaeeraa/ayugram-port?style=for-the-badge)
+![GitHub License](https://img.shields.io/github/license/ayugram-port/ayugram-desktop?style=for-the-badge)
 
 > [!NOTE]
 > We do have binary cache via [Garnix](https://garnix.io/) CI. In case you'll setup it manually - make sure to
