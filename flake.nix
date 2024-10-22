@@ -26,15 +26,16 @@
       packages = forAllSystems (pkgs: {
         ayugram-desktop = pkgs.libsForQt5.callPackage ./default.nix { };
       });
-    };
 
-  nixConfig = {
-    sandbox = nixpkgs.stdenv.isLinux;
-    extra-substituters = [
-      "https://cache.garnix.io"
-    ];
-    extra-trusted-public-keys = [
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-    ];
-  };
+      nixConfig = {
+        sandbox = nixpkgs.stdenv.isLinux;
+        extra-substituters = [
+          "https://cache.garnix.io"
+        ];
+        extra-trusted-public-keys = [
+          "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+        ];
+      };
+
+    };
 }
