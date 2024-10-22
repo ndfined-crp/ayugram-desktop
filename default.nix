@@ -1,22 +1,20 @@
 {
-  pkgs,
   lib,
-  stdenv,
   fetchFromGitHub,
-  fetchpatch,
   callPackage,
   pkg-config,
   cmake,
   ninja,
   python3,
+  gobject-introspection,
   wrapGAppsHook3,
   wrapQtAppsHook,
   extra-cmake-modules,
-  qtbase,
   qtwayland,
   qtsvg,
   qtimageformats,
   gtk3,
+  glib-networking,
   boost,
   fmt,
   libdbusmenu,
@@ -32,7 +30,6 @@
   range-v3,
   tl-expected,
   hunspell,
-  glibmm_2_68,
   webkitgtk_6_0,
   jemalloc,
   rnnoise,
@@ -41,35 +38,28 @@
   xdg-utils,
   microsoft-gsl,
   rlottie,
+  ada,
+  stdenv,
   darwin,
   lld,
   libicns,
   nix-update-script,
-  libXtst,
-  libclang,
   clang,
-  kcoreaddons,
-  mount,
-  ada,
-  glib-networking,
-  makeWrapper,
-  fetchgit,
+  libclang,
+  glib,
   libXi,
-  libXfixes,
-  libXrandr,
-  libXrender,
-  libXext,
-  libX11,
-  libXScrnSaver,
   libXcomposite,
   libXdamage,
-  glib,
+  libXext,
+  libXfixes,
+  libXrender,
+  libXrandr,
+  libXtst,
   pcre,
   pcre-cpp,
   openssl,
   libjpeg,
-  gobject-introspection
-
+  qtbase
 }:
 
 let
@@ -77,22 +67,21 @@ let
 
   tg_owt = callPackage ./lib/tg_owt.nix {
     inherit stdenv; # oh no, stdenv
-    inherit pkgs;
     abseil-cpp = abseil-cpp.override { cxxStandard = "20"; };
   };
 
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop";
-  version = "5.4.1";
+  version = "5.6.3";
 
   src = fetchFromGitHub {
     owner = "AyuGram";
     repo = "AyuGramDesktop";
-    rev = "v5.4.1";
+    rev = "v${finalAttrs.version}";
 
     fetchSubmodules = true;
-    hash = "sha256-7KmXA3EDlCszoUfQZg3UsKvfRCENy/KLxiE08J9COJ8=";
+    hash = "";
   };
 
   patches =
@@ -121,19 +110,29 @@ stdenv.mkDerivation (finalAttrs: {
         --replace kAudioObjectPropertyElementMain kAudioObjectPropertyElementMaster
     '';
 
-  # Wrapping the inside of the app bundles, avoiding double-wrapping
-  dontWrapQtApps = stdenv.isDarwin;
+  # We want to run wrapProgram manually (with additional parameters)
+  dontWrapGApps = true;
+  dontWrapQtApps = true;
 
-  nativeBuildInputs = [
-    cmake
-    ninja
-    pkg-config
-    python3
-    wrapQtAppsHook
-    clang
-    libclang
-    pkg-config
-  ];
+  nativeBuildInputs =
+    [
+      cmake
+      ninja
+      pkg-config
+      python3
+      wrapQtAppsHook
+      clang
+      libclang
+      pkg-config
+    ]
+    ++ lib.optionals stdenv.hostPlatform.isLinux [
+      gobject-introspection
+      wrapGAppsHook3
+      extra-cmake-modules
+    ]
+    ++ lib.optionals stdenv.hostPlatform.isDarwin [
+      lld
+    ];
 
   buildInputs = [
     qtbase
@@ -162,7 +161,6 @@ stdenv.mkDerivation (finalAttrs: {
     ffmpeg
     libXdamage
     ada
-    gobject-introspection
   ];
 
   propagatedBuildInputs = lib.optionals stdenv.isLinux [
@@ -234,7 +232,7 @@ stdenv.mkDerivation (finalAttrs: {
   makeFlags = lib.optionalString stdenv.isDarwin "NIX_CFLAGS_LINK=-fuse-ld=lld";
 
   cmakeFlags = [
-    "-Ddisable_autoupdate=ON"
+    "-DDESKTOP_APP_DISABLE_AUTOUPDATE=ON"
     "-DTDESKTOP_API_ID=2040"
     "-DTDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627"
     "-DDESKTOP_APP_USE_GTK3=ON"
@@ -246,9 +244,9 @@ stdenv.mkDerivation (finalAttrs: {
     "-DCMAKE_GENERATOR=Ninja"
   ];
 
-  preBuild = lib.optionalString stdenv.isLinux ''
-    export GI_GIR_PATH=${webkitgtk_6_0}/share/gir-1.0
-    export tg_owt_DIR=${tg_owt}/share/cmake/tg_owt
+  # for cppgir to locate gir files
+  preBuild = ''
+    export GI_GIR_PATH="$XDG_DATA_DIRS"
   '';
 
   installPhase = lib.optionalString stdenv.isDarwin ''
@@ -257,13 +255,16 @@ stdenv.mkDerivation (finalAttrs: {
     ln -s $out/Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS/${finalAttrs.meta.mainProgram} $out/bin/${finalAttrs.meta.mainProgram}
   '';
 
+  # This is necessary to run Telegram in a pure environment.
+  # We also use gappsWrapperArgs from wrapGAppsHook.
   postFixup =
-    lib.optionalString stdenv.isLinux ''
+    lib.optionalString stdenv.hostPlatform.isLinux ''
       wrapProgram $out/bin/${finalAttrs.meta.mainProgram} \
-        --prefix GIO_EXTRA_MODULES : ${glib-networking}/lib/gio/modules \
-        --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ webkitgtk_6_0 ]}
+        "''${gappsWrapperArgs[@]}" \
+        "''${qtWrapperArgs[@]}" \
+        --suffix PATH : ${lib.makeBinPath [ xdg-utils ]}
     ''
-    + lib.optionalString stdenv.isDarwin ''
+    + lib.optionalString stdenv.hostPlatform.isDarwin ''
       wrapQtApp $out/Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS/${finalAttrs.meta.mainProgram}
     '';
 
@@ -278,8 +279,8 @@ stdenv.mkDerivation (finalAttrs: {
     # inherit from AyuGramDesktop
     maintainers = with maintainers; [ ];
     platforms = lib.platforms.all;
-    broken = stdenv.isDarwin; # temporary
-    badPlatforms = [ stdenv.isDarwin ];
+    # broken = stdenv.isDarwin; # temporary
+    # badPlatforms = [ stdenv.isDarwin ];
     description = "Desktop Telegram client with good customization and Ghost mode.";
     license = licenses.gpl3Only;
     homepage = "https://ayugram.one";
