@@ -1,13 +1,17 @@
 <h1 align="center">Ayugram desktop 🌐 NixOS flake</h1>
 
+<div align="center">
+
 ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/ayugram-port/ayugram-desktop?style=for-the-badge)
+
 ![GitHub License](https://img.shields.io/github/license/ayugram-port/ayugram-desktop?style=for-the-badge)
+</div>
 
 > [!NOTE]
 > We do have binary cache via [Garnix](https://garnix.io/) CI. In case you'll setup it manually - make sure to
 > rebuild with activated cache **BEFORE** adding `ayugram` into `environment.systemPackages` or `home.packages.`.
 
-<h2 align="center">☄️ Installation Instructions</h2>
+<h2 align="center">☄️ Installation Instructions</h2>https://www.youtube.com/post/UgkxEbot2oqAD7Mq5154xY2naBscL8vuEstA
 
 1. You'll need to add this repo into your `flake.nix`:
 
