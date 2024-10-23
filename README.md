@@ -1,4 +1,4 @@
-# Ayugram desktop 🌐 NixOS flake {: .center}
+<h1 align="center">Ayugram desktop 🌐 NixOS flake</h1>
 
 <div align="center">
 
@@ -14,7 +14,6 @@
 <h2 align="center">☄️ Installation Instructions</h2>
 
 1. You'll need to add this repo into your `flake.nix`:
-
 
    ```nix
    {
@@ -89,4 +88,3 @@ nix = {
 | 🪐 [kaeeraa](https://github.com/kaeeraa)          | for fork adoption.                                                          |
 | 🪐 [AyuGram](https://github.com/AyuGram)          | for the [ayugram-dektop](https://github.com/AyuGram/AyuGramDesktop) itself. |
 | 🪐 [hand7s](https://github.com/s0me1newithhands7) | for this awesome readme (:D) and some work with package format.             |
-
