@@ -8,8 +8,9 @@
 </div>
 
 > [!NOTE]
-> We do have binary cache via [Garnix CI](https://garnix.io/). In case you'll setup it manually - make sure to
-> rebuild with activated cache **BEFORE** adding `ayugram` into `environment.systemPackages` or `home.packages.`.
+> We do have binary cache via [Garnix CI](https://garnix.io/).
+> In case you'll setup it manually - make sure to rebuild with
+> activated cache **BEFORE** adding `ayugram` your packages.
 
 <h2 align="center">☄️ Installation Instructions</h2>
 
