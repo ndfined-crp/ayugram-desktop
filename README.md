@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/ayugram-port/ayugram-desktop?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/ayugram-port/ayugram-desktop?style=for-the-badge&cacheSeconds=180)
 
 ![GitHub License](https://img.shields.io/github/license/ayugram-port/ayugram-desktop?style=for-the-badge)
 </div>
