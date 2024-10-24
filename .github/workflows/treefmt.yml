@@ -1,28 +1,20 @@
 name: Format Code
-
 on: [push, pull_request]
-
 jobs:
   format:
     runs-on: ubuntu-latest
-
     steps:
-    - name : Checkout repository
-      uses : actions/checkout@v4
-
-    - uses : ahmadnassri/action-workflow-queue@v1
-
-    - name : Install Nix
-      uses : DeterminateSystems/nix-installer-action@main
-
-    - uses : DeterminateSystems/magic-nix-cache-action@main
-
-    - name : Install formatting tools
-      run  : nix-env -f "<nixpkgs>" -iA nixfmt-rfc-style treefmt yamlfmt jsonfmt markdownlint-cli
-
-    - name : Run treefmt
-      uses : isbecker/treefmt-action@v1
-      with :
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        version: 'latest'
-        fail_on_change: 'false'
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - uses: ahmadnassri/action-workflow-queue@v1
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Install formatting tools
+        run: nix-env -f "<nixpkgs>" -iA nixfmt-rfc-style treefmt yamlfmt jsonfmt markdownlint-cli
+      - name: Run treefmt
+        uses: isbecker/treefmt-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          version: 'latest'
+          fail_on_change: 'false'

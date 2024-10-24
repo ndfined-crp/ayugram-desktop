@@ -175,8 +175,7 @@ let
     );
 
   # https://github.com/NixOS/nixpkgs/blob/0258808f5744ca980b9a1f24fe0b1e6f0fecee9c/lib/lists.nix#L295
-  range =
-    first: last: if first > last then [ ] else builtins.genList (n: first + n) (last - first + 1);
+  range = first: last: if first > last then [ ] else builtins.genList (n: first + n) (last - first + 1);
 
   # https://github.com/NixOS/nixpkgs/blob/0258808f5744ca980b9a1f24fe0b1e6f0fecee9c/lib/strings.nix#L257
   stringToCharacters = s: map (p: builtins.substring p 1 s) (range 0 (builtins.stringLength s - 1));
