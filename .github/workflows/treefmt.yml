@@ -14,10 +14,10 @@ jobs:
       uses : DeterminateSystems/nix-installer-action@main
 
     - name : Install nixfmt
-      run  : nix-env -iA nixpkgs.nixfmt-rfc-style
+      run  : nix-env -f "<nixpkgs>" -iA nixpkgs.nixfmt-rfc-style
 
     - name : Install treefmt
-      run  : nix-env -iA nixpkgs.treefmt
+      run  : nix-env -f "<nixpkgs>" -iA nixpkgs.treefmt
 
     - name : Run nixfmt
       run  : nixfmt .
