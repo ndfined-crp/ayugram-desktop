@@ -4,19 +4,19 @@
 command  = "nixfmt"
 options  = [ "-w 120", "-v" ]
 includes = [ "*.nix" ]
-excludes = []
+excludes = [ "*.yaml", "*.yml", "*.json", "*.md" ]
 
 [formatter.yaml]
 command  = "yamlfmt"
 options  = [ "" ]
 includes = [ "*.yaml", "*.yml" ]
-excludes = []
+excludes = [ "*.nix", "*.json", "*.md" ]
 
 [formatter.json]
 command  = "jsonfmt"
-options  = [ "-w"    ]
+options  = [ "-w" ]
 includes = [ "*.json" ]
-excludes = []
+excludes = [ "*.nix", "*.yaml", "*.yml", "*.md" ]
 
 # [formatter.md]
 # command  = "markdownlint"
