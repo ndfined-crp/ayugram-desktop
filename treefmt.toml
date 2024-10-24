@@ -1,3 +1,26 @@
+# One CLI to format the code tree - https://git.numtide.com/numtide/treefmt
+
 [formatter.nix]
-command = "nixfmt"
-includes = ["*.nix"]
+command  = "nixfmt"
+options  = [ "-w 120", "-v" ]
+includes = [ "*.nix" ]
+excludes = [ "*.yaml", "*.yml", "*.json", "*.md" ]
+
+[formatter.yaml]
+command  = "yamlfmt"
+options  = [ "" ]
+includes = [ "*.yaml", "*.yml" ]
+excludes = [ "*.nix", "*.json", "*.md" ]
+
+[formatter.json]
+command  = "jsonfmt"
+options  = [ "-w" ]
+includes = [ "*.json" ]
+excludes = [ "*.nix", "*.yaml", "*.yml", "*.md" ]
+
+# [formatter.md]
+# command  = "markdownlint"
+# options  = [ "--disable", "MD013", "MD033", "--", "--fix"]
+# includes = [ "*.md" ]
+# excludes = []
+
