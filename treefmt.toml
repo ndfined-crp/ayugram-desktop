@@ -14,7 +14,7 @@ excludes = []
 
 [formatter.json]
 command  = "jsonfmt"
-options  = [ "-w", '-i "  "' ]
+options  = [ "-w" ]
 includes = [ "*.json" ]
 excludes = []
 
