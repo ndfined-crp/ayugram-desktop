@@ -1,13 +1,9 @@
-labels:
-- name: docs
-  paths:
-  - '*.md'
-- name: flake-update
-  paths:
-  - 'flake.nix'
-- name: nixpkgs-update
-  paths:
-  - 'flake.lock'
-- name: in-review
-  paths:
-  - './**'
+
+docs:
+- '*.md'
+flake-update:
+- 'flake.nix'
+nixpkgs-update:
+- 'flake.lock'
+in-review:
+- './**'
