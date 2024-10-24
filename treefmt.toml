@@ -20,7 +20,7 @@ excludes = []
 
 [formatter.md]
 command  = "markdownlint"
-options  = [ "--fix" ]
+options  = [ "--fix", "--disable 'MD013 MD033'"]
 includes = [ "*.md" ]
 excludes = []
 
