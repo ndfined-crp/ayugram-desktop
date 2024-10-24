@@ -1,5 +1,5 @@
 diff --git a/lib/xdg/com.ayugram.desktop.desktop b/lib/xdg/com.ayugram.desktop.desktop
-index 3c5f7bde0..e78454cf1 100644
+index 3c5f7bde0..f71c5800e 100644
 --- a/lib/xdg/com.ayugram.desktop.desktop
 +++ b/lib/xdg/com.ayugram.desktop.desktop
 @@ -2,8 +2,8 @@
@@ -9,7 +9,7 @@ index 3c5f7bde0..e78454cf1 100644
 -Exec=DESKTOPINTEGRATION=1 ayugram-desktop -- %u
 -Icon=ayugram
 +Exec=ayugram-desktop -- %u
-+Icon=share/icons/hicolor/64x64/apps/ayugram.png
++Icon=icons/hicolor/64x64/apps/ayugram.png
  Terminal=false
  StartupWMClass=AyuGram
  Type=Application
