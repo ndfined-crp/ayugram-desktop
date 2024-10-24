@@ -18,9 +18,9 @@ options  = [ "-w", '-i "  "' ]
 includes = [ "*.json" ]
 excludes = []
 
-[formatter.md]
-command  = "markdownlint"
-options  = [ "--disable", "MD013", "MD033", "--", "--fix"]
-includes = [ "*.md" ]
-excludes = []
+# [formatter.md]
+# command  = "markdownlint"
+# options  = [ "--disable", "MD013", "MD033", "--", "--fix"]
+# includes = [ "*.md" ]
+# excludes = []
 
