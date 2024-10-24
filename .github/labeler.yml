@@ -8,3 +8,6 @@ labels:
 - name: nixpkgs-update
   paths:
   - 'flake.lock'
+- name: in-review
+  paths:
+  - './**'
