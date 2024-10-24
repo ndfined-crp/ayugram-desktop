@@ -1,0 +1,10 @@
+labels:
+- name: docs
+  paths:
+  - '*.md'
+- name: flake-update
+  paths:
+  - 'flake.nix'
+- name: nixpkgs-update
+  paths:
+  - 'flake.lock'
