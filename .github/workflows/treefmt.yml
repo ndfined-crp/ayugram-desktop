@@ -13,14 +13,8 @@ jobs:
     - name : Install Nix
       uses : DeterminateSystems/nix-installer-action@main
 
-    - name : Install nixfmt
-      run  : nix-env -f "<nixpkgs>" -iA nixfmt-rfc-style
-
-    - name : Install treefmt
-      run  : nix-env -f "<nixpkgs>" -iA treefmt
-
-    - name : Run nixfmt
-      run  : nixfmt .
+    - name : Install formatting tools
+      run  : nix-env -f "<nixpkgs>" -iA nixfmt-rfc-style treefmt yamlfmt jsonfmt markdownlint-cli
 
     - name : Run treefmt
       uses : isbecker/treefmt-action@v1
