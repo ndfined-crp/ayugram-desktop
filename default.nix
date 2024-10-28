@@ -59,7 +59,6 @@
   pcre-cpp,
   openssl,
   libjpeg,
-  qtbase,
   sources ? import ./nix/sources.nix,
   system ? builtins.currentSystem,
 }:
