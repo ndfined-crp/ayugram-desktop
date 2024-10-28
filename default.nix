@@ -60,6 +60,7 @@
   openssl,
   libjpeg,
   qtbase,
+  sources ? import ./nix/sources.nix
 }:
 
 let
@@ -67,7 +68,6 @@ let
     inherit stdenv; # oh no, stdenv
     abseil-cpp = abseil-cpp.override { cxxStandard = "20"; };
   };
-  sources = import ./nix/sources.nix;
   nixpkgs = import sources.nixpkgs { };
 in
 stdenv.mkDerivation (finalAttrs: {
