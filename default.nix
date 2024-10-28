@@ -135,7 +135,7 @@ stdenv.mkDerivation (finalAttrs: {
     ];
 
   buildInputs = [
-    nixpkgs.qtbase
+    nixpkgs.kdePackages.qtbase
     qtsvg
     qtimageformats
     boost
