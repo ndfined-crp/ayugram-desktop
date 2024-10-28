@@ -131,34 +131,38 @@ stdenv.mkDerivation (finalAttrs: {
       lld
     ];
 
-  buildInputs = [
-    qtbase
-    qtsvg
-    qtimageformats
-    boost
-    lz4
-    xxHash
-    ffmpeg
-    openalSoft
-    minizip
-    libopus
-    range-v3
-    tl-expected
-    rnnoise
-    protobuf
-    tg_owt
-    microsoft-gsl
-    rlottie
-    pcre
-    pcre-cpp
-    libXtst
-    openssl
-    libjpeg
-    libopus
-    ffmpeg
-    libXdamage
-    ada
-  ];
+  let
+    sources = import ./nix/sources.nix;
+    nixpkgs = import sources.nixpkgs { };
+  in
+    buildInputs = [
+      nixpkgs.qtbase
+      qtsvg
+      qtimageformats
+      boost
+      lz4
+      xxHash
+      ffmpeg
+      openalSoft
+      minizip
+      libopus
+      range-v3
+      tl-expected
+      rnnoise
+      protobuf
+      tg_owt
+      microsoft-gsl
+      rlottie
+      pcre
+      pcre-cpp
+      libXtst
+      openssl
+      libjpeg
+      libopus
+      ffmpeg
+      libXdamage
+      ada
+    ];
 
   propagatedBuildInputs = lib.optionals stdenv.isLinux [
     qtwayland
