@@ -67,6 +67,8 @@ let
     inherit stdenv; # oh no, stdenv
     abseil-cpp = abseil-cpp.override { cxxStandard = "20"; };
   };
+  sources = import ./nix/sources.nix;
+  nixpkgs = import sources.nixpkgs { };
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop";
@@ -131,38 +133,34 @@ stdenv.mkDerivation (finalAttrs: {
       lld
     ];
 
-  let
-    sources = import ./nix/sources.nix;
-    nixpkgs = import sources.nixpkgs { };
-  in
-    buildInputs = [
-      nixpkgs.qtbase
-      qtsvg
-      qtimageformats
-      boost
-      lz4
-      xxHash
-      ffmpeg
-      openalSoft
-      minizip
-      libopus
-      range-v3
-      tl-expected
-      rnnoise
-      protobuf
-      tg_owt
-      microsoft-gsl
-      rlottie
-      pcre
-      pcre-cpp
-      libXtst
-      openssl
-      libjpeg
-      libopus
-      ffmpeg
-      libXdamage
-      ada
-    ];
+  buildInputs = [
+    nixpkgs.qtbase
+    qtsvg
+    qtimageformats
+    boost
+    lz4
+    xxHash
+    ffmpeg
+    openalSoft
+    minizip
+    libopus
+    range-v3
+    tl-expected
+    rnnoise
+    protobuf
+    tg_owt
+    microsoft-gsl
+    rlottie
+    pcre
+    pcre-cpp
+    libXtst
+    openssl
+    libjpeg
+    libopus
+    ffmpeg
+    libXdamage
+    ada
+  ];
 
   propagatedBuildInputs = lib.optionals stdenv.isLinux [
     qtwayland
