@@ -9,7 +9,7 @@ index 3c5f7bde0..d4071574d 100644
 -Exec=DESKTOPINTEGRATION=1 ayugram-desktop -- %u
 -Icon=ayugram
 +Exec=ayugram-desktop -- %u
-+Icon=ayugram.png
++Icon=share/icons/hicolor/128x128/apps/ayugram.png
  Terminal=false
  StartupWMClass=AyuGram
  Type=Application
