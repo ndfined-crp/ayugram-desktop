@@ -1,9 +1,25 @@
-
 docs:
-- '*.md'
+- head-branch: [ '^docs', 'docs' ]
+- changed-files:
+  - any-glob-to-any-file: '*.md'
+
 flake-update:
-- 'flake.nix'
+- head-branch: [ '^flake', 'flake' ]
+- changed-files:
+  - any-glob-to-any-file: 'flake.nix'
+
 nixpkgs-update:
-- 'flake.lock'
+- head-branch: [ '^update', 'update' ]
+- changed-files:
+  - any-glob-to-any-file: 'flake.lock'
+
 in-review:
-- './**'
+- head-branch: [ '.*' ]
+- changed-files:
+  - any-glob-to-any-file: './**'
+
+bugfix:
+- head-branch: [ '^bugfix', 'bugfix' ]
+
+feature:
+- head-branch: [ '^feature', 'feature' ]
