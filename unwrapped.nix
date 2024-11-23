@@ -91,18 +91,13 @@ stdenv.mkDerivation (finalAttrs: {
     ];
 
   postPatch =
-    lib.optionalString stdenv.isLinux ''
-      for file in \
-        Telegram/ThirdParty/libtgvoip/os/linux/AudioInputALSA.cpp \
-        Telegram/ThirdParty/libtgvoip/os/linux/AudioOutputALSA.cpp \
-        Telegram/ThirdParty/libtgvoip/os/linux/AudioPulse.cpp \
-        Telegram/lib_webview/webview/platform/linux/webview_linux_webkitgtk_library.cpp
-      do
-        substituteInPlace "$file" \
-          --replace '"libasound.so.2"' '"${alsa-lib}/lib/libasound.so.2"' \
-          --replace '"libpulse.so.0"' '"${libpulseaudio}/lib/libpulse.so.0"' \
-          --replace '"libwebkitgtk-6.0.so.4"' '"${webkitgtk_6_0}/lib/libwebkitgtk-6.0.so.4"'
-      done
+    ''
+      substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioInputALSA.cpp \
+        --replace-fail '"libasound.so.2"' '"${lib.getLib alsa-lib}/lib/libasound.so.2"'
+      substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioOutputALSA.cpp \
+        --replace-fail '"libasound.so.2"' '"${lib.getLib alsa-lib}/lib/libasound.so.2"'
+      substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioPulse.cpp \
+        --replace-fail '"libpulse.so.0"' '"${lib.getLib libpulseaudio}/lib/libpulse.so.0"'
     ''
     + lib.optionalString stdenv.isDarwin ''
       substituteInPlace Telegram/lib_webrtc/webrtc/platform/mac/webrtc_environment_mac.mm \
