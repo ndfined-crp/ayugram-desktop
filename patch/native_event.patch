@@ -1,0 +1,17 @@
+diff --git a/Telegram/SourceFiles/platform/mac/main_window_mac.h b/Telegram/SourceFiles/platform/mac/main_window_mac.h
+index 63ed4009b..48e6cafda 100644
+--- a/Telegram/SourceFiles/platform/mac/main_window_mac.h
++++ b/Telegram/SourceFiles/platform/mac/main_window_mac.h
+@@ -49,10 +49,10 @@ protected:
+ private:
+ 	friend class Private;
+ 
+-	bool nativeEvent(
++    bool nativeEvent(
+ 		const QByteArray &eventType,
+ 		void *message,
+-		qintptr *result) override;
++		qintptr *result);
+ 
+ 	void hideAndDeactivate();
+ 	void updateDockCounter();
