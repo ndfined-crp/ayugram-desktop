@@ -21,16 +21,25 @@
         ] (system: function nixpkgs.legacyPackages.${system});
     in
     {
+      overlays.ayugaram-desktop = (final: _prev: {
+        ayugram-desktop = self.packages;
+      });
 
       nixosModules = {
-        default = self.nixosModules;
+        ayugram-desktop = self.overlays;
+        default = self.overlays;
       };
 
       homeManagerModules = {
-        default = self.nixosModules;
+        ayugram-desktop = self.overlays;
+        default = self.overlays;
       };
 
       packages = forAllSystems (pkgs: {
+        ayugram-desktop = pkgs.libsForQt5.callPackage ./default.nix { };
+      });
+
+      apps = forAllSystems (pkgs: {
         ayugram-desktop = pkgs.libsForQt5.callPackage ./default.nix { };
       });
 
