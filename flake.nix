@@ -6,6 +6,15 @@
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
   };
+  nixConfig = {
+    sandbox = true;
+    extra-substituters = [
+      "https://cache.garnix.io"
+    ];
+    extra-trusted-public-keys = [
+      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+    ];
+  };
   outputs =
     {
       self,
@@ -42,16 +51,5 @@
       apps = forAllSystems (pkgs: {
         ayugram-desktop = pkgs.libsForQt5.callPackage ./default.nix { };
       });
-
-      nixConfig = {
-        sandbox = nixpkgs.stdenv.isLinux;
-        extra-substituters = [
-          "https://cache.garnix.io"
-        ];
-        extra-trusted-public-keys = [
-          "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-        ];
-      };
     };
-
 }
