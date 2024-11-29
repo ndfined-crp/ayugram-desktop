@@ -47,9 +47,5 @@
       packages = forAllSystems (pkgs: {
         ayugram-desktop = pkgs.libsForQt5.callPackage ./default.nix { };
       });
-
-      apps = forAllSystems (pkgs: {
-        ayugram-desktop = pkgs.libsForQt5.callPackage ./default.nix { };
-      });
     };
 }
