@@ -14,10 +14,43 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - name: Install formatting tools
-        run: nix-env -f "<nixpkgs>" -iA nixfmt-rfc-style treefmt yamlfmt jsonfmt markdownlint-cli
+        run: nix profile install github:nixos/nixpkgs/unstable#nixmft-rfc-style github:nixos/nixpkgs/unstable#yamlftm github:nixos/nixpkgs/unstable#jsonftm github:nixos/nixpkgs/unstable#markdown-cli
+      - name: Add new branch
+        run: git checkout -b treefmt-code
       - name: Run treefmt
         uses: isbecker/treefmt-action@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           version: 'latest'
           fail_on_change: 'false'
+      - name: Commit changes
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add .
+          git commit -m "fmt: automated formatting"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: treefmt-code
+      - name: New Pull Request
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const pr = await github.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'fmt: automated formatting',
+              head: 'treefmt-code',
+              base: context.ref.replace('refs/heads/', ''),
+              body: 'Automated formatting with treefmt'
+            });
+            console.log(pr.data.html_url);
+            console.log(pr.data.number);
+            core.setOutput('pr_url', pr.data.html_url);
+            core.setOutput('pr_number', pr.data.number);
+            core.setOutput('pr_body', pr.data.body);
+
+
+
