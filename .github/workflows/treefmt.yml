@@ -6,6 +6,8 @@ jobs:
     permissions:
       contents: write
       id-token: write
+      pull-requests: write
+      workflows: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
