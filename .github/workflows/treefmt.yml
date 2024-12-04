@@ -1,5 +1,10 @@
 name: Format Code
-on: [push, pull_request]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
 jobs:
   format:
     runs-on: ubuntu-latest
