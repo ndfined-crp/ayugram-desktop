@@ -30,9 +30,11 @@
         ] (system: function nixpkgs.legacyPackages.${system});
     in
     {
-      overlays.ayugaram-desktop = (final: _prev: {
-        ayugram-desktop = self.packages;
-      });
+      overlays.ayugaram-desktop = (
+        final: _prev: {
+          ayugram-desktop = self.packages;
+        }
+      );
 
       nixosModules = {
         ayugram-desktop = self.overlays;
