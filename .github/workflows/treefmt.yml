@@ -11,8 +11,6 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
-        with:
-
       - name: Install formatting tools
         run: nix-env -f "<nixpkgs>" -iA nixfmt-rfc-style treefmt yamlfmt jsonfmt markdownlint-cli
       - name: Add new branch
@@ -34,25 +32,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: treefmt-code
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: New Pull Request
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const pr = await github.pulls.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: 'fmt: automated formatting',
-              head: 'treefmt-code',
-              base: context.ref.replace('refs/heads/', ''),
-              body: 'Automated formatting with treefmt'
-            });
-            console.log(pr.data.html_url);
-            console.log(pr.data.number);
-            core.setOutput('pr_url', pr.data.html_url);
-            core.setOutput('pr_number', pr.data.number);
-            core.setOutput('pr_body', pr.data.body);
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
