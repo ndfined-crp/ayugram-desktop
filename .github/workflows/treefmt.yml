@@ -3,11 +3,7 @@ on: [push, pull_request]
 jobs:
   format:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      id-token: write
-      pull-requests: write
-      workflows: write
+    permissions: write-all
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
