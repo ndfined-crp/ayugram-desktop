@@ -82,7 +82,10 @@ in
     };
 
     patches =
-      [./patch/desktop.patch]
+      [
+        ./patch/desktop.patch
+        ./patch/cstring.patch
+      ]
       ++ lib.optionals stdenv.isDarwin [
         ./patch/macos.patch
         ./patch/macos-opengl.patch
