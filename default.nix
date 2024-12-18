@@ -77,7 +77,7 @@ stdenv.mkDerivation (finalAttrs: {
   src = fetchFromGitHub {
     owner = "AyuGram";
     repo = "AyuGramDesktop";
-    rev = "v${finalAttrs.version}";
+    rev = "v5.8.3";
 
     fetchSubmodules = true;
     hash = "sha256-Hon5qVJeQF/6y55lVKB0O87Du+DvCUYVdMjibgU0YM4=";
