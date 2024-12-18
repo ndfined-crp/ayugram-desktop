@@ -1,25 +1,26 @@
-# One CLI to format the code tree - https://github.com/numtide/treefmt
+# One CLI to format the code tree - https://git.numtide.com/numtide/treefmt
 
 [formatter.nix]
-command = "nixfmt"
-options = ["-w 120", "-v"]
-includes = ["*.nix"]
-excludes = ["*.yaml", "*.yml", "*.json", "*.md", ".github/**"]
+command  = "nixfmt"
+options  = [ "-w 120", "-v" ]
+includes = [ "*.nix" ]
+excludes = [ "*.yaml", "*.yml", "*.json", "*.md" ]
 
 [formatter.yaml]
-command = "yamlfmt"
-options = [""]
-includes = ["*.yaml", "*.yml"]
-excludes = ["*.nix", "*.json", "*.md", ".github/**"]
+command  = "yamlfmt"
+options  = [ "" ]
+includes = [ "*.yaml", "*.yml" ]
+excludes = [ "*.nix", "*.json", "*.md" ]
 
 [formatter.json]
-command = "jsonfmt"
-options = ["-w"]
-includes = ["*.json"]
-excludes = ["*.nix", "*.yaml", "*.yml", "*.md", ".github/**"]
+command  = "jsonfmt"
+options  = [ "-w" ]
+includes = [ "*.json" ]
+excludes = [ "*.nix", "*.yaml", "*.yml", "*.md" ]
 
 # [formatter.md]
 # command  = "markdownlint"
 # options  = [ "--disable", "MD013", "MD033", "--", "--fix"]
 # includes = [ "*.md" ]
 # excludes = []
+
