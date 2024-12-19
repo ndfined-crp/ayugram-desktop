@@ -1,0 +1,12 @@
+diff --git a/Telegram/lib_tl/tl/tl_basic_types.h b/Telegram/lib_tl/tl/tl_basic_types.h
+index 5eadf62..e9b6da5 100644
+--- a/Telegram/lib_tl/tl/tl_basic_types.h
++++ b/Telegram/lib_tl/tl/tl_basic_types.h
+@@ -11,6 +11,7 @@
+ #include "base/bytes.h"
+
+ #include <QtCore/QVector>
++#include <cstring>
+
+ namespace tl {
+ namespace details {

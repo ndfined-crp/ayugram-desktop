@@ -62,7 +62,6 @@
   sources ? import ./nix/sources.nix,
   system ? builtins.currentSystem,
 }:
-
 let
   tg_owt = callPackage ./lib/tg_owt.nix {
     inherit stdenv; # oh no, stdenv
@@ -77,14 +76,17 @@ stdenv.mkDerivation (finalAttrs: {
   src = fetchFromGitHub {
     owner = "AyuGram";
     repo = "AyuGramDesktop";
-    rev = "v5.8.3";
+    rev = "v${finalAttrs.version}";
 
     fetchSubmodules = true;
-    hash = "sha256-Hon5qVJeQF/6y55lVKB0O87Du+DvCUYVdMjibgU0YM4=";
+    hash = "sha256-bgfqYI77kxHmFZB6LCdLzeIFv6bfsXXJrrkbz5MD6Q0=";
   };
 
   patches =
-    [ ./patch/desktop.patch ]
+    [
+      ./patch/desktop.patch
+      ./patch/cstring.patch
+    ]
     ++ lib.optionals stdenv.isDarwin [
       ./patch/macos.patch
       ./patch/macos-opengl.patch
