@@ -87,7 +87,7 @@ stdenv.mkDerivation (finalAttrs: {
     [
       ./patch/cstring.patch
       (fetchpatch {
-        url = "https://github.com/AyuGram/AyuGramDesktop/commit/8847034217487d992cd070c0ab791baa213b4141";
+        url = "https://github.com/AyuGram/AyuGramDesktop/commit/8847034217487d992cd070c0ab791baa213b4141.patch";
         hash = "sha256-LM2biCNT3XjOjzo/CutkSsP1l0xjZ/MQAxkvq5TqQMk=";
       })
     ]
