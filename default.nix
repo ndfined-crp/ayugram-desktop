@@ -1,6 +1,7 @@
 {
   lib,
   fetchFromGitHub,
+  fetchpatch,
   callPackage,
   pkg-config,
   cmake,
@@ -84,12 +85,14 @@ stdenv.mkDerivation (finalAttrs: {
 
   patches =
     [
-      ./patch/desktop.patch
       ./patch/cstring.patch
+      (fetchpatch {
+        url = "https://github.com/AyuGram/AyuGramDesktop/commit/8847034217487d992cd070c0ab791baa213b4141";
+        hash = "sha256-LM2biCNT3XjOjzo/CutkSsP1l0xjZ/MQAxkvq5TqQMk=";
+      })
     ]
     ++ lib.optionals stdenv.isDarwin [
       ./patch/macos.patch
-      ./patch/macos-opengl.patch
     ];
 
   postPatch =
