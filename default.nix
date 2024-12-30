@@ -31,7 +31,7 @@
   range-v3,
   tl-expected,
   hunspell,
-  webkitgtk_6_0,
+  webkitgtk_4_1,
   jemalloc,
   rnnoise,
   protobuf,
@@ -113,6 +113,13 @@ stdenv.mkDerivation (finalAttrs: {
       substituteInPlace Telegram/lib_webrtc/webrtc/platform/mac/webrtc_environment_mac.mm \
         --replace kAudioObjectPropertyElementMain kAudioObjectPropertyElementMaster
     '';
+
+  qtWrapperArgs = lib.optionals stdenv.hostPlatform.isLinux [
+    "--prefix"
+    "LD_LIBRARY_PATH"
+    ":"
+    (lib.makeLibraryPath [ webkitgtk_4_1 ])
+  ];
 
   # We want to run wrapProgram manually (with additional parameters)
   dontWrapGApps = true;
@@ -259,18 +266,9 @@ stdenv.mkDerivation (finalAttrs: {
     ln -s $out/Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS/${finalAttrs.meta.mainProgram} $out/bin/${finalAttrs.meta.mainProgram}
   '';
 
-  # This is necessary to run Telegram in a pure environment.
-  # We also use gappsWrapperArgs from wrapGAppsHook.
-  postFixup =
-    lib.optionalString stdenv.hostPlatform.isLinux ''
-      wrapProgram $out/bin/${finalAttrs.meta.mainProgram} \
-        "''${gappsWrapperArgs[@]}" \
-        "''${qtWrapperArgs[@]}" \
-        --suffix PATH : ${lib.makeBinPath [ xdg-utils ]}
-    ''
-    + lib.optionalString stdenv.hostPlatform.isDarwin ''
-      wrapQtApp $out/Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS/${finalAttrs.meta.mainProgram}
-    '';
+  preFixup = ''
+    qtWrapperArgs+=("''${gappsWrapperArgs[@]}")
+  '';
 
   passthru = {
     inherit tg_owt;
