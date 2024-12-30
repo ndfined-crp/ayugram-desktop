@@ -31,7 +31,7 @@
   range-v3,
   tl-expected,
   hunspell,
-  webkitgtk_6_0,
+  webkitgtk_4_1,
   jemalloc,
   rnnoise,
   protobuf,
@@ -95,24 +95,21 @@ stdenv.mkDerivation (finalAttrs: {
       ./patch/macos.patch
     ];
 
-  postPatch =
-    lib.optionalString stdenv.isLinux ''
-      for file in \
-        Telegram/ThirdParty/libtgvoip/os/linux/AudioInputALSA.cpp \
-        Telegram/ThirdParty/libtgvoip/os/linux/AudioOutputALSA.cpp \
-        Telegram/ThirdParty/libtgvoip/os/linux/AudioPulse.cpp \
-        Telegram/lib_webview/webview/platform/linux/webview_linux_webkitgtk_library.cpp
-      do
-        substituteInPlace "$file" \
-          --replace '"libasound.so.2"' '"${alsa-lib}/lib/libasound.so.2"' \
-          --replace '"libpulse.so.0"' '"${libpulseaudio}/lib/libpulse.so.0"' \
-          --replace '"libwebkitgtk-6.0.so.4"' '"${webkitgtk_6_0}/lib/libwebkitgtk-6.0.so.4"'
-      done
-    ''
-    + lib.optionalString stdenv.isDarwin ''
-      substituteInPlace Telegram/lib_webrtc/webrtc/platform/mac/webrtc_environment_mac.mm \
-        --replace kAudioObjectPropertyElementMain kAudioObjectPropertyElementMaster
-    '';
+  postPatch = lib.optionalString stdenv.hostPlatform.isLinux ''
+    substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioInputALSA.cpp \
+      --replace-fail '"libasound.so.2"' '"${lib.getLib alsa-lib}/lib/libasound.so.2"'
+    substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioOutputALSA.cpp \
+      --replace-fail '"libasound.so.2"' '"${lib.getLib alsa-lib}/lib/libasound.so.2"'
+    substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioPulse.cpp \
+      --replace-fail '"libpulse.so.0"' '"${lib.getLib libpulseaudio}/lib/libpulse.so.0"'
+  '';
+
+  qtWrapperArgs = lib.optionals stdenv.hostPlatform.isLinux [
+    "--prefix"
+    "LD_LIBRARY_PATH"
+    ":"
+    (lib.makeLibraryPath [ webkitgtk_4_1 ])
+  ];
 
   # We want to run wrapProgram manually (with additional parameters)
   dontWrapGApps = true;
@@ -259,18 +256,9 @@ stdenv.mkDerivation (finalAttrs: {
     ln -s $out/Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS/${finalAttrs.meta.mainProgram} $out/bin/${finalAttrs.meta.mainProgram}
   '';
 
-  # This is necessary to run Telegram in a pure environment.
-  # We also use gappsWrapperArgs from wrapGAppsHook.
-  postFixup =
-    lib.optionalString stdenv.hostPlatform.isLinux ''
-      wrapProgram $out/bin/${finalAttrs.meta.mainProgram} \
-        "''${gappsWrapperArgs[@]}" \
-        "''${qtWrapperArgs[@]}" \
-        --suffix PATH : ${lib.makeBinPath [ xdg-utils ]}
-    ''
-    + lib.optionalString stdenv.hostPlatform.isDarwin ''
-      wrapQtApp $out/Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS/${finalAttrs.meta.mainProgram}
-    '';
+  preFixup = ''
+    qtWrapperArgs+=("''${gappsWrapperArgs[@]}")
+  '';
 
   passthru = {
     inherit tg_owt;
