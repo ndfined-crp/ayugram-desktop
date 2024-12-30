@@ -111,6 +111,13 @@ stdenv.mkDerivation (finalAttrs: {
     (lib.makeLibraryPath [ webkitgtk_4_1 ])
   ];
 
+  qtWrapperArgs = lib.optionals stdenv.hostPlatform.isLinux [
+    "--prefix"
+    "LD_LIBRARY_PATH"
+    ":"
+    (lib.makeLibraryPath [ webkitgtk_4_1 ])
+  ];
+
   # We want to run wrapProgram manually (with additional parameters)
   dontWrapGApps = true;
   dontWrapQtApps = true;
