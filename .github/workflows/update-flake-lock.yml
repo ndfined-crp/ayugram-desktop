@@ -21,7 +21,7 @@ jobs:
         uses: DeterminateSystems/update-flake-lock@main
         with:
           pr-title: "chore(flake.lock): Update flake.lock" # Title of PR to be created
-          pr-reviewers: kaeeraa,s0me1newithhand7s
+          pr-reviewers: s0me1newithhand7s
           pr-labels: | # Labels to be set on the PR
             low-prior
             automated
