@@ -260,6 +260,19 @@ stdenv.mkDerivation (finalAttrs: {
     qtWrapperArgs+=("''${gappsWrapperArgs[@]}")
   '';
 
+  # This is necessary to run Telegram in a pure environment.
+  # We also use gappsWrapperArgs from wrapGAppsHook.
+  postFixup =
+    lib.optionalString stdenv.hostPlatform.isLinux ''
+      wrapProgram $out/bin/${finalAttrs.meta.mainProgram} \
+        "''${gappsWrapperArgs[@]}" \
+        "''${qtWrapperArgs[@]}" \
+        --suffix PATH : ${lib.makeBinPath [ xdg-utils ]}
+    ''
+    + lib.optionalString stdenv.hostPlatform.isDarwin ''
+      wrapQtApp $out/Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS/${finalAttrs.meta.mainProgram}
+    '';
+
   passthru = {
     inherit tg_owt;
     updateScript = nix-update-script { };
