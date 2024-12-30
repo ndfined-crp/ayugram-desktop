@@ -88,7 +88,7 @@ stdenv.mkDerivation (finalAttrs: {
       ./patch/cstring.patch
       (fetchpatch {
         url = "https://github.com/AyuGram/AyuGramDesktop/commit/8847034217487d992cd070c0ab791baa213b4141.patch";
-        hash = "sha256-LM2biCNT3XjOjzo/CutkSsP1l0xjZ/MQAxkvq5TqQMk=";
+        hash = "sha256-8q+K06wmG6TuBRomDSS9zWuM3PYQfMHpmIokw+bC3EY=";
       })
     ]
     ++ lib.optionals stdenv.isDarwin [
