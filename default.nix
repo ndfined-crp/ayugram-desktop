@@ -174,7 +174,7 @@ stdenv.mkDerivation (finalAttrs: {
     libpulseaudio
     pipewire
     hunspell
-    webkitgtk_6_0
+    webkitgtk_4_1
     jemalloc
     tg_owt
     glib
