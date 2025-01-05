@@ -2,13 +2,14 @@ name: update-flake-lock
 on:
   workflow_dispatch: # allows manual triggering
   schedule:
-    - cron: '0 0 * * 0' # runs weekly on Sunday at 00:00
+    - cron: "0 0 * * 0" # runs weekly on Sunday at 00:00
 jobs:
   lockfile:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
+      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -19,8 +20,13 @@ jobs:
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@main
         with:
-          pr-title: "Update flake.lock" # Title of PR to be created
-          pr-reviewers: kaeeraa,s0me1newithhand7s
+          pr-title: "chore(flake.lock): Update flake.lock" # Title of PR to be created
+          pr-reviewers: s0me1newithhand7s
           pr-labels: | # Labels to be set on the PR
             low-prior
             automated
+            dependencies
+            nixpkgs-update
+          pr-body: | # Body of PR to be created
+            This PR updates the flake.lock file using [update-flake-lock](https://github.com/DeterminateSystems/update-flake-lock).
+          token: ${{ secrets.LOCK_UPDATE }}

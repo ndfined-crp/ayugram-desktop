@@ -1,23 +1,46 @@
 name: Format Code
-on: [push, pull_request]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
 jobs:
   format:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      id-token: write
+    permissions: write-all
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: ahmadnassri/action-workflow-queue@v1
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - name: Install formatting tools
         run: nix-env -f "<nixpkgs>" -iA nixfmt-rfc-style treefmt yamlfmt jsonfmt markdownlint-cli
+      - name: Add new branch
+        run: git checkout -b treefmt-code
       - name: Run treefmt
         uses: isbecker/treefmt-action@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           version: 'latest'
           fail_on_change: 'false'
+      - name: Commit changes
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          if ! git diff --quiet; then
+            git add .
+            git commit -m "refactor(*): automated formatting"
+          fi
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
+
+
+

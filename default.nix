@@ -1,6 +1,7 @@
 {
   lib,
   fetchFromGitHub,
+  fetchpatch,
   callPackage,
   pkg-config,
   cmake,
@@ -30,7 +31,7 @@
   range-v3,
   tl-expected,
   hunspell,
-  webkitgtk_6_0,
+  webkitgtk_4_1,
   jemalloc,
   rnnoise,
   protobuf,
@@ -62,7 +63,6 @@
   sources ? import ./nix/sources.nix,
   system ? builtins.currentSystem,
 }:
-
 let
   tg_owt = callPackage ./lib/tg_owt.nix {
     inherit stdenv; # oh no, stdenv
@@ -72,7 +72,7 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop";
-  version = "5.6.3";
+  version = "5.8.3";
 
   src = fetchFromGitHub {
     owner = "AyuGram";
@@ -80,34 +80,36 @@ stdenv.mkDerivation (finalAttrs: {
     rev = "v${finalAttrs.version}";
 
     fetchSubmodules = true;
-    hash = "sha256-Hon5qVJeQF/6y55lVKB0O87Du+DvCUYVdMjibgU0YM4=";
+    hash = "sha256-bgfqYI77kxHmFZB6LCdLzeIFv6bfsXXJrrkbz5MD6Q0=";
   };
 
   patches =
-    [ ./patch/desktop.patch ]
+    [
+      ./patch/cstring.patch
+      (fetchpatch {
+        url = "https://github.com/AyuGram/AyuGramDesktop/commit/8847034217487d992cd070c0ab791baa213b4141.patch";
+        hash = "sha256-8q+K06wmG6TuBRomDSS9zWuM3PYQfMHpmIokw+bC3EY=";
+      })
+    ]
     ++ lib.optionals stdenv.isDarwin [
       ./patch/macos.patch
-      ./patch/macos-opengl.patch
     ];
 
-  postPatch =
-    lib.optionalString stdenv.isLinux ''
-      for file in \
-        Telegram/ThirdParty/libtgvoip/os/linux/AudioInputALSA.cpp \
-        Telegram/ThirdParty/libtgvoip/os/linux/AudioOutputALSA.cpp \
-        Telegram/ThirdParty/libtgvoip/os/linux/AudioPulse.cpp \
-        Telegram/lib_webview/webview/platform/linux/webview_linux_webkitgtk_library.cpp
-      do
-        substituteInPlace "$file" \
-          --replace '"libasound.so.2"' '"${alsa-lib}/lib/libasound.so.2"' \
-          --replace '"libpulse.so.0"' '"${libpulseaudio}/lib/libpulse.so.0"' \
-          --replace '"libwebkitgtk-6.0.so.4"' '"${webkitgtk_6_0}/lib/libwebkitgtk-6.0.so.4"'
-      done
-    ''
-    + lib.optionalString stdenv.isDarwin ''
-      substituteInPlace Telegram/lib_webrtc/webrtc/platform/mac/webrtc_environment_mac.mm \
-        --replace kAudioObjectPropertyElementMain kAudioObjectPropertyElementMaster
-    '';
+  postPatch = lib.optionalString stdenv.hostPlatform.isLinux ''
+    substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioInputALSA.cpp \
+      --replace-fail '"libasound.so.2"' '"${lib.getLib alsa-lib}/lib/libasound.so.2"'
+    substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioOutputALSA.cpp \
+      --replace-fail '"libasound.so.2"' '"${lib.getLib alsa-lib}/lib/libasound.so.2"'
+    substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioPulse.cpp \
+      --replace-fail '"libpulse.so.0"' '"${lib.getLib libpulseaudio}/lib/libpulse.so.0"'
+  '';
+
+  qtWrapperArgs = lib.optionals stdenv.hostPlatform.isLinux [
+    "--prefix"
+    "LD_LIBRARY_PATH"
+    ":"
+    (lib.makeLibraryPath [ webkitgtk_4_1 ])
+  ];
 
   # We want to run wrapProgram manually (with additional parameters)
   dontWrapGApps = true;
@@ -172,7 +174,7 @@ stdenv.mkDerivation (finalAttrs: {
     libpulseaudio
     pipewire
     hunspell
-    webkitgtk_6_0
+    webkitgtk_4_1
     jemalloc
     tg_owt
     glib
@@ -252,6 +254,10 @@ stdenv.mkDerivation (finalAttrs: {
     mkdir -p $out/Applications
     cp -r ${finalAttrs.meta.mainProgram}.app $out/Applications
     ln -s $out/Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS/${finalAttrs.meta.mainProgram} $out/bin/${finalAttrs.meta.mainProgram}
+  '';
+
+  preFixup = ''
+    qtWrapperArgs+=("''${gappsWrapperArgs[@]}")
   '';
 
   # This is necessary to run Telegram in a pure environment.
