@@ -60,7 +60,7 @@
   pcre-cpp,
   openssl,
   libjpeg,
-  sources ? import ./nix/sources.nix,
+  libsForQt5,
   system ? builtins.currentSystem,
 }:
 let
@@ -68,7 +68,6 @@ let
     inherit stdenv; # oh no, stdenv
     abseil-cpp = abseil-cpp.override { cxxStandard = "20"; };
   };
-  nixpkgs = import sources.nixpkgs { inherit system; };
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop";
@@ -136,7 +135,7 @@ stdenv.mkDerivation (finalAttrs: {
     ];
 
   buildInputs = [
-    nixpkgs.libsForQt5.qt5.qtbase
+    libsForQt5.qt5.qtbase
     qtsvg
     qtimageformats
     boost
@@ -298,3 +297,4 @@ stdenv.mkDerivation (finalAttrs: {
     '';
   };
 })
+
