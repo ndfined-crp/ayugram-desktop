@@ -34,6 +34,7 @@
   libicns,
   apple-sdk_15,
   nix-update-script,
+  fetchpatch,
   tg_owt ? callPackage ./lib/tg_owt.nix { inherit stdenv; },
 }:
 
