@@ -72,7 +72,7 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop";
-  version = "5.8.3";
+  version = "5.10.3";
 
   src = fetchFromGitHub {
     owner = "AyuGram";
