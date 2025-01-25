@@ -124,8 +124,8 @@ stdenv.mkDerivation (finalAttrs: {
     (lib.cmakeFeature "CMAKE_GENERATOR" "Ninja")
 
     (lib.cmakeBool "DESKTOP_APP_DISABLE_AUTOUPDATE" true)
-    (lib.cmakeFeature "DESKTOP_APP_DISABLE_SCUDO" true)
-    (lib.cmakeFeature "DESKTOP_APP_USE_GTK3" true)
+    (lib.cmakeBool "DESKTOP_APP_DISABLE_SCUDO" true)
+    (lib.cmakeBool "DESKTOP_APP_USE_GTK3" true)
 
     (lib.cmakeBool "DESKTOP_APP_USE_PACKAGED_FONTS" false)
 
