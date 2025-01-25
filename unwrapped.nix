@@ -120,7 +120,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   cmakeFlags = [
     (lib.cmakeBool "CMAKE_EXPORT_COMPILE_COMMANDS" true)
-    (lib.cmakeBool "CMAKE_BUILD_TYPE" "Release")
+    (lib.cmakeFeature "CMAKE_BUILD_TYPE" "Release")
     (lib.cmakeFeature "CMAKE_GENERATOR" "Ninja")
 
     (lib.cmakeBool "DESKTOP_APP_DISABLE_AUTOUPDATE" true)
