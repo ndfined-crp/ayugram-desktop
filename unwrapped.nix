@@ -48,7 +48,7 @@ stdenv.mkDerivation (finalAttrs: {
     rev = "v${finalAttrs.version}";
 
     fetchSubmodules = true;
-    hash = "sha256-bgfqYI77kxHmFZB6LCdLzeIFv6bfsXXJrrkbz5MD6Q0=";
+    hash = "";
   };
 
   patches = [
