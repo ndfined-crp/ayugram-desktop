@@ -1,4 +1,4 @@
-{
+
   description = "AyuGram Desktop";
 
   inputs = {
@@ -7,7 +7,7 @@
     };
   };
   nixConfig = {
-    sandbox = relaxed;
+    sandbox = "relaxed";
     extra-substituters = [
       "https://cache.garnix.io"
     ];
