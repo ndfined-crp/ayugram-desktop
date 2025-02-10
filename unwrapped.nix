@@ -152,8 +152,6 @@ stdenv.mkDerivation (finalAttrs: {
     # inherit from AyuGramDesktop
     maintainers = with maintainers; [ ];
     platforms = lib.platforms.all;
-    broken = stdenv.isDarwin; # temporary
-    badPlatforms = [ stdenv.isDarwin ];
     description = "Desktop Telegram client with good customization and Ghost mode.";
     license = licenses.gpl3Only;
     homepage = "https://ayugram.one";
