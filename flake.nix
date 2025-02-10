@@ -7,7 +7,6 @@
     };
   };
   nixConfig = {
-    sandbox = "relaxed";
     extra-substituters = [
       "https://cache.garnix.io"
     ];
