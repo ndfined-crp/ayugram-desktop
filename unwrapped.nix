@@ -41,7 +41,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop-unwrapped";
-  version = "5.8.6";
+  version = "5.10.3";
 
   src = fetchFromGitHub {
     owner = "AyuGram";
@@ -49,15 +49,11 @@ stdenv.mkDerivation (finalAttrs: {
     rev = "v${finalAttrs.version}";
 
     fetchSubmodules = true;
-    hash = "sha256-bgfqYI77kxHmFZB6LCdLzeIFv6bfsXXJrrkbz5MD6Q0=";
+    hash = "sha256-ieHIBBm97ZZ+5EK4k3QTkhrazHnhiLNXpQoQFtzn8KY=";
   };
 
   patches = [
     ./patch/cstring.patch
-    (fetchpatch {
-      url = "https://github.com/AyuGram/AyuGramDesktop/commit/8847034217487d992cd070c0ab791baa213b4141.patch";
-      hash = "sha256-8q+K06wmG6TuBRomDSS9zWuM3PYQfMHpmIokw+bC3EY=";
-    })
   ];
 
   postPatch = lib.optionalString stdenv.hostPlatform.isLinux ''
