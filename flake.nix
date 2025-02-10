@@ -1,4 +1,4 @@
-
+{
   description = "AyuGram Desktop";
 
   inputs = {
