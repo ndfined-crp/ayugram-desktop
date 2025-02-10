@@ -3,7 +3,6 @@
   lib,
   stdenv,
   pname ? "ayugram-desktop",
-  unwrapped ? callPackage ./unwrapped.nix { inherit stdenv; },
   qtbase,
   qtimageformats,
   qtsvg,
@@ -12,7 +11,14 @@
   wrapQtAppsHook,
   glib-networking,
   webkitgtk_4_1,
+
   withWebkit ? true,
+  isDebug ? false,
+
+  unwrapped ? callPackage ./unwrapped.nix {
+    inherit stdenv;
+    isDebug = isDebug;
+  },
 }:
 stdenv.mkDerivation (finalAttrs: {
   inherit pname;

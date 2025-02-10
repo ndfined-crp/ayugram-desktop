@@ -35,6 +35,7 @@
   apple-sdk_15,
   nix-update-script,
   fetchpatch,
+  isDebug ? false,
   tg_owt ? callPackage ./lib/tg_owt.nix { inherit stdenv; },
 }:
 
@@ -120,7 +121,6 @@ stdenv.mkDerivation (finalAttrs: {
 
   cmakeFlags = [
     (lib.cmakeBool "CMAKE_EXPORT_COMPILE_COMMANDS" true)
-    (lib.cmakeFeature "CMAKE_BUILD_TYPE" "Release")
     (lib.cmakeFeature "CMAKE_GENERATOR" "Ninja")
 
     (lib.cmakeBool "DESKTOP_APP_DISABLE_AUTOUPDATE" true)
@@ -131,6 +131,8 @@ stdenv.mkDerivation (finalAttrs: {
 
     (lib.cmakeFeature "TDESKTOP_API_HASH" "b18441a1ff607e10a989891a5462e627")
     (lib.cmakeFeature "TDESKTOP_API_ID" "2040")
+
+    (lib.cmakeFeature "CMAKE_BUILD_TYPE" (if isDebug then "Debug" else "Release"))
   ];
 
   # for cppgir to locate gir files
