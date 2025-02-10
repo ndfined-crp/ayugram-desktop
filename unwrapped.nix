@@ -131,11 +131,6 @@ stdenv.mkDerivation (finalAttrs: {
     (lib.cmakeFeature "CMAKE_BUILD_TYPE" (if isDebug then "Debug" else "Release"))
   ];
 
-  # for cppgir to locate gir files
-  preBuild = ''
-    export GI_GIR_PATH="$XDG_DATA_DIRS"
-  '';
-
   installPhase = lib.optionalString stdenv.hostPlatform.isDarwin ''
     runHook preInstall
 
@@ -144,10 +139,6 @@ stdenv.mkDerivation (finalAttrs: {
     ln -sr $out/{Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS,bin}
 
     runHook postInstall
-  '';
-
-  preFixup = ''
-    qtWrapperArgs+=("''${gappsWrapperArgs[@]}")
   '';
 
   passthru = {

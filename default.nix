@@ -56,6 +56,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   dontUnpack = true;
   dontWrapGApps = true;
+  dontWrapQtApps = stdenv.hostPlatform.isDarwin;
 
   installPhase = ''
     runHook preInstall
@@ -67,8 +68,12 @@ stdenv.mkDerivation (finalAttrs: {
     qtWrapperArgs+=("''${gappsWrapperArgs[@]}")
   '';
 
-  postFixup = lib.optionalString stdenv.hostPlatform.isLinux ''
-    substituteInPlace $out/share/dbus-1/services/* \
-      --replace-fail "$unwrapped" "$out"
-  '';
+  postFixup =
+    lib.optionalString stdenv.hostPlatform.isDarwin ''
+      wrapQtApp "$out/Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS/${finalAttrs.meta.mainProgram}"
+    ''
+    + lib.optionalString stdenv.hostPlatform.isLinux ''
+      substituteInPlace $out/share/dbus-1/services/* \
+        --replace-fail "$unwrapped" "$out"
+    '';
 })
