@@ -14,7 +14,7 @@ jobs:
       - uses: ahmadnassri/action-workflow-queue@v1
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: DeterminateSystems/flakehub-cache-action@main
       - name: Install formatting tools
         run: nix-env -f "<nixpkgs>" -iA nixfmt-rfc-style treefmt yamlfmt jsonfmt markdownlint-cli
       - name: Add new branch
