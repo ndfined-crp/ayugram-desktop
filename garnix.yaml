@@ -5,7 +5,7 @@ builds:
     - '*.x86_64-linux.*'
     - '*.aarch64-linux.*'
     # darwin
-    # - '*.aarch64-darwin.*'
+    - '*.aarch64-darwin.*'
     # configurations
     - darwinConfigurations.*
     - nixosConfigurations.*
