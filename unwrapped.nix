@@ -116,14 +116,7 @@ stdenv.mkDerivation (finalAttrs: {
     ];
 
   cmakeFlags = [
-    (lib.cmakeBool "CMAKE_EXPORT_COMPILE_COMMANDS" true)
-    (lib.cmakeFeature "CMAKE_GENERATOR" "Ninja")
-
     (lib.cmakeBool "DESKTOP_APP_DISABLE_AUTOUPDATE" true)
-    (lib.cmakeBool "DESKTOP_APP_DISABLE_SCUDO" true)
-    (lib.cmakeBool "DESKTOP_APP_USE_GTK3" true)
-
-    (lib.cmakeBool "DESKTOP_APP_USE_PACKAGED_FONTS" false)
 
     (lib.cmakeFeature "TDESKTOP_API_HASH" "b18441a1ff607e10a989891a5462e627")
     (lib.cmakeFeature "TDESKTOP_API_ID" "2040")
