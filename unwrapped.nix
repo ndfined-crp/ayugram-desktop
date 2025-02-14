@@ -46,7 +46,7 @@ stdenv.mkDerivation (finalAttrs: {
   src = fetchFromGitHub {
     owner = "kaeeraa";
     repo = "AyuGramDesktop";
-    rev = "v${finalAttrs.version}";
+    rev = "${finalAttrs.version}";
 
     fetchSubmodules = true;
     hash = lib.fakeHash;
