@@ -41,15 +41,15 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop-unwrapped";
-  version = "5.11.1";
+  version = "15287ad6ed162c209d9772fc592e959d793f63b9";
 
   src = fetchFromGitHub {
-    owner = "AyuGram";
+    owner = "kaeeraa";
     repo = "AyuGramDesktop";
     rev = "v${finalAttrs.version}";
 
     fetchSubmodules = true;
-    hash = "sha256-AiMPbcEvbyhGd1V9mg95Q+mLrBH0DqTEFpC3D9ziCy8=";
+    hash = lib.fakeHash;
   };
 
   patches = [
