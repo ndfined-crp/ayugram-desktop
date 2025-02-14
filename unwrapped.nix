@@ -54,6 +54,11 @@ stdenv.mkDerivation (finalAttrs: {
 
   patches = [
     ./patch/cstring.patch
+    # Fixes linux builds
+    (fecthpatch {
+      url = "https://github.com/AyuGram/AyuGramDesktop/pull/32/commits/15287ad6ed162c209d9772fc592e959d793f63b9";
+      hash = "sha256-a3Mf+GcyS+dYritbqRpd9sFDpw/cXRA2Uv06+gac5mU=";
+    })
   ];
 
   postPatch = lib.optionalString stdenv.hostPlatform.isLinux ''
