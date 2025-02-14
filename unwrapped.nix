@@ -57,7 +57,7 @@ stdenv.mkDerivation (finalAttrs: {
     # Fixes linux builds
     (fetchpatch {
       url = "https://github.com/AyuGram/AyuGramDesktop/pull/32/commits/15287ad6ed162c209d9772fc592e959d793f63b9.patch";
-      hash = "sha256-GvFH6v2tiX6TeqYB9gHaOYONRTHxPYfFjzYWGH8CwrM=";
+      hash = "sha256-3yt502TsytJtpBn8iSJySN+UAQQ23c1hYNPIFLSogVA=";
     })
   ];
 
