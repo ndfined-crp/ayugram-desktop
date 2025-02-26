@@ -35,6 +35,7 @@
   apple-sdk_15,
   nix-update-script,
   fetchpatch,
+  gitUpdater,
   isDebug ? false,
   tg_owt ? callPackage ./lib/tg_owt.nix { inherit stdenv; },
 }:
