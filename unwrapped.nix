@@ -149,7 +149,7 @@ stdenv.mkDerivation (finalAttrs: {
 
     # inherit from AyuGramDesktop
     maintainers = with maintainers; [ ];
-    platforms = lib.platforms.all;
+    platforms = lib.platforms.linux;
     description = "Desktop Telegram client with good customization and Ghost mode.";
     license = licenses.gpl3Only;
     homepage = "https://ayugram.one";
