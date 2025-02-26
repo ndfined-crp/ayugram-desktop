@@ -139,16 +139,19 @@ stdenv.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  passthru = {
-    inherit tg_owt;
-    updateScript = nix-update-script { };
+  passthru.updateScript = gitUpdater {
+    rev-prefix = "v";
+    url = "https://github.com/AyuGram/AyuGramDesktop.git";
   };
 
   meta = with lib; {
     mainProgram = "ayugram-desktop";
 
     # inherit from AyuGramDesktop
-    maintainers = with maintainers; [ ];
+    maintainers = with maintainers; [
+      kaeeraa
+      s0me1newithhand7s
+    ];
     platforms = lib.platforms.linux;
     description = "Desktop Telegram client with good customization and Ghost mode.";
     license = licenses.gpl3Only;
