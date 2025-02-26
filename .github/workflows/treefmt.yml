@@ -1,9 +1,6 @@
 name: Format Code
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
   workflow_dispatch:
 jobs:
   format:
@@ -17,7 +14,7 @@ jobs:
       - uses: ahmadnassri/action-workflow-queue@v1
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: DeterminateSystems/flakehub-cache-action@main
       - name: Install formatting tools
         run: nix-env -f "<nixpkgs>" -iA nixfmt-rfc-style treefmt yamlfmt jsonfmt markdownlint-cli
       - name: Add new branch
@@ -26,8 +23,8 @@ jobs:
         uses: isbecker/treefmt-action@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          version: 'latest'
-          fail_on_change: 'false'
+          version: "latest"
+          fail_on_change: "false"
       - name: Commit changes
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -41,7 +38,4 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
-
-
-
+          branch: ${{ github.ref_name }}

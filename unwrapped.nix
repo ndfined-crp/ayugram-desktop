@@ -35,12 +35,14 @@
   apple-sdk_15,
   nix-update-script,
   fetchpatch,
+  gitUpdater,
+  isDebug ? false,
   tg_owt ? callPackage ./lib/tg_owt.nix { inherit stdenv; },
 }:
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop-unwrapped";
-  version = "5.10.3";
+  version = "5.11.1";
 
   src = fetchFromGitHub {
     owner = "AyuGram";
@@ -48,11 +50,16 @@ stdenv.mkDerivation (finalAttrs: {
     rev = "v${finalAttrs.version}";
 
     fetchSubmodules = true;
-    hash = "sha256-ieHIBBm97ZZ+5EK4k3QTkhrazHnhiLNXpQoQFtzn8KY=";
+    hash = "sha256-AiMPbcEvbyhGd1V9mg95Q+mLrBH0DqTEFpC3D9ziCy8=";
   };
 
   patches = [
     ./patch/cstring.patch
+    # Fixes linux builds
+    (fetchpatch {
+      url = "https://github.com/AyuGram/AyuGramDesktop/pull/32/commits/15287ad6ed162c209d9772fc592e959d793f63b9.patch";
+      hash = "sha256-3yt502TsytJtpBn8iSJySN+UAQQ23c1hYNPIFLSogVA=";
+    })
   ];
 
   postPatch = lib.optionalString stdenv.hostPlatform.isLinux ''
@@ -115,24 +122,13 @@ stdenv.mkDerivation (finalAttrs: {
     ];
 
   cmakeFlags = [
-    (lib.cmakeBool "CMAKE_EXPORT_COMPILE_COMMANDS" true)
-    (lib.cmakeFeature "CMAKE_BUILD_TYPE" "Release")
-    (lib.cmakeFeature "CMAKE_GENERATOR" "Ninja")
-
     (lib.cmakeBool "DESKTOP_APP_DISABLE_AUTOUPDATE" true)
-    (lib.cmakeBool "DESKTOP_APP_DISABLE_SCUDO" true)
-    (lib.cmakeBool "DESKTOP_APP_USE_GTK3" true)
-
-    (lib.cmakeBool "DESKTOP_APP_USE_PACKAGED_FONTS" false)
 
     (lib.cmakeFeature "TDESKTOP_API_HASH" "b18441a1ff607e10a989891a5462e627")
     (lib.cmakeFeature "TDESKTOP_API_ID" "2040")
-  ];
 
-  # for cppgir to locate gir files
-  preBuild = ''
-    export GI_GIR_PATH="$XDG_DATA_DIRS"
-  '';
+    (lib.cmakeFeature "CMAKE_BUILD_TYPE" (if isDebug then "Debug" else "Release"))
+  ];
 
   installPhase = lib.optionalString stdenv.hostPlatform.isDarwin ''
     runHook preInstall
@@ -144,23 +140,20 @@ stdenv.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  preFixup = ''
-    qtWrapperArgs+=("''${gappsWrapperArgs[@]}")
-  '';
-
-  passthru = {
-    inherit tg_owt;
-    updateScript = nix-update-script { };
+  passthru.updateScript = gitUpdater {
+    rev-prefix = "v";
+    url = "https://github.com/AyuGram/AyuGramDesktop.git";
   };
 
   meta = with lib; {
     mainProgram = "ayugram-desktop";
 
     # inherit from AyuGramDesktop
-    maintainers = with maintainers; [ ];
-    platforms = lib.platforms.all;
-    broken = stdenv.isDarwin; # temporary
-    badPlatforms = [ stdenv.isDarwin ];
+    maintainers = with maintainers; [
+      kaeeraa
+      s0me1newithhand7s
+    ];
+    platforms = lib.platforms.linux;
     description = "Desktop Telegram client with good customization and Ghost mode.";
     license = licenses.gpl3Only;
     homepage = "https://ayugram.one";
