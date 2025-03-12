@@ -23,7 +23,7 @@
        ayugram-desktop = {
          type = "git";
          submodules = true;
-         url = "https://github.com/ndfined-crp/ayugram-desktop/release";
+         url = "https://github.com/ndfined-crp/ayugram-desktop/";
         };
      };
 
