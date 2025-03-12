@@ -20,7 +20,11 @@
    {
      inputs = {
        nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-       ayugram-desktop.url = "github:/ayugram-port/ayugram-desktop/release?submodules=1";
+       ayugram-desktop = {
+         type = "git";
+         submodules = true;
+         url = "https://github.com/ndfined-crp/ayugram-desktop/";
+        };
      };
 
      outputs = {
