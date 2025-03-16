@@ -54,8 +54,8 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   patches = [
-    ./patch/cstring.patch
     # Fixes linux builds
+    ./patch/cstring.patch
     (fetchpatch {
       url = "https://github.com/AyuGram/AyuGramDesktop/pull/32/commits/15287ad6ed162c209d9772fc592e959d793f63b9.patch";
       hash = "sha256-3yt502TsytJtpBn8iSJySN+UAQQ23c1hYNPIFLSogVA=";
