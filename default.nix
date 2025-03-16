@@ -17,7 +17,7 @@
 
   unwrapped ? callPackage ./unwrapped.nix {
     inherit stdenv;
-    isDebug = isDebug;
+    inherit isDebug;
   },
 }:
 stdenv.mkDerivation (finalAttrs: {
