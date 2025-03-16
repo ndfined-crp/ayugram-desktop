@@ -42,7 +42,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop-unwrapped";
-  version = "5.11.1";
+  version = "5.12.3";
 
   src = fetchFromGitHub {
     owner = "AyuGram";
@@ -50,12 +50,12 @@ stdenv.mkDerivation (finalAttrs: {
     rev = "v${finalAttrs.version}";
 
     fetchSubmodules = true;
-    hash = "sha256-AiMPbcEvbyhGd1V9mg95Q+mLrBH0DqTEFpC3D9ziCy8=";
+    hash = "sha256-Zjik+9J0YtabVW1VEkJr/Bl3SIakVQ8EiTLYm28rEIk=";
   };
 
   patches = [
-    ./patch/cstring.patch
     # Fixes linux builds
+    ./patch/cstring.patch
     (fetchpatch {
       url = "https://github.com/AyuGram/AyuGramDesktop/pull/32/commits/15287ad6ed162c209d9772fc592e959d793f63b9.patch";
       hash = "sha256-3yt502TsytJtpBn8iSJySN+UAQQ23c1hYNPIFLSogVA=";
