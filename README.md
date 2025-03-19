@@ -7,6 +7,12 @@
 ![GitHub License](https://img.shields.io/github/license/ayugram-port/ayugram-desktop?style=for-the-badge)
 </div>
 
+> [!TIP]
+> NEW!!!
+> `ayugram-desktop` is already in [nixpkgs](https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/ay/ayugram-desktop/package.nix)
+> it's override for `telegram-desktop`, so `ndfined-crp/ayugram-desktop`
+> flake is still better
+
 > [!NOTE]
 > We do have binary cache via [Garnix CI](https://garnix.io/).
 > In case you'll setup it manually - make sure to rebuild with
