@@ -19,7 +19,7 @@
       self,
       nixpkgs,
       ...
-    }@inputs:
+    }:
     let
       forAllSystems =
         function:

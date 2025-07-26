@@ -33,7 +33,6 @@
   ada,
   libicns,
   apple-sdk_15,
-  nix-update-script,
   fetchpatch,
   gitUpdater,
   isDebug ? false,
@@ -75,51 +74,49 @@ stdenv.mkDerivation (finalAttrs: {
 
   dontWrapQtApps = true;
 
-  nativeBuildInputs =
-    [
-      pkg-config
-      cmake
-      ninja
-      python3
-    ]
-    ++ lib.optionals stdenv.hostPlatform.isLinux [
-      # to build bundled libdispatch
-      clang
-      gobject-introspection
-    ];
+  nativeBuildInputs = [
+    pkg-config
+    cmake
+    ninja
+    python3
+  ]
+  ++ lib.optionals stdenv.hostPlatform.isLinux [
+    # to build bundled libdispatch
+    clang
+    gobject-introspection
+  ];
 
-  buildInputs =
-    [
-      libsForQt5.qt5.qtbase
-      qtimageformats
-      qtsvg
-      lz4
-      xxHash
-      ffmpeg_6
-      openalSoft
-      minizip
-      libopus
-      range-v3
-      tl-expected
-      rnnoise
-      tg_owt
-      microsoft-gsl
-      boost
-      ada
-    ]
-    ++ lib.optionals stdenv.hostPlatform.isLinux [
-      protobuf
-      qtwayland
-      kcoreaddons
-      alsa-lib
-      libpulseaudio
-      hunspell
-      jemalloc
-    ]
-    ++ lib.optionals stdenv.hostPlatform.isDarwin [
-      apple-sdk_15
-      libicns
-    ];
+  buildInputs = [
+    libsForQt5.qt5.qtbase
+    qtimageformats
+    qtsvg
+    lz4
+    xxHash
+    ffmpeg_6
+    openalSoft
+    minizip
+    libopus
+    range-v3
+    tl-expected
+    rnnoise
+    tg_owt
+    microsoft-gsl
+    boost
+    ada
+  ]
+  ++ lib.optionals stdenv.hostPlatform.isLinux [
+    protobuf
+    qtwayland
+    kcoreaddons
+    alsa-lib
+    libpulseaudio
+    hunspell
+    jemalloc
+  ]
+  ++ lib.optionals stdenv.hostPlatform.isDarwin [
+    apple-sdk_15
+    libicns
+  ];
 
   cmakeFlags = [
     (lib.cmakeBool "DESKTOP_APP_DISABLE_AUTOUPDATE" true)
