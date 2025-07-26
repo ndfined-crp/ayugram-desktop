@@ -36,9 +36,8 @@
   fetchpatch,
   gitUpdater,
   isDebug ? false,
-  tg_owt ? callPackage ./lib/tg_owt.nix { inherit stdenv; },
+  tg_owt ? callPackage ./lib/tg_owt.nix {inherit stdenv;},
 }:
-
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop-unwrapped";
   version = "5.12.3";
@@ -74,49 +73,51 @@ stdenv.mkDerivation (finalAttrs: {
 
   dontWrapQtApps = true;
 
-  nativeBuildInputs = [
-    pkg-config
-    cmake
-    ninja
-    python3
-  ]
-  ++ lib.optionals stdenv.hostPlatform.isLinux [
-    # to build bundled libdispatch
-    clang
-    gobject-introspection
-  ];
+  nativeBuildInputs =
+    [
+      pkg-config
+      cmake
+      ninja
+      python3
+    ]
+    ++ lib.optionals stdenv.hostPlatform.isLinux [
+      # to build bundled libdispatch
+      clang
+      gobject-introspection
+    ];
 
-  buildInputs = [
-    libsForQt5.qt5.qtbase
-    qtimageformats
-    qtsvg
-    lz4
-    xxHash
-    ffmpeg_6
-    openalSoft
-    minizip
-    libopus
-    range-v3
-    tl-expected
-    rnnoise
-    tg_owt
-    microsoft-gsl
-    boost
-    ada
-  ]
-  ++ lib.optionals stdenv.hostPlatform.isLinux [
-    protobuf
-    qtwayland
-    kcoreaddons
-    alsa-lib
-    libpulseaudio
-    hunspell
-    jemalloc
-  ]
-  ++ lib.optionals stdenv.hostPlatform.isDarwin [
-    apple-sdk_15
-    libicns
-  ];
+  buildInputs =
+    [
+      libsForQt5.qt5.qtbase
+      qtimageformats
+      qtsvg
+      lz4
+      xxHash
+      ffmpeg_6
+      openalSoft
+      minizip
+      libopus
+      range-v3
+      tl-expected
+      rnnoise
+      tg_owt
+      microsoft-gsl
+      boost
+      ada
+    ]
+    ++ lib.optionals stdenv.hostPlatform.isLinux [
+      protobuf
+      qtwayland
+      kcoreaddons
+      alsa-lib
+      libpulseaudio
+      hunspell
+      jemalloc
+    ]
+    ++ lib.optionals stdenv.hostPlatform.isDarwin [
+      apple-sdk_15
+      libicns
+    ];
 
   cmakeFlags = [
     (lib.cmakeBool "DESKTOP_APP_DISABLE_AUTOUPDATE" true)
@@ -124,7 +125,11 @@ stdenv.mkDerivation (finalAttrs: {
     (lib.cmakeFeature "TDESKTOP_API_HASH" "b18441a1ff607e10a989891a5462e627")
     (lib.cmakeFeature "TDESKTOP_API_ID" "2040")
 
-    (lib.cmakeFeature "CMAKE_BUILD_TYPE" (if isDebug then "Debug" else "Release"))
+    (lib.cmakeFeature "CMAKE_BUILD_TYPE" (
+      if isDebug
+      then "Debug"
+      else "Release"
+    ))
   ];
 
   installPhase = lib.optionalString stdenv.hostPlatform.isDarwin ''

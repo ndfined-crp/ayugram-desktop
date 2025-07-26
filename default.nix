@@ -11,14 +11,13 @@
   wrapQtAppsHook,
   glib-networking,
   webkitgtk_4_1,
-
   withWebkit ? true,
   isDebug ? false,
-
-  unwrapped ? callPackage ./unwrapped.nix {
-    inherit stdenv;
-    inherit isDebug;
-  },
+  unwrapped ?
+    callPackage ./unwrapped.nix {
+      inherit stdenv;
+      inherit isDebug;
+    },
 }:
 stdenv.mkDerivation (finalAttrs: {
   inherit pname;
@@ -26,30 +25,32 @@ stdenv.mkDerivation (finalAttrs: {
 
   inherit unwrapped;
 
-  nativeBuildInputs = [
-    wrapQtAppsHook
-  ]
-  ++ lib.optionals withWebkit [
-    wrapGAppsHook3
-  ];
+  nativeBuildInputs =
+    [
+      wrapQtAppsHook
+    ]
+    ++ lib.optionals withWebkit [
+      wrapGAppsHook3
+    ];
 
-  buildInputs = [
-    qtbase
-    qtimageformats
-    qtsvg
-  ]
-  ++ lib.optionals stdenv.hostPlatform.isLinux [
-    qtwayland
-  ]
-  ++ lib.optionals withWebkit [
-    glib-networking
-  ];
+  buildInputs =
+    [
+      qtbase
+      qtimageformats
+      qtsvg
+    ]
+    ++ lib.optionals stdenv.hostPlatform.isLinux [
+      qtwayland
+    ]
+    ++ lib.optionals withWebkit [
+      glib-networking
+    ];
 
   qtWrapperArgs = lib.optionals (stdenv.hostPlatform.isLinux && withWebkit) [
     "--prefix"
     "LD_LIBRARY_PATH"
     ":"
-    (lib.makeLibraryPath [ webkitgtk_4_1 ])
+    (lib.makeLibraryPath [webkitgtk_4_1])
   ];
 
   dontUnpack = true;
