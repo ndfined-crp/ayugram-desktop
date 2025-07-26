@@ -27,7 +27,7 @@ jobs:
           git config user.email "github-actions@users.noreply.github.com"
 
       - name: Update flake.lock
-        run: nix flake update
+        run: nix flake update --accept-flake-config
 
       - name: Commit changes
         id: commit
