@@ -28,24 +28,13 @@
       });
     in
     {
-      overlays.ayugaram-desktop = (
-        final: _prev: {
-          ayugram-desktop = self.packages;
-        }
-      );
-
-      nixosModules = {
-        ayugram-desktop = self.overlays;
-        default = self.overlays;
+      overlays.default = final: _prev: {
+        ayugram-desktop = self.packages.${final.system}.default;
       };
 
-      homeManagerModules = {
-        ayugram-desktop = self.overlays;
-        default = self.overlays;
-      };
-
-      packages = forEachSystem (pkgs: {
-        ayugram-desktop = pkgs.libsForQt5.callPackage ./default.nix { };
+      packages = forEachSystem ({pkgs, ...}: {
+        default = pkgs.libsForQt5.callPackage ./default.nix {};
+        ayugram-desktop = self.packages.${pkgs.system}.default;
       });
     };
 }
