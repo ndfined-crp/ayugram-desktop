@@ -26,12 +26,8 @@ stdenv.mkDerivation (finalAttrs: {
   inherit unwrapped;
 
   nativeBuildInputs =
-    [
-      wrapQtAppsHook
-    ]
-    ++ lib.optionals withWebkit [
-      wrapGAppsHook3
-    ];
+    [wrapQtAppsHook]
+    ++ lib.optionals withWebkit [wrapGAppsHook3];
 
   buildInputs =
     [
@@ -39,12 +35,8 @@ stdenv.mkDerivation (finalAttrs: {
       qtimageformats
       qtsvg
     ]
-    ++ lib.optionals stdenv.hostPlatform.isLinux [
-      qtwayland
-    ]
-    ++ lib.optionals withWebkit [
-      glib-networking
-    ];
+    ++ lib.optionals stdenv.hostPlatform.isLinux [qtwayland]
+    ++ lib.optionals withWebkit [glib-networking];
 
   qtWrapperArgs = lib.optionals (stdenv.hostPlatform.isLinux && withWebkit) [
     "--prefix"
