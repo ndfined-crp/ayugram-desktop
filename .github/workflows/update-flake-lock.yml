@@ -13,25 +13,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - uses: ahmadnassri/action-workflow-queue@v1
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@main
         with:
           pr-title: "chore(lock): update flake lock"
           pr-reviewers: s0me1newithhand7s
-          pr-labels: |
-            low-prior
-            automated
-            dependencies
-            nixpkgs-update
-          pr-body: | # Body of PR to be created
-            # Flake.lock update
-
-            ## Changelog
-
-            - Update flake.lock with flake at ${{ github.sha }}
-
           token: ${{ secrets.LOCK_UPDATE }}
