@@ -1,6 +1,7 @@
 name: update-flake-lock
 on:
   workflow_dispatch:
+  pull_request:
   schedule:
     - cron: "0 0 * * 0"  # Weekly on Sunday at 00:00
 
