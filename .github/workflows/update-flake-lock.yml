@@ -49,8 +49,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore(lock): update flake.lock"
-          branch: "flake-update/"
-          branch-suffix: "timestamp"
+          branch: "flake-update/$(date +%s)"
           delete-branch: true
           title: "chore(lock): update flake.lock"
           body: "Automated flake.lock update"
