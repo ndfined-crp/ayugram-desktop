@@ -8,8 +8,6 @@
   ninja,
   clang,
   python3,
-  libsForQt5,
-  qtimageformats,
   qtsvg,
   qtwayland,
   kcoreaddons,
@@ -19,28 +17,25 @@
   protobuf,
   openalSoft,
   minizip,
-  libopus,
-  alsa-lib,
-  libpulseaudio,
   range-v3,
   tl-expected,
   hunspell,
   gobject-introspection,
-  jemalloc,
   rnnoise,
   microsoft-gsl,
   boost,
   ada,
   libicns,
   apple-sdk_15,
-  fetchpatch,
-  gitUpdater,
+  qtbase,
+  tdlib,
+  nix-update-script,
   isDebug ? false,
   tg_owt ? callPackage ./lib/tg_owt.nix {inherit stdenv;},
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop-unwrapped";
-  version = "5.12.3";
+  version = "5.16.4";
 
   src = fetchFromGitHub {
     owner = "AyuGram";
@@ -48,28 +43,8 @@ stdenv.mkDerivation (finalAttrs: {
     rev = "v${finalAttrs.version}";
 
     fetchSubmodules = true;
-    hash = "sha256-Zjik+9J0YtabVW1VEkJr/Bl3SIakVQ8EiTLYm28rEIk=";
+    hash = "sha256-Q7CVNU97wdEk+bMvOyMn8b0Ov8WHSdbAP+JYnqfrmM8=";
   };
-
-  patches = [
-    # Fixes linux builds
-    ./patch/cstring.patch
-    (fetchpatch {
-      url = "https://github.com/AyuGram/AyuGramDesktop/pull/32/commits/15287ad6ed162c209d9772fc592e959d793f63b9.patch";
-      hash = "sha256-3yt502TsytJtpBn8iSJySN+UAQQ23c1hYNPIFLSogVA=";
-    })
-  ];
-
-  postPatch = lib.optionalString stdenv.hostPlatform.isLinux ''
-    substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioInputALSA.cpp \
-      --replace-fail '"libasound.so.2"' '"${lib.getLib alsa-lib}/lib/libasound.so.2"'
-    substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioOutputALSA.cpp \
-      --replace-fail '"libasound.so.2"' '"${lib.getLib alsa-lib}/lib/libasound.so.2"'
-    substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioPulse.cpp \
-      --replace-fail '"libpulse.so.0"' '"${lib.getLib libpulseaudio}/lib/libpulse.so.0"'
-    substituteInPlace lib/xdg/com.ayugram.desktop.desktop \
-              --replace-fail "DBusActivatable=true" ""
-  '';
 
   dontWrapQtApps = true;
 
@@ -88,15 +63,13 @@ stdenv.mkDerivation (finalAttrs: {
 
   buildInputs =
     [
-      libsForQt5.qt5.qtbase
-      qtimageformats
+      qtbase
       qtsvg
       lz4
       xxHash
       ffmpeg_6
       openalSoft
       minizip
-      libopus
       range-v3
       tl-expected
       rnnoise
@@ -104,15 +77,13 @@ stdenv.mkDerivation (finalAttrs: {
       microsoft-gsl
       boost
       ada
+      (tdlib.override {tde2eOnly = true;})
     ]
     ++ lib.optionals stdenv.hostPlatform.isLinux [
       protobuf
       qtwayland
       kcoreaddons
-      alsa-lib
-      libpulseaudio
       hunspell
-      jemalloc
     ]
     ++ lib.optionals stdenv.hostPlatform.isDarwin [
       apple-sdk_15
@@ -122,8 +93,8 @@ stdenv.mkDerivation (finalAttrs: {
   cmakeFlags = [
     (lib.cmakeBool "DESKTOP_APP_DISABLE_AUTOUPDATE" true)
 
-    (lib.cmakeFeature "TDESKTOP_API_HASH" "b18441a1ff607e10a989891a5462e627")
-    (lib.cmakeFeature "TDESKTOP_API_ID" "2040")
+    (lib.cmakeFeature "TDESKTOP_API_ID" "611335")
+    (lib.cmakeFeature "TDESKTOP_API_HASH" "d524b414d21f4d37f08684c1df41ac9c")
 
     (lib.cmakeFeature "CMAKE_BUILD_TYPE" (
       if isDebug
@@ -142,9 +113,9 @@ stdenv.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  passthru.updateScript = gitUpdater {
-    rev-prefix = "v";
-    url = "https://github.com/AyuGram/AyuGramDesktop.git";
+  passthru = {
+    inherit tg_owt;
+    updateScript = nix-update-script {};
   };
 
   meta = with lib; {
@@ -155,7 +126,7 @@ stdenv.mkDerivation (finalAttrs: {
       kaeeraa
       s0me1newithhand7s
     ];
-    platforms = lib.platforms.linux;
+    platforms = lib.platforms.all;
     description = "Desktop Telegram client with good customization and Ghost mode.";
     license = licenses.gpl3Only;
     homepage = "https://ayugram.one";
