@@ -20,11 +20,15 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
 
-      - name: Create update branch
+      - name: Create and push update branch
+        id: branch
         run: |
-          git checkout -b "flake-update/$(date +%s)"
+          TIMESTAMP=$(date +%s)
+          BRANCH_NAME="flake-update/$TIMESTAMP"
+          git checkout -b "$BRANCH_NAME"
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
 
       - name: Update flake.lock
         run: nix flake update --accept-flake-config
@@ -49,7 +53,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore(lock): update flake.lock"
-          branch: "flake-update/$(date +%s)"
+          branch: ${{ steps.branch.outputs.branch_name }}
           delete-branch: true
           title: "chore(lock): update flake.lock"
           body: "Automated flake.lock update"
