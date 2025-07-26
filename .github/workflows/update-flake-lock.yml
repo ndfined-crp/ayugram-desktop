@@ -57,6 +57,11 @@ jobs:
             exit 1
           fi
 
+      - name: Push changes
+        if: steps.commit.outputs.changes == 'true'
+        run: |
+          git push
+
       - name: Create PR
         if: steps.commit.outputs.changes == 'true'
         id: create-pr
