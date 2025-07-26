@@ -21,13 +21,11 @@
       ...
     }:
     let
-      forAllSystems =
-        function:
-        nixpkgs.lib.genAttrs [
-          "x86_64-linux"
-          "aarch64-linux"
-          "aarch64-darwin"
-        ] (system: function nixpkgs.legacyPackages.${system});
+      systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
+      forEachSystem = f: nixpkgs.lib.genAttrs systems (system: f {
+        inherit system;
+        pkgs = import nixpkgs {inherit system;};
+      });
     in
     {
       overlays.ayugaram-desktop = (
@@ -46,7 +44,7 @@
         default = self.overlays;
       };
 
-      packages = forAllSystems (pkgs: {
+      packages = forEachSystem (pkgs: {
         ayugram-desktop = pkgs.libsForQt5.callPackage ./default.nix { };
       });
     };
