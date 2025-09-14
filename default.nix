@@ -15,6 +15,7 @@
   libjxl,
   wrapGAppsHook3,
   wrapQtAppsHook,
+  makeBinaryWrapper,
   glib-networking,
   webkitgtk_4_1,
   withWebkit ? true,
@@ -31,6 +32,8 @@ stdenv.mkDerivation (finalAttrs: {
     ]
     ++ lib.optionals withWebkit [
       wrapGAppsHook3
+    ] ++ lib.optionals stdenv.hostPlatform.isLinux [
+      makeBinaryWrapper
     ];
 
   buildInputs =
@@ -78,6 +81,7 @@ stdenv.mkDerivation (finalAttrs: {
       wrapQtApp "$out/Applications/${finalAttrs.meta.mainProgram}.app/Contents/MacOS/${finalAttrs.meta.mainProgram}"
     ''
     + lib.optionalString stdenv.hostPlatform.isLinux ''
+      wrapProgram $out/bin/AyuGram --set GDK_GL disable
       substituteInPlace $out/share/dbus-1/services/* \
         --replace-fail "$unwrapped" "$out"
     '';
