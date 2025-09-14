@@ -27,7 +27,7 @@
     };
 
     packages = forEachSystem ({pkgs, ...}: {
-      default = pkgs.libsForQt5.callPackage ./default.nix {};
+      default = pkgs.kdePackages.callPackage ./default.nix {};
       ayugram-desktop = self.packages.${pkgs.system}.default;
     });
   };
