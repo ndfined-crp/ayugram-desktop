@@ -1,37 +1,85 @@
 name: update-flake-lock
 on:
-  workflow_dispatch: # allows manual triggering
+  workflow_dispatch:
+  pull_request:
   schedule:
-    - cron: "0 0 * * 0" # runs weekly on Sunday at 00:00
+    - cron: "0 0 * * 0"  # Weekly on Sunday at 00:00
+
 jobs:
-  lockfile:
+  update-lock:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      id-token: write
+      contents: write
       pull-requests: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - uses: ahmadnassri/action-workflow-queue@v1
+        with:
+          fetch-depth: 0
+
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Get current branch name
+        id: branch-info
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            BRANCH_NAME="${{ github.head_ref }}"
+          else
+            BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          fi
+          echo "current_branch=${BRANCH_NAME}" >> $GITHUB_OUTPUT
+
+      - name: Create and push update branch
+        id: branch
+        run: |
+          TIMESTAMP=$(date +%s)
+          BRANCH_NAME="flake-update/$TIMESTAMP"
+          git checkout -b "$BRANCH_NAME"
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+
       - name: Update flake.lock
-        uses: DeterminateSystems/update-flake-lock@main
+        run: nix flake update --accept-flake-config
+
+      - name: Commit changes
+        id: commit
+        run: |
+          if [ -n "$(git status --porcelain flake.lock)" ]; then
+            git add flake.lock
+            git commit -m "chore(lock): update flake.lock"
+            echo "changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "No changes to flake.lock"
+            echo "changes=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Push changes
+        if: steps.commit.outputs.changes == 'true'
+        run: |
+          git push origin ${{ steps.branch.outputs.branch_name }}
+
+      - name: Create PR
+        if: steps.commit.outputs.changes == 'true'
+        id: create-pr
+        uses: peter-evans/create-pull-request@v5
         with:
-          pr-title: "chore(lock): update flake lock"
-          pr-reviewers: s0me1newithhand7s
-          pr-labels: |
-            low-prior
-            automated
-            dependencies
-            nixpkgs-update
-          pr-body: | # Body of PR to be created
-            # Flake.lock update
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(lock): update flake.lock"
+          branch: ${{ steps.branch.outputs.branch_name }}
+          base: ${{ steps.branch-info.outputs.current_branch }}
+          delete-branch: true
+          title: "chore(lock): update flake.lock"
+          body: "Automated flake.lock update"
+          draft: false
+          labels: automated,dependencies
 
-            ## Changelog
-
-            - Update flake.lock with flake at ${{ github.sha }}
-
-          token: ${{ secrets.LOCK_UPDATE }}
+      - name: Enable auto-merge
+        if: steps.create-pr.outputs.pull-request-number
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr merge --auto --rebase ${{ steps.create-pr.outputs.pull-request-number }}

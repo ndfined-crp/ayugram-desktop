@@ -1,53 +1,34 @@
 {
   description = "AyuGram Desktop";
 
-  inputs = {
-    nixpkgs = {
-      url = "github:nixos/nixpkgs/nixos-unstable";
-    };
-  };
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
   nixConfig = {
-    extra-substituters = [
-      "https://cache.garnix.io"
-    ];
-    extra-trusted-public-keys = [
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-    ];
+    extra-substituters = ["https://cache.garnix.io"];
+    extra-trusted-public-keys = ["cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="];
   };
-  outputs =
-    {
-      self,
-      nixpkgs,
-      ...
-    }@inputs:
-    let
-      forAllSystems =
-        function:
-        nixpkgs.lib.genAttrs [
-          "x86_64-linux"
-          "aarch64-linux"
-          "aarch64-darwin"
-        ] (system: function nixpkgs.legacyPackages.${system});
-    in
-    {
-      overlays.ayugaram-desktop = (
-        final: _prev: {
-          ayugram-desktop = self.packages;
-        }
+  outputs = {
+    self,
+    nixpkgs,
+    ...
+  }: let
+    systems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
+    forEachSystem = f:
+      nixpkgs.lib.genAttrs systems (
+        system:
+          f {
+            inherit system;
+            pkgs = import nixpkgs {inherit system;};
+          }
       );
-
-      nixosModules = {
-        ayugram-desktop = self.overlays;
-        default = self.overlays;
-      };
-
-      homeManagerModules = {
-        ayugram-desktop = self.overlays;
-        default = self.overlays;
-      };
-
-      packages = forAllSystems (pkgs: {
-        ayugram-desktop = pkgs.libsForQt5.callPackage ./default.nix { };
-      });
+  in {
+    overlays.default = final: _prev: {
+      ayugram-desktop = self.packages.${final.system}.default;
     };
+
+    packages = forEachSystem ({pkgs, ...}: {
+      default = pkgs.kdePackages.callPackage ./default.nix {};
+      ayugram-desktop = self.packages.${pkgs.system}.default;
+    });
+  };
 }

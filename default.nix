@@ -3,26 +3,25 @@
   lib,
   stdenv,
   pname ? "ayugram-desktop",
+  isDebug ? false,
+  unwrapped ? callPackage ./unwrapped.nix {inherit stdenv isDebug;},
   qtbase,
   qtimageformats,
   qtsvg,
   qtwayland,
+  kimageformats,
+  libavif,
+  libheif,
+  libjxl,
   wrapGAppsHook3,
   wrapQtAppsHook,
   glib-networking,
   webkitgtk_4_1,
-
   withWebkit ? true,
-  isDebug ? false,
-
-  unwrapped ? callPackage ./unwrapped.nix {
-    inherit stdenv;
-    inherit isDebug;
-  },
 }:
 stdenv.mkDerivation (finalAttrs: {
   inherit pname;
-  inherit (unwrapped) version meta passthru;
+  inherit (finalAttrs.unwrapped) version meta passthru;
 
   inherit unwrapped;
 
@@ -41,7 +40,13 @@ stdenv.mkDerivation (finalAttrs: {
       qtsvg
     ]
     ++ lib.optionals stdenv.hostPlatform.isLinux [
+      kimageformats
       qtwayland
+    ]
+    ++ lib.optionals stdenv.hostPlatform.isDarwin [
+      libavif
+      libheif
+      libjxl
     ]
     ++ lib.optionals withWebkit [
       glib-networking
@@ -51,7 +56,7 @@ stdenv.mkDerivation (finalAttrs: {
     "--prefix"
     "LD_LIBRARY_PATH"
     ":"
-    (lib.makeLibraryPath [ webkitgtk_4_1 ])
+    (lib.makeLibraryPath [webkitgtk_4_1])
   ];
 
   dontUnpack = true;
