@@ -1,6 +1,9 @@
 ---
 name: "Flake Update Action"
 run-name: "nfu"
+permissions:
+  contents: write
+  pull-requests: write
 on: 
   workflow_dispatch: 
   schedule: 
