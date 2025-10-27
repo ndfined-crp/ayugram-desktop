@@ -30,6 +30,7 @@
   qtbase,
   tdlib,
   nix-update-script,
+  fetchpatch2,
   isDebug ? false,
   tg_owt ? callPackage ./lib/tg_owt.nix {inherit stdenv;},
 }:
@@ -44,6 +45,15 @@ stdenv.mkDerivation (finalAttrs: {
 
     fetchSubmodules = true;
     hash = "sha256-Q7CVNU97wdEk+bMvOyMn8b0Ov8WHSdbAP+JYnqfrmM8=";
+  };
+
+  # fix build failure with Qt 6.10
+  patches = fetchpatch2 {
+    name = "fix-build-with-qt-610.patch";
+    url = "https://github.com/desktop-app/cmake_helpers/commit/682f1b57.patch";
+    hash = "sha256-DHwgxAEFc1byQkVvrPwyctQKvUsK/KQ/cnzRv6PQuTM=";
+    stripLen = 1;
+    extraPrefix = "cmake/";
   };
 
   dontWrapQtApps = true;
