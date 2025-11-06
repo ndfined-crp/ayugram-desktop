@@ -36,7 +36,7 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop-unwrapped";
-  version = "5.16.4";
+  version = "6.2.4";
 
   src = fetchFromGitHub {
     owner = "AyuGram";
