@@ -23,12 +23,12 @@
       );
   in {
     overlays.default = final: _prev: {
-      ayugram-desktop = self.packages.${final.system}.default;
+      ayugram-desktop = self.packages.${final.stdenv.hostPlatform.system}.default;
     };
 
     packages = forEachSystem ({pkgs, ...}: {
       default = pkgs.kdePackages.callPackage ./default.nix {};
-      ayugram-desktop = self.packages.${pkgs.system}.default;
+      ayugram-desktop = self.packages.${pkgs.stdenv.hostPlatform.system}.default;
     });
   };
 }
