@@ -7,22 +7,19 @@
     extra-substituters = [ "https://cache.garnix.io" ];
     extra-trusted-public-keys = [ "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=" ];
   };
-  outputs =
-    {
-      self,
-      nixpkgs,
-      ...
-    }:
-    let
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "aarch64-darwin"
-      ];
-      forEachSystem =
-        f:
-        nixpkgs.lib.genAttrs systems (
-          system:
+  outputs = {
+    self,
+    nixpkgs,
+    ...
+  }: let
+    systems = [
+      "x86_64-linux"
+      "aarch64-linux"
+      "aarch64-darwin"
+    ];
+    forEachSystem = f:
+      nixpkgs.lib.genAttrs systems (
+        system:
           f {
             inherit system;
             pkgs = import nixpkgs { inherit system; };
@@ -41,5 +38,16 @@
           ayugram-desktop = self.packages.${pkgs.stdenv.hostPlatform.system}.default;
         }
       );
+  in {
+    overlays.default = final: _prev: {
+      ayugram-desktop = self.packages.${final.stdenv.hostPlatform.system}.default;
     };
+
+    packages = forEachSystem (
+      {pkgs, ...}: {
+        default = pkgs.kdePackages.callPackage ./default.nix {};
+        ayugram-desktop = self.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      }
+    );
+  };
 }
