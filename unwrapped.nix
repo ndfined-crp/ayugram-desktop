@@ -47,14 +47,7 @@ stdenv.mkDerivation (finalAttrs: {
     hash = "sha256-bFGk8lqPlNlaxbrulYe0+8ayj33frctruce3/TZ+W2c=";
   };
 
-  # fix build failure with Qt 6.10
-  patches = fetchpatch2 {
-    name = "fix-build-with-qt-610.patch";
-    url = "https://github.com/desktop-app/cmake_helpers/commit/682f1b57.patch";
-    hash = "sha256-DHwgxAEFc1byQkVvrPwyctQKvUsK/KQ/cnzRv6PQuTM=";
-    stripLen = 1;
-    extraPrefix = "cmake/";
-  };
+  patches = [];
 
   dontWrapQtApps = true;
 
