@@ -44,7 +44,7 @@ stdenv.mkDerivation (finalAttrs: {
     rev = "v${finalAttrs.version}";
 
     fetchSubmodules = true;
-    hash = "sha256-Q7CVNU97wdEk+bMvOyMn8b0Ov8WHSdbAP+JYnqfrmM8=";
+    hash = "sha256-bFGk8lqPlNlaxbrulYe0+8ayj33frctruce3/TZ+W2c=";
   };
 
   # fix build failure with Qt 6.10
