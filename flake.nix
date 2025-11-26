@@ -10,22 +10,19 @@
     extra-substituters = ["https://cache.garnix.io"];
     extra-trusted-public-keys = ["cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="];
   };
-  outputs = {
-    self,
-    flake-parts,
-    ...
-  } @ inputs:
+  outputs = {flake-parts, ...} @ inputs:
     flake-parts.lib.mkFlake {inherit inputs;} {
+      imports = [flake-parts.flakeModules.easyOverlay];
       systems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
-      flake = {
-        overlays.default = final: prev: {
-          ayugram-desktop = final.kdePackages.callPackage ./default.nix {};
-        };
-      };
-      perSystem = {pkgs, ...}: {
+      perSystem = {
+        config,
+        pkgs,
+        ...
+      }: {
+        overlayAttrs = {inherit (config.packages) default;};
         packages = {
-          default = pkgs.ayugram-desktop;
-          ayugram-desktop = self.ayugram-desktop;
+          default = pkgs.kdePackages.callPackage ./default.nix {};
+          ayugram-desktop = pkgs.kdePackages.callPackage ./default.nix {};
         };
       };
     };
