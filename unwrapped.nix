@@ -85,7 +85,7 @@ stdenv.mkDerivation (finalAttrs: {
   ];
 
   meta = with lib; {
-    mainProgram = "ayugram-desktop";
+    mainProgram = "AyuGram";
     maintainers = with maintainers; [kaeeraa s0me1newithhand7s];
     platforms = with platforms; builtins.filter (x: x != darwin) all;
     description = "Desktop Telegram client with good customization and Ghost mode.";
