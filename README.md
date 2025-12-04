@@ -98,4 +98,4 @@ nix = {
 | 🪐 [shwewo](https://github.com/shwewo)            | for original [repo](https://github.com/shwewo/ayugram-desktop).             |
 | 🪐 [kaeeraa](https://github.com/kaeeraa)          | for fork adoption.                                                          |
 | 🪐 [AyuGram](https://github.com/AyuGram)          | for the [AyuGramDesktop](https://github.com/AyuGram/AyuGramDesktop) itself. |
-| 🪐 [hand7s](https://github.com/s0me1newithhands7) | for this awesome readme (:D) and some work with package format.             |
+| 🪐 [hand7s](https://github.com/s0me1newithhand7s) | for this awesome readme (:D) and some work with package format.             |
