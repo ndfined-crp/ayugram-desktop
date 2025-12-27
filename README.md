@@ -10,8 +10,9 @@
 > [!TIP]
 > NEW!!!
 > `ayugram-desktop` is already in [nixpkgs](https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/ay/ayugram-desktop/package.nix)
-> it's override for `telegram-desktop`, so `ndfined-crp/ayugram-desktop`
-> flake is still better
+> but it's an override for `telegram-desktop`, so `ndfined-crp/ayugram-desktop`
+> flake is still better, because we don't rely on `telegram-desktop` being able to build - 
+> and we won't push a broken update.
 
 > [!NOTE]
 > We do have binary cache via [Garnix CI](https://garnix.io/).
