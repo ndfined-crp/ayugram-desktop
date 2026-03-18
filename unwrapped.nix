@@ -15,7 +15,7 @@
   xxHash,
   ffmpeg_6,
   protobuf,
-  openalSoft,
+  openal-soft,
   minizip,
   range-v3,
   tl-expected,
@@ -56,7 +56,7 @@ stdenv.mkDerivation (finalAttrs: {
     lz4
     xxHash
     ffmpeg_6
-    openalSoft
+    openal-soft
     minizip
     range-v3
     tl-expected
