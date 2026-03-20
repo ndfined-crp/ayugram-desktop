@@ -4,23 +4,24 @@ run-name: "nfu"
 permissions:
   contents: write
   pull-requests: write
-on: 
-  workflow_dispatch: 
-  schedule: 
+on:
+  workflow_dispatch:
+  schedule:
     - cron: '0 0 * * 0'
 
 jobs:
   locker:
     runs-on: "ubuntu-latest"
     steps:
-      - name: "repo checkout"
+      - name: "Checkout repo"
         uses: "actions/checkout@v4"
-      - name: "nix install"
-        uses: "DeterminateSystems/nix-installer-action@v16"
-      - name: "flake check"
-        uses: "DeterminateSystems/flake-checker-action@v5"
-      - name: "flake update"
-        uses: "DeterminateSystems/update-flake-lock@v24"
+      - name: "Install Nix"
+        uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - name: "Update Nix flake.lock"
+        id: "update"
+        uses: "DeterminateSystems/update-flake-lock@v28"
         with:
           pr-title: "Update flake.lock Action"
           pr-labels: |
@@ -30,5 +31,10 @@ jobs:
           git-author-email: "github-actions[bot]@users.noreply.github.com"
           git-committer-name: "John Nix"
           git-committer-email: "github-actions[bot]@users.noreply.github.com"
-          pr-assignees: "s0me1newithhand7s"
-          pr-reviewers: "s0me1newithhand7s"
+      - name: Enable auto-merge
+        run: |
+          gh pr merge ${{ steps.update.outputs.pull-request-number }} \
+            --auto \
+            --merge
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
