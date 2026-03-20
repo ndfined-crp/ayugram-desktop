@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    git-hooks.url = "github:cachix/git-hooks.nix";
   };
 
   nixConfig = {
@@ -12,17 +13,24 @@
   };
   outputs = {flake-parts, ...} @ inputs:
     flake-parts.lib.mkFlake {inherit inputs;} {
-      imports = [flake-parts.flakeModules.easyOverlay];
-      systems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
+      imports = [flake-parts.flakeModules.easyOverlay inputs.git-hooks.flakeModule];
+      systems = ["x86_64-linux" "aarch64-linux"];
       perSystem = {
         config,
         pkgs,
         ...
-      }: {
+      }: let
+        AyuGram = pkgs.kdePackages.callPackage ./default.nix {};
+      in {
         overlayAttrs = {inherit (config.packages) default;};
         packages = {
-          default = pkgs.kdePackages.callPackage ./default.nix {};
-          ayugram-desktop = pkgs.kdePackages.callPackage ./default.nix {};
+          default = AyuGram;
+          ayugram-desktop = AyuGram;
+        };
+        pre-commit.settings.hooks = {
+          alejandra.enable = true;
+          statix.enable = true;
+          deadnix.enable = true;
         };
       };
     };
