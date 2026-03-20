@@ -19,8 +19,9 @@
 > In case you'll setup it manually - make sure to rebuild with
 > activated cache **BEFORE** adding `ayugram` your packages.
 
-> [!WARN]
+> [!WARNING]
 > Any other architecture than Linux is **NOT SUPPORTED**:
+>
 > Q: Why?
 > A: We don't have any device to test it!
 >
@@ -93,9 +94,11 @@ nix = {
   settings = {
     substituters = [
       "https://cache.garnix.io"
+      "https://ayugram-desktop.cachix.org"
     ];
     trusted-public-keys = [
       "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+      "ayugram-desktop.cachix.org:AZ5EqHrJsAKL5YkZYLPEsb1FdD9QlypUwQ0REcJftgA="
     ];
   };
 };
