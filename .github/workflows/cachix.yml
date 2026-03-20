@@ -1,0 +1,14 @@
+---
+name: "Cachix: build and cache"
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  cachix:
+    runs-on: "ubuntu-latest"
+    steps:
+    - uses: cachix/cachix-action@v17
+      with:
+        name: ayugram-desktop
+        authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
