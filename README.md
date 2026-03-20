@@ -11,13 +11,23 @@
 > NEW!!!
 > `ayugram-desktop` is already in [nixpkgs](https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/ay/ayugram-desktop/package.nix)
 > but it's an override for `telegram-desktop`, so `ndfined-crp/ayugram-desktop`
-> flake is still better, because we don't rely on `telegram-desktop` being able to build - 
+> flake is still better, because we don't rely on `telegram-desktop` being able to build -
 > and we won't push a broken update.
 
 > [!NOTE]
 > We do have binary cache via [Garnix CI](https://garnix.io/).
 > In case you'll setup it manually - make sure to rebuild with
 > activated cache **BEFORE** adding `ayugram` your packages.
+
+> [!WARNING]
+> Any other architecture than Linux is **NOT SUPPORTED**:
+>
+> Q: Why?
+> A: We don't have any device to test it!
+>
+> Q: Can I help it?
+> A: YES!! If you are user of this kind of system you can
+>    become maintainer to add support for your architecture!
 
 <h2 align="center">☄️ Installation Instructions</h2>
 
@@ -84,9 +94,11 @@ nix = {
   settings = {
     substituters = [
       "https://cache.garnix.io"
+      "https://ayugram-desktop.cachix.org"
     ];
     trusted-public-keys = [
       "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+      "ayugram-desktop.cachix.org:AZ5EqHrJsAKL5YkZYLPEsb1FdD9QlypUwQ0REcJftgA="
     ];
   };
 };
