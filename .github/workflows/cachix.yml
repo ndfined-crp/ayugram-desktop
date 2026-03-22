@@ -8,10 +8,6 @@ on:
       - '**/*.lock'
       - '**/*.patch'
   pull_request:
-    paths:
-      - '**/*.nix'
-      - '**/*.lock'
-      - '**/*.patch'
 
 permissions:
   contents: read

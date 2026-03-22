@@ -35,6 +35,6 @@ jobs:
         run: |
           gh pr merge ${{ steps.update.outputs.pull-request-number }} \
             --auto \
-            --merge
+            --squash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
