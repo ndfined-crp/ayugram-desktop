@@ -32,14 +32,14 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop-unwrapped";
-  version = "6.3.10";
+  version = "e49bf706c53b8ba4200cab08dc901ca5fe9504ba";
   src = fetchFromGitHub {
     owner = "AyuGram";
     repo = "AyuGramDesktop";
-    rev = "v${finalAttrs.version}";
+    rev = "${finalAttrs.version}";
 
     fetchSubmodules = true;
-    hash = "sha256-kyxnr246bhxHpDUhhEnraDtHZDnF2uU2tdmfIvPnKHo=";
+    hash = "sha256-vR2V0EFO4XOUyH4IFiDhhFZEeKjByEvv7jEMip9pLJ8=";
   };
 
   nativeBuildInputs = [
