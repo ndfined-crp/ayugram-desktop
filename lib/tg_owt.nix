@@ -43,9 +43,6 @@ stdenv.mkDerivation {
   };
 
   patches = [
-    # fix build with abseil 202508
-    # upstream PR: https://github.com/desktop-app/tg_owt/pull/164
-    ./abseil-202508.patch
   ];
 
   postPatch = lib.optionalString stdenv.hostPlatform.isLinux ''
