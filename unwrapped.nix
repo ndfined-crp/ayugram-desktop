@@ -12,7 +12,7 @@
   qtwayland,
   kcoreaddons,
   lz4,
-  xxHash,
+  xxhash,
   ffmpeg_6,
   protobuf,
   openal-soft,
@@ -27,8 +27,8 @@
   ada,
   qtbase,
   tdlib,
+  tg_owt,
   isDebug ? false,
-  tg_owt ? callPackage ./lib/tg_owt.nix {inherit stdenv;},
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop-unwrapped";
@@ -54,7 +54,7 @@ stdenv.mkDerivation (finalAttrs: {
     qtbase
     qtsvg
     lz4
-    xxHash
+    xxhash
     ffmpeg_6
     openal-soft
     minizip-ng
