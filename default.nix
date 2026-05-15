@@ -4,7 +4,8 @@
   stdenv,
   pname ? "ayugram-desktop",
   isDebug ? false,
-  unwrapped ? callPackage ./unwrapped.nix {inherit stdenv isDebug;},
+  tg_owt,
+  unwrapped ? callPackage ./unwrapped.nix {inherit stdenv isDebug tg_owt;},
   qtbase,
   qtimageformats,
   qtsvg,
@@ -35,9 +36,6 @@ stdenv.mkDerivation (finalAttrs: {
     ++ lib.optionals withWebkit [glib-networking];
 
   qtWrapperArgs = lib.optionals withWebkit ["--prefix" "LD_LIBRARY_PATH" ":" (lib.makeLibraryPath [webkitgtk_4_1])];
-
-  dontUnpack = true;
-  dontWrapGApps = true;
 
   installPhase = ''
     runHook preInstall
