@@ -43,6 +43,8 @@ stdenv.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
+  dontUnpack = true;
+
   preFixup = lib.optionalString withWebkit ''
     qtWrapperArgs+=("''${gappsWrapperArgs[@]}")
   '';
