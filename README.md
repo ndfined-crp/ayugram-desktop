@@ -15,7 +15,7 @@
 > and we won't push a broken update.
 
 > [!NOTE]
-> We do have binary cache via [Garnix CI](https://garnix.io/).
+> We do have binary cache via [Cachix](https://cachix.org/).
 > In case you'll setup it manually - make sure to rebuild with
 > activated cache **BEFORE** adding `ayugram` your packages.
 
@@ -90,17 +90,9 @@
 Simpy add it into your `nix` settings inside nixos configuration:
 
 ```nix
-nix = {
-  settings = {
-    substituters = [
-      "https://cache.garnix.io"
-      "https://ayugram-desktop.cachix.org"
-    ];
-    trusted-public-keys = [
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-      "ayugram-desktop.cachix.org:AZ5EqHrJsAKL5YkZYLPEsb1FdD9QlypUwQ0REcJftgA="
-    ];
-  };
+nix.settings = {
+  substituters = ["https://ayugram-desktop.cachix.org"];
+  trusted-public-keys = ["ayugram-desktop.cachix.org:AZ5EqHrJsAKL5YkZYLPEsb1FdD9QlypUwQ0REcJftgA="];
 };
 ```
 
