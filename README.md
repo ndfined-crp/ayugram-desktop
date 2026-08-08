@@ -1,106 +1,133 @@
-<h1 align="center">Ayugram desktop 🌐 NixOS flake</h1>
+# ayugram-desktop
 
-<div align="center">
+**🌐 English** · [Русский](README.ru.md)
 
-![GitHub repo size](https://img.shields.io/github/repo-size/ayugram-port/ayugram-desktop?style=for-the-badge&cacheSeconds=180)
+> AyuGram for Nix — the first-class way to run [AyuGram], a feature-rich
+> Telegram Desktop fork, on NixOS and other Linux distributions.
 
-![GitHub License](https://img.shields.io/github/license/ayugram-port/ayugram-desktop?style=for-the-badge)
-</div>
+[AyuGram]: https://github.com/AyuGram/AyuGramDesktop
 
-> [!TIP]
-> NEW!!!
-> `ayugram-desktop` is already in [nixpkgs](https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/ay/ayugram-desktop/package.nix)
-> but it's an override for `telegram-desktop`, so `ndfined-crp/ayugram-desktop`
-> flake is still better, because we don't rely on `telegram-desktop` being able to build -
-> and we won't push a broken update.
+[![Flake](https://img.shields.io/badge/nix-flake-blueviolet?logo=nixos&logoColor=white&style=flat-square)](https://nixos.wiki/wiki/Flakes)
+[![Platforms](https://img.shields.io/badge/Linux-x86__64%20%7C%20aarch64-informational?logo=linux&logoColor=white&style=flat-square)]()
+[![License](https://img.shields.io/badge/license-GPL--3-blue?logo=opensourceinitiative&logoColor=white&style=flat-square)](https://www.gnu.org/licenses/gpl-3.0)
+[![Cachix](https://img.shields.io/badge/cachix-ayugram--desktop-7c77f8?style=flat-square)](https://app.cachix.org/cache/ayugram-desktop)
 
-> [!NOTE]
-> We do have binary cache via [Cachix](https://cachix.org/).
-> In case you'll setup it manually - make sure to rebuild with
-> activated cache **BEFORE** adding `ayugram` your packages.
+---
 
-> [!WARNING]
-> Any other architecture than Linux is **NOT SUPPORTED**:
->
-> Q: Why?
-> A: We don't have any device to test it!
->
-> Q: Can I help it?
-> A: YES!! If you are user of this kind of system you can
->    become maintainer to add support for your architecture!
+## What makes it different
 
-<h2 align="center">☄️ Installation Instructions</h2>
+The `nixpkgs` package of AyuGram is an *override* of `telegram-desktop`. This
+flake builds AyuGram **from its own source tree**, ahead of release, so the
+build is always verified by CI and never inherits breakage from the base
+client.
 
-1. You'll need to add this repo into your `flake.nix`:
+Prebuilt binaries are served from two binary caches, enabled automatically
+when this flake is used:
 
-   ```nix
-   {
-     inputs = {
-       nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-       ayugram-desktop = {
-         type = "git";
-         submodules = true;
-         url = "https://github.com/ndfined-crp/ayugram-desktop/";
-        };
-     };
+| Cache | Contents |
+| --- | --- |
+| `ayugram-desktop.cachix.org` | the application |
+| `tg-owt.cachix.org` | `tg_owt`, the WebRTC dependency |
 
-     outputs = {
-       self,
-       nixpkgs,
-       ayugram-desktop,
-       ...
-     }: {
-       ...
-     };
-   }
-   ```
+## Requirements
 
-2. After that, add package into your `environment.systemPackages` or `home.packages`:
+| Requirement | Notes |
+| --- | --- |
+| Nix with [flakes] enabled | `nixos-unstable` works out of the box |
+| Linux · `x86_64` or `aarch64` | other platforms are not covered by CI |
 
-   ```nix
-   # Nixos configuraion
-   {
-     pkgs,
-     inputs,
-     ...
-   }: {
-     environment.systemPackages = with pkgs; [
-       inputs.ayugram-desktop.packages.${pkgs.system}.ayugram-desktop
-     ];
-   }
-   ```
+[flakes]: https://nixos.org/wiki/Flakes
 
-   ```nix
-   # Home-manager configuration
-   {
-     pkgs,
-     inputs,
-     ...
-   }: {
-     home.packages = with pkgs; [
-       inputs.ayugram-desktop.packages.${pkgs.system}.ayugram-desktop
-     ];
-   }
-   ```
+## Quick start
 
-3. Now rebuild, and feel free to use `ayugram-desktop`!
+Give it a spin without installing anything:
 
-<h2 align="center"> ⚡ Manual Binary Cache Setup</h2>
+```console
+nix run github:ndfined-crp/ayugram-desktop
+```
 
-Simpy add it into your `nix` settings inside nixos configuration:
+It will open AyuGram right away. From here you can either use it as is, or
+add it to your system.
+
+## Using it in a configuration
+
+Add the input to your flake and let its `nixpkgs` follow yours, so both roots
+share the same revision:
 
 ```nix
-nix.settings = {
-  substituters = ["https://ayugram-desktop.cachix.org"];
-  trusted-public-keys = ["ayugram-desktop.cachix.org:AZ5EqHrJsAKL5YkZYLPEsb1FdD9QlypUwQ0REcJftgA="];
+{
+  inputs = {
+    ayugram-desktop = {
+      url = "github:ndfined-crp/ayugram-desktop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  };
+}
+```
+
+Install it system-wide (NixOS):
+
+```nix
+{ pkgs, inputs, ... }: {
+  environment.systemPackages = [
+    inputs.ayugram-desktop.packages.${pkgs.system}.default
+  ];
+}
+```
+
+Or per user (Home Manager):
+
+```nix
+{ pkgs, inputs, ... }: {
+  home.packages = [
+    inputs.ayugram-desktop.packages.${pkgs.system}.default
+  ];
+}
+```
+
+> After `nixos-rebuild switch` or `home-manager switch`, launch **AyuGram**.
+
+## Binary caches, manual setup
+
+The caches listed above are normally picked up from the flake's `nixConfig`.
+If your Nix daemon ignores them, set them up yourself:
+
+```nix
+nix = {
+  settings = {
+    substituters = ["https://ayugram-desktop.cachix.org"];
+    trusted-public-keys = [
+      "ayugram-desktop.cachix.org-1:AZ5EqHrJsAKL5YkZYLPEsb1FdD9QlypUwQ0REcJftgA="
+    ];
+  };
+  extra-substituters = ["https://tg-owt.cachix.org"];
+  extra-trusted-public-keys = [
+    "tg-owt.cachix.org-1:lp0BukIhSK3EIyLcDhDZ5zABgT48nmNp6t4SnZ0wr8w="
+  ];
 };
 ```
 
-<h2 align="center"> 🪐 P.S.:</h2>
+## FAQ
 
-| Thanks                                            | to                                                                          |
-| ------------------------------------------------- | --------------------------------------------------------------------------- |
-| 🪐 [shwewo](https://github.com/shwewo)            | for original [repo](https://github.com/shwewo/ayugram-desktop).             |
-| 🪐 [kaeeraa](https://github.com/kaeeraa)          | for fork adoption.                                                          |
-| 🪐 [AyuGram](https://github.com/AyuGram)          | for the [AyuGramDesktop](https://github.com/AyuGram/AyuGramDesktop) itself. |
-| 🪐 [hand7s](https://github.com/s0me1newithhand7s) | for this awesome readme (:D) and some work with package format.             |
+**Does this redefine `telegram-desktop`?**
+No — AyuGram is built from its own tree. That also means a broken `tdesktop`
+update never affects it.
+
+**Which platforms are supported?**
+`x86_64-linux` and `aarch64-linux`. Other platforms lack CI and a test device.
+
+**What about crash reports?**
+Untouched. They go wherever AyuGram normally sends them; nothing is redirected.
+
+## Maintainers
+
+The flake is maintained by **[hand7s](https://github.com/s0me1newithand7s)** and
+**[fractal](https://github.com/fractal-l)**. Contributions and build reports
+are welcome.
+
+## License
+
+The flake itself is licensed under [GPL-3.0-or-later](./LICENSE), matching
+AyuGram. AyuGramDesktop is distributed under the same terms by
+[its authors](https://github.com/AyuGram/AyuGramDesktop).
