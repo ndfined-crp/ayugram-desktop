@@ -1,12 +1,11 @@
 {
   lib,
   stdenv,
-  fetchFromGitHub,
-  callPackage,
+  fetchurl,
   pkg-config,
   cmake,
   ninja,
-  clang,
+  cmark-gfm,
   python3,
   qtsvg,
   qtwayland,
@@ -16,7 +15,8 @@
   ffmpeg_6,
   protobuf,
   openal-soft,
-  minizip-ng,
+  minizip-ng-compat,
+  qtshadertools,
   range-v3,
   tl-expected,
   hunspell,
@@ -32,14 +32,14 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop-unwrapped";
-  version = "6.7.8";
-  src = fetchFromGitHub {
-    owner = "AyuGram";
-    repo = "AyuGramDesktop";
-    rev = "v${finalAttrs.version}";
-
-    fetchSubmodules = true;
-    hash = "sha256-X0g/zl5pJE8S5rkk7o81LiDNClLEMDyHVxmdoO4X9DE=";
+  version = "7.0.9";
+# Full release archive is used because it bundles submodules (codegen).
+  # This also avoids the official v7.0.9 tag pointing to a broken submodule
+  # pin that fails to build on Linux.
+  # If the archive is re-uploaded, update the hash below.
+  src = fetchurl {
+    url = "https://github.com/AyuGram/AyuGramDesktop/releases/download/v${finalAttrs.version}/AyuGramDesktop-${finalAttrs.version}-full.tar.gz";
+    hash = "sha256-znTEAOSI/JDTeE87o9YCyv7NUFO3onOll3GGg6R6uw8=";
   };
 
   nativeBuildInputs = [
@@ -47,7 +47,6 @@ stdenv.mkDerivation (finalAttrs: {
     cmake
     ninja
     python3
-    clang
     gobject-introspection
   ];
   buildInputs = [
@@ -57,7 +56,7 @@ stdenv.mkDerivation (finalAttrs: {
     xxhash
     ffmpeg_6
     openal-soft
-    minizip-ng
+    minizip-ng-compat
     range-v3
     tl-expected
     rnnoise
@@ -70,6 +69,8 @@ stdenv.mkDerivation (finalAttrs: {
     qtwayland
     kcoreaddons
     hunspell
+    qtshadertools
+    cmark-gfm
   ];
 
   dontWrapQtApps = true;
