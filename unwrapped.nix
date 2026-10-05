@@ -19,6 +19,7 @@
   qtshadertools,
   range-v3,
   tl-expected,
+  tlottie,
   hunspell,
   gobject-introspection,
   rnnoise,
@@ -60,6 +61,7 @@ stdenv.mkDerivation (finalAttrs: {
     minizip-ng-compat
     range-v3
     tl-expected
+    tlottie
     rnnoise
     tg_owt
     microsoft-gsl
