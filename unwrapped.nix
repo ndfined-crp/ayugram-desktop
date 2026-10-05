@@ -1,7 +1,7 @@
 {
   lib,
   stdenv,
-  fetchurl,
+  fetchFromGitHub,
   pkg-config,
   cmake,
   ninja,
@@ -32,14 +32,14 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "ayugram-desktop-unwrapped";
-  version = "7.0.9";
-# Full release archive is used because it bundles submodules (codegen).
-  # This also avoids the official v7.0.9 tag pointing to a broken submodule
-  # pin that fails to build on Linux.
-  # If the archive is re-uploaded, update the hash below.
-  src = fetchurl {
-    url = "https://github.com/AyuGram/AyuGramDesktop/releases/download/v${finalAttrs.version}/AyuGramDesktop-${finalAttrs.version}-full.tar.gz";
-    hash = "sha256-znTEAOSI/JDTeE87o9YCyv7NUFO3onOll3GGg6R6uw8=";
+  version = "7.2.9";
+  src = fetchFromGitHub {
+    owner = "AyuGram";
+    repo = "AyuGramDesktop";
+    rev = "v${finalAttrs.version}";
+
+    fetchSubmodules = true;
+    hash = "sha256-JlZWJ+fWdJqgDMpPFLfkfFp/O65eQaA8GQD6ZY/SI/k=";
   };
 
   nativeBuildInputs = [
