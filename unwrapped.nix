@@ -25,6 +25,7 @@
   microsoft-gsl,
   boost,
   ada,
+  pango,
   qtbase,
   tdlib,
   tg_owt,
@@ -64,6 +65,7 @@ stdenv.mkDerivation (finalAttrs: {
     microsoft-gsl
     boost
     ada
+    pango
     (tdlib.override {tde2eOnly = true;})
     protobuf
     qtwayland
