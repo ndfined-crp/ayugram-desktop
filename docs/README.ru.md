@@ -1,14 +1,14 @@
 # ayugram-desktop
 
-**[English](README.md) · 🌐 Русский**
+[🇺🇸 English](README.md) · **🇷🇺 Русский**
 
 > AyuGram для Nix — самый «родной» способ запустить [AyuGram], форк
 > Telegram Desktop с кучей возможностей, на NixOS и других Linux-системах.
 
 [AyuGram]: https://github.com/AyuGram/AyuGramDesktop
 
+[![Platforms](https://img.shields.io/badge/Linux-x86__64%20and%20aarch64-informational?logo=linux&logoColor=white&style=flat-square)](-)
 [![Flake](https://img.shields.io/badge/nix-flake-blueviolet?logo=nixos&logoColor=white&style=flat-square)](https://nixos.wiki/wiki/Flakes)
-[![Platforms](https://img.shields.io/badge/Linux-x86__64%20%7C%20aarch64-informational?logo=linux&logoColor=white&style=flat-square)]()
 [![License](https://img.shields.io/badge/license-GPL--3-blue?logo=opensourceinitiative&logoColor=white&style=flat-square)](https://www.gnu.org/licenses/gpl-3.0)
 [![Cachix](https://img.shields.io/badge/cachix-ayugram--desktop-7c77f8?style=flat-square)](https://app.cachix.org/cache/ayugram-desktop)
 
@@ -16,7 +16,7 @@
 
 ## Чем отличается
 
-Пакет AyuGram из `nixpkgs` — это *override* `telegram-desktop`. Этот флейк
+Пакет AyuGram из `nixpkgs` — это _override_ `telegram-desktop`. Этот флейк
 собирает AyuGram **из его собственного дерева исходников**, до релиза, так
 что сборка всегда проверяется CI и никогда не наследует поломки базового
 клиента.
@@ -24,17 +24,17 @@
 Готовые бинарники раздаются из двух бинарных кэшей, которые подключаются
 автоматически:
 
-| Кэш | Что лежит |
-| --- | --- |
-| `ayugram-desktop.cachix.org` | само приложение |
-| `tg-owt.cachix.org` | `tg_owt`, зависимость для WebRTC |
+| Кэш                          | Что лежит                        |
+| ---------------------------- | -------------------------------- |
+| `ayugram-desktop.cachix.org` | само приложение                  |
+| `tg-owt.cachix.org`          | `tg_owt`, зависимость для WebRTC |
 
 ## Требования
 
-| Требование | Примечание |
-| --- | --- |
-| Nix с включёнными [flakes] | из коробки работает `nixos-unstable` |
-| Linux · `x86_64` или `aarch64` | другие платформы CI не покрывает |
+| Требование                     | Примечание                           |
+| ------------------------------ | ------------------------------------ |
+| Nix с включёнными [flakes]     | из коробки работает `nixos-unstable` |
+| Linux · `x86_64` или `aarch64` | другие платформы CI не покрывает     |
 
 [flakes]: https://nixos.org/wiki/Flakes
 

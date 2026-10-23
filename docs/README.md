@@ -1,14 +1,14 @@
 # ayugram-desktop
 
-**🌐 English** · [Русский](README.ru.md)
+**🇺🇸 English** · [🇷🇺 Русский](README.ru.md)
 
 > AyuGram for Nix — the first-class way to run [AyuGram], a feature-rich
 > Telegram Desktop fork, on NixOS and other Linux distributions.
 
 [AyuGram]: https://github.com/AyuGram/AyuGramDesktop
 
+[![Platforms](https://img.shields.io/badge/Linux-x86__64%20and%20aarch64-informational?logo=linux&logoColor=white&style=flat-square)](-)
 [![Flake](https://img.shields.io/badge/nix-flake-blueviolet?logo=nixos&logoColor=white&style=flat-square)](https://nixos.wiki/wiki/Flakes)
-[![Platforms](https://img.shields.io/badge/Linux-x86__64%20%7C%20aarch64-informational?logo=linux&logoColor=white&style=flat-square)]()
 [![License](https://img.shields.io/badge/license-GPL--3-blue?logo=opensourceinitiative&logoColor=white&style=flat-square)](https://www.gnu.org/licenses/gpl-3.0)
 [![Cachix](https://img.shields.io/badge/cachix-ayugram--desktop-7c77f8?style=flat-square)](https://app.cachix.org/cache/ayugram-desktop)
 
@@ -16,7 +16,7 @@
 
 ## What makes it different
 
-The `nixpkgs` package of AyuGram is an *override* of `telegram-desktop`. This
+The `nixpkgs` package of AyuGram is an _override_ of `telegram-desktop`. This
 flake builds AyuGram **from its own source tree**, ahead of release, so the
 build is always verified by CI and never inherits breakage from the base
 client.
@@ -24,16 +24,16 @@ client.
 Prebuilt binaries are served from two binary caches, enabled automatically
 when this flake is used:
 
-| Cache | Contents |
-| --- | --- |
-| `ayugram-desktop.cachix.org` | the application |
-| `tg-owt.cachix.org` | `tg_owt`, the WebRTC dependency |
+| Cache                        | Contents                        |
+| ---------------------------- | ------------------------------- |
+| `ayugram-desktop.cachix.org` | the application                 |
+| `tg-owt.cachix.org`          | `tg_owt`, the WebRTC dependency |
 
 ## Requirements
 
-| Requirement | Notes |
-| --- | --- |
-| Nix with [flakes] enabled | `nixos-unstable` works out of the box |
+| Requirement                   | Notes                                 |
+| ----------------------------- | ------------------------------------- |
+| Nix with [flakes] enabled     | `nixos-unstable` works out of the box |
 | Linux · `x86_64` or `aarch64` | other platforms are not covered by CI |
 
 [flakes]: https://nixos.org/wiki/Flakes
