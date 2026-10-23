@@ -1,0 +1,82 @@
+---
+name: "Package Update Action"
+run-name: "npu"
+permissions:
+  contents: write
+  pull-requests: write
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+
+jobs:
+  updater:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout repo"
+        uses: "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1" # v7.0.1
+
+      - name: "Check for update"
+        id: "check"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        run: |
+          latest="$(gh api "repos/AyuGram/AyuGramDesktop/releases/latest" --jq '.tag_name')"
+          latest="${latest#v}"
+          current="$(awk -F'"' '/^  version = / {print $2; exit}' unwrapped.nix)"
+
+          echo "Current version: $current"
+          echo "Latest version: $latest"
+
+          if [ "$latest" = "$current" ]; then
+            echo "update=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "update=true" >> "$GITHUB_OUTPUT"
+          fi
+          echo "version=$latest" >> "$GITHUB_OUTPUT"
+
+      - name: "Install Nix"
+        if: steps.check.outputs.update == 'true'
+        uses: "cachix/install-nix-action@75c75c31ebece974e48ebc36b4ad125bd97bd97b" # v31.11.3
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: "Update package"
+        if: steps.check.outputs.update == 'true'
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        run: |
+          nix run nixpkgs#nix-update -- \
+            --flake ayugram-desktop.unwrapped \
+            --use-github-releases \
+            --override-filename unwrapped.nix
+
+      - name: "Read package version"
+        if: steps.check.outputs.update == 'true'
+        id: "version"
+        run: |
+          echo "value=$(nix eval --raw .#ayugram-desktop.version)" >> "$GITHUB_OUTPUT"
+
+      - name: "Create pull request"
+        if: steps.check.outputs.update == 'true'
+        id: "pr"
+        uses: "peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1" # v8.1.1
+        with:
+          branch: "update-ayugram-desktop"
+          delete-branch: true
+          add-paths: "unwrapped.nix"
+          commit-message: "chore: update ayugram-desktop to ${{ steps.version.outputs.value }}"
+          title: "chore: update ayugram-desktop to ${{ steps.version.outputs.value }}"
+          body: |
+            Automated update of `ayugram-desktop` to [`v${{ steps.version.outputs.value }}`](https://github.com/AyuGram/AyuGramDesktop/releases/tag/v${{ steps.version.outputs.value }}).
+
+            Version and source hash were bumped with [nix-update](https://github.com/Mic92/nix-update).
+
+      - name: "Enable auto-merge"
+        if: "steps.pr.outputs.pull-request-number != ''"
+        run: |
+          gh pr merge ${{ steps.pr.outputs.pull-request-number }} \
+            --auto \
+            --squash
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
