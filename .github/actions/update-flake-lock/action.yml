@@ -1,0 +1,17 @@
+---
+name: "Update flake.lock"
+description: "Bump flake inputs and leave flake.lock modified in the workspace"
+
+inputs:
+  flake-inputs:
+    description: "Space-separated inputs to update (empty updates every input)"
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: "Update flake.lock"
+      shell: "bash"
+      run: |-
+        nix flake update ${{ inputs.flake-inputs }}
