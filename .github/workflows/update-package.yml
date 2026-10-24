@@ -1,6 +1,5 @@
 ---
 name: "Package Update Action"
-run-name: "npu"
 permissions:
   contents: write
   pull-requests: write
