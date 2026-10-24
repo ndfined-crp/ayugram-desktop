@@ -61,11 +61,20 @@ jobs:
         run: |
           echo "value=$(nix eval --raw .#ayugram-desktop.version)" >> "$GITHUB_OUTPUT"
 
+      - name: "Create app token"
+        if: steps.check.outputs.update == 'true'
+        id: "app-token"
+        uses: "./.github/actions/create-app-token"
+        with:
+          client-id: "${{ secrets.APP_CLIENT_ID }}"
+          private-key: "${{ secrets.APP_PRIVATE_KEY }}"
+
       - name: "Create pull request"
         if: steps.check.outputs.update == 'true'
         id: "pr"
         uses: "peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1" # v8.1.1
         with:
+          token: "${{ steps.app-token.outputs.token }}"
           branch: "update-ayugram-desktop"
           delete-branch: true
           add-paths: |
@@ -85,4 +94,4 @@ jobs:
             --auto \
             --squash
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
