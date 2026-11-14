@@ -122,7 +122,7 @@ Untouched. They go wherever AyuGram normally sends them; nothing is redirected.
 
 ## Maintainers
 
-The flake is maintained by **[hand7s](https://github.com/s0me1newithand7s)** and
+The flake is maintained by **[hand7s](https://github.com/s0me1newithhand7s)** and
 **[fractal](https://github.com/fractal-l)**. Contributions and build reports
 are welcome.
 

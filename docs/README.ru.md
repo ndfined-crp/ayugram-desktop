@@ -124,7 +124,7 @@ nix = {
 
 ## Мейнтейнеры
 
-Флейк поддерживают **[hand7s](https://github.com/s0me1newithand7s)** и
+Флейк поддерживают **[hand7s](https://github.com/s0me1newithhand7s)** и
 **[fractal](https://github.com/fractal-l)**. Вклад в код и отчёты о сборках
 приветствуются.
 
