@@ -21,13 +21,9 @@ flake builds AyuGram **from its own source tree**, ahead of release, so the
 build is always verified by CI and never inherits breakage from the base
 client.
 
-Prebuilt binaries are served from two binary caches, enabled automatically
-when this flake is used:
-
-| Cache                        | Contents                        |
-| ---------------------------- | ------------------------------- |
-| `ayugram-desktop.cachix.org` | the application                 |
-| `tg-owt.cachix.org`          | `tg_owt`, the WebRTC dependency |
+Prebuilt binaries are served from a binary cache, enabled automatically
+when this flake is used: `ayugram-desktop.cachix.org`. It contains the
+application itself.
 
 ## Requirements
 
@@ -88,10 +84,10 @@ Or per user (Home Manager):
 
 > After `nixos-rebuild switch` or `home-manager switch`, launch **AyuGram**.
 
-## Binary caches, manual setup
+## Binary cache, manual setup
 
-The caches listed above are normally picked up from the flake's `nixConfig`.
-If your Nix daemon ignores them, set them up yourself:
+The cache listed above is normally picked up from the flake's `nixConfig`.
+If your Nix daemon ignores it, set it up yourself:
 
 ```nix
 nix = {
